@@ -109,6 +109,44 @@ void loop(void) {
   ntshell_execute_nb(&Shell);
 }
 
+static std::string RssiCodeToStr(int rssi) {
+  if (rssi == 0) {
+    return "~-113dBm";
+  } else if (rssi == 1) {
+    return "-111dBm";
+  } else if (rssi <= 30) {
+    const auto value = map(rssi, 2, 30, -109, -53);
+    return std::to_string(value) + "dBm";
+  } else if (rssi == 31) {
+    return "-51~dBm";
+  } else {
+    return "Unknown";
+  }
+}
+
+static std::string BerCodeToStr(int ber) {
+  switch (ber) {
+    case 0:
+      return "0~0.2%";
+    case 1:
+      return "0.2~0.4%";
+    case 2:
+      return "0.4~0.8%";
+    case 3:
+      return "0.8~1.6%";
+    case 4:
+      return "1.6~3.2%";
+    case 5:
+      return "3.2~6.4%";
+    case 6:
+      return "6.4~12.8%";
+    case 7:
+      return "12.8~%";
+    default:
+      return "Unknown";
+  }
+}
+
 static int shellRead(char *buf, int cnt, void *extobj) {
   for (int i = 0; i < cnt; ++i) {
     const auto c = Serial.read();
@@ -396,42 +434,4 @@ static int CommandHelp(int argc, char **argv) {
   }
 
   return 0;
-}
-
-std::string RssiCodeToStr(int rssi) {
-  if (rssi == 0) {
-    return "~-113dBm";
-  } else if (rssi == 1) {
-    return "-111dBm";
-  } else if (rssi <= 30) {
-    const auto value = map(rssi, 2, 30, -109, -53);
-    return std::to_string(value) + "dBm";
-  } else if (rssi == 31) {
-    return "-51~dBm";
-  } else {
-    return "Unknown";
-  }
-}
-
-std::string BerCodeToStr(int ber) {
-  switch (ber) {
-    case 0:
-      return "0~0.2%";
-    case 1:
-      return "0.2~0.4%";
-    case 2:
-      return "0.4~0.8%";
-    case 3:
-      return "0.8~1.6%";
-    case 4:
-      return "1.6~3.2%";
-    case 5:
-      return "3.2~6.4%";
-    case 6:
-      return "6.4~12.8%";
-    case 7:
-      return "12.8~%";
-    default:
-      return "Unknown";
-  }
 }
