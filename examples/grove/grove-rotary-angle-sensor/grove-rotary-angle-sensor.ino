@@ -30,7 +30,17 @@ void setup(void) {
 
 void loop(void) {
   const auto rotaryAngleRaw = analogRead(ROTARY_ANGLE_PIN);
-  const auto rotaryAngle = (float)rotaryAngleRaw / 16383 * 0.6f * 6 / 3.3f;
+
+  // Convert raw value to voltage
+  //
+  // Voltage = Value / Resolution * Reference voltage / Gain
+  //   Resolution       : 16383 ... 14-bit resolution = 2^14-1
+  //   Reference voltage: 0.6   ... Internal reference = 0.6V
+  //   Gain             : 1/6   ... 1/6
+  const auto rotaryAngleVoltage = (float)rotaryAngleRaw / 16383 * 0.6f / (1.0f / 6);
+
+  // Normalize 0~3.3V to 0~1
+  const auto rotaryAngle = rotaryAngleVoltage / 3.3f;
 
   int i;
   for (i = 0; i < BAR_LENGTH * rotaryAngle; i++) Serial.print("*");
