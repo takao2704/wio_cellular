@@ -29,6 +29,8 @@ jobs:
     strategy:
       matrix:
         include:
+          - sketch_path: examples/cellular/cellular-status
+            sketch_name: cellular-status
           - sketch_path: examples/cellular/transparent
             sketch_name: transparent
           - sketch_path: examples/cellular/shell
