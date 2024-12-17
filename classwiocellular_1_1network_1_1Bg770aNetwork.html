@@ -84,10 +84,14 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 公開型</h2></td></tr>
-<tr class="memitem:a96d9ff055576415f1b70cf59725cc493"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493">SearchAccessTechnology</a> { <a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a1b095adeb708a4c686d2992307efaefa">LTEM</a>
+<tr class="memitem:a96d9ff055576415f1b70cf59725cc493"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493">SearchAccessTechnology</a> { <br />
+&#160;&#160;<a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493af240c53fb8c059905625504cc7e8a7ee">NOSET</a>
+, <a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a1b095adeb708a4c686d2992307efaefa">LTEM</a>
 , <a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a9ce13d0c0fd3b1dd0bf831687f613128">NBIOT</a>
 , <a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a911c31c20f4a149af4646aadda00cb97">LTEM_NBIOT</a>
-, <a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a79a4c4b68f100ef567e6842c230a5f91">NBIOT_LTEM</a>
+, <br />
+&#160;&#160;<a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a79a4c4b68f100ef567e6842c230a5f91">NBIOT_LTEM</a>
+<br />
  }</td></tr>
 <tr class="memdesc:a96d9ff055576415f1b70cf59725cc493"><td class="mdescLeft">&#160;</td><td class="mdescRight">ネットワーク探索のアクセステクノロジーと順序  <a href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493">[詳解]</a><br /></td></tr>
 <tr class="separator:a96d9ff055576415f1b70cf59725cc493"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,6 +155,9 @@ $(function() {
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 静的公開変数類</h2></td></tr>
+<tr class="memitem:a57ab7d0314e44ffec7daa820700982b2"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a57ab7d0314e44ffec7daa820700982b2">ALL_LTEM_BAND</a> [] = &quot;0x2000000000f0e189f&quot;</td></tr>
+<tr class="memdesc:a57ab7d0314e44ffec7daa820700982b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">NTTドコモのLTE-M周波数バンド  <a href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a57ab7d0314e44ffec7daa820700982b2">[詳解]</a><br /></td></tr>
+<tr class="separator:a57ab7d0314e44ffec7daa820700982b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a037161df1d04403d7170a7d0d3ebcd11"><td class="memItemLeft" align="right" valign="top">static constexpr char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a037161df1d04403d7170a7d0d3ebcd11">NTTDOCOMO_LTEM_BAND</a> [] = &quot;0xa040005&quot;</td></tr>
 <tr class="memdesc:a037161df1d04403d7170a7d0d3ebcd11"><td class="mdescLeft">&#160;</td><td class="mdescRight">NTTドコモのLTE-M周波数バンド  <a href="classwiocellular_1_1network_1_1Bg770aNetwork.html#a037161df1d04403d7170a7d0d3ebcd11">[詳解]</a><br /></td></tr>
 <tr class="separator:a037161df1d04403d7170a7d0d3ebcd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,7 +227,9 @@ $(function() {
 
 <p>ネットワーク探索のアクセステクノロジーと順序 </p>
 <table class="fieldtable">
-<tr><th colspan="2">列挙値</th></tr><tr><td class="fieldname"><a id="a96d9ff055576415f1b70cf59725cc493a1b095adeb708a4c686d2992307efaefa"></a>LTEM&#160;</td><td class="fielddoc"><p>LTE-M </p>
+<tr><th colspan="2">列挙値</th></tr><tr><td class="fieldname"><a id="a96d9ff055576415f1b70cf59725cc493af240c53fb8c059905625504cc7e8a7ee"></a>NOSET&#160;</td><td class="fielddoc"><p>未設定 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a96d9ff055576415f1b70cf59725cc493a1b095adeb708a4c686d2992307efaefa"></a>LTEM&#160;</td><td class="fielddoc"><p>LTE-M </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a96d9ff055576415f1b70cf59725cc493a9ce13d0c0fd3b1dd0bf831687f613128"></a>NBIOT&#160;</td><td class="fielddoc"><p>NB-IoT </p>
 </td></tr>
@@ -411,6 +420,30 @@ $(function() {
 
 </div>
 </div>
+<a id="a57ab7d0314e44ffec7daa820700982b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57ab7d0314e44ffec7daa820700982b2">&#9670;&nbsp;</a></span>ALL_LTEM_BAND</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr char wiocellular::network::Bg770aNetwork::ALL_LTEM_BAND[] = &quot;0x2000000000f0e189f&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>NTTドコモのLTE-M周波数バンド </p>
+
+</div>
+</div>
 <a id="ad47761014b3e49d8b7d2f68aeff20c90"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad47761014b3e49d8b7d2f68aeff20c90">&#9670;&nbsp;</a></span>apn</h2>
 
@@ -481,7 +514,7 @@ $(function() {
 
 <p>LTE-M周波数バンド </p>
 <ul>
-<li>"": なし</li>
+<li>"": 未設定</li>
 <li>"0x1": LTE B1</li>
 <li>"0x2": LTE B2</li>
 <li>"0x4": LTE B3</li>
@@ -516,7 +549,7 @@ $(function() {
 
 <p>NB-IoT周波数バンド </p>
 <ul>
-<li>"": なし</li>
+<li>"": 未設定</li>
 <li>"0x1": LTE B1</li>
 <li>"0x2": LTE B2</li>
 <li>"0x4": LTE B3</li>
