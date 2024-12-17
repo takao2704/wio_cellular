@@ -29,6 +29,11 @@ namespace wiocellular
             {
                 /**
                  * @~Japanese
+                 * @brief 未設定
+                 */
+                NOSET,
+                /**
+                 * @~Japanese
                  * @brief LTE-M
                  */
                 LTEM,
@@ -116,7 +121,7 @@ namespace wiocellular
                  * @~Japanese
                  * @brief LTE-M周波数バンド
                  *
-                 * * "": なし
+                 * * "": 未設定
                  * * "0x1": LTE B1
                  * * "0x2": LTE B2
                  * * "0x4": LTE B3
@@ -139,7 +144,7 @@ namespace wiocellular
                  * @~Japanese
                  * @brief NB-IoT周波数バンド
                  *
-                 * * "": なし
+                 * * "": 未設定
                  * * "0x1": LTE B1
                  * * "0x2": LTE B2
                  * * "0x4": LTE B3
@@ -232,6 +237,7 @@ namespace wiocellular
 
                 // Check search access technology
                 bool setSearchAccessTechnology = false;
+                if (config.searchAccessTechnology != SearchAccessTechnology::NOSET)
                 {
                     int actMode;
                     if ((result = WioCellular.getSearchAccessTechnology(&actMode)) != WioCellularResult::Ok)
