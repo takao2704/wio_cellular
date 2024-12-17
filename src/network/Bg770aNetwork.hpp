@@ -92,6 +92,11 @@ namespace wiocellular
              * @~Japanese
              * @brief NTTドコモのLTE-M周波数バンド
              */
+            static constexpr char ALL_LTEM_BAND[] = "0x2000000000f0e189f";
+            /**
+             * @~Japanese
+             * @brief NTTドコモのLTE-M周波数バンド
+             */
             static constexpr char NTTDOCOMO_LTEM_BAND[] = "0xa040005";
             /**
              * @~Japanese
@@ -198,7 +203,7 @@ namespace wiocellular
              */
             Bg770aNetwork(void)
                 : abortHandler{nullptr},
-                  config{SearchAccessTechnology::LTEM_NBIOT, "0x2000000000f0e189f", "0x200000000090f189f", 1, ""},
+                  config{SearchAccessTechnology::NOSET, "", "", 1, ""},
                   epsRegistrationStatus{-1}
             {
             }
