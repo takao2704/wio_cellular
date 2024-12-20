@@ -84,7 +84,6 @@ void loop(void) {
     MeasureTime = millis();
   }
 
-  Serial.flush();
   WioCellular.doWork(10);  // Spin
 }
 

@@ -35,7 +35,6 @@ void setup(void) {
 void loop(void) {
   PrintStatus();
 
-  Serial.flush();
   WioCellular.doWorkUntil(INTERVAL);
 }
 

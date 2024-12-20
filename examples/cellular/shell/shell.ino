@@ -104,7 +104,6 @@ void setup(void) {
 }
 
 void loop(void) {
-  Serial.flush();
   WioCellular.doWork(10);  // Spin
   ntshell_execute_nb(&Shell);
 }

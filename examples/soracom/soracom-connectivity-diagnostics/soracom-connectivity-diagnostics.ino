@@ -134,7 +134,6 @@ static void pingToSoracomNetwork(void) {
   ABORT_IF_FAILED(executeCommand("AT+QPING=1,\"pong.soracom.io\",3,3", 300000));
   const auto start = millis();
   while (pingResponse.size() < 3 + 1) {
-    Serial.flush();
     WioCellular.doWork(timeout - (millis() - start));
     if (millis() - start >= timeout) break;
   }

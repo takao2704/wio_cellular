@@ -59,7 +59,6 @@ void loop(void) {
     digitalWrite(LED_BUILTIN, LOW);
   }
 
-  Serial.flush();
   WioCellular.doWorkUntil(INTERVAL);
 }
 

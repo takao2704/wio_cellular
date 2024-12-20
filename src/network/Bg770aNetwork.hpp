@@ -189,8 +189,8 @@ namespace wiocellular
                 Serial.print(file);
                 Serial.print(":");
                 Serial.println(line);
-                Serial.flush();
 
+                Serial.flush();
                 abort();
             }
 
