@@ -1,5 +1,5 @@
 /*
- * soracom-uptime-wionetwork.ino
+ * soracom-uptime.ino
  * Copyright (C) Seeed K.K.
  * MIT License
  */
