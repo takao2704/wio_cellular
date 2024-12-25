@@ -1,12 +1,12 @@
 /*
- * soracom-connectivity-pubsubclient.ino
+ * cellular-mqtt-pubsubclient.ino
  * Copyright (C) Seeed K.K.
  * MIT License
  */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries:
-//   http://librarymanager#PubSubClient 2.8
+//   http://librarymanager#PubSubClient 2.8.0
 
 #include <Adafruit_TinyUSB.h>
 #include <WioCellular.h>
