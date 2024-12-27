@@ -164,6 +164,9 @@ public:
         if (!Connected_)
             return -1;
 
+        if (ReceiveQueue_.size() >= 1)
+            return ReceiveQueue_.size();
+
         size_t size;
         if (Module_.receiveSocket(ConnectId_, ReceiveBuffer_.data(), ReceiveBuffer_.size(), &size) != WioCellularResult::Ok)
             return -1;
