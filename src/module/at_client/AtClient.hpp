@@ -9,6 +9,7 @@
 
 #include <functional>
 #include <list>
+#include <memory>
 #include <string>
 
 namespace wiocellular
@@ -42,6 +43,51 @@ namespace wiocellular
             private:
                 std::string Response_;
                 std::list<UrcHandlerFunctionType> UrcHandlers_;
+
+            public:
+                /**
+                 * @~Japanese
+                 * @brief URCハンドラ
+                 *
+                 * URCハンドラのクラスです。
+                 * URC処理ハンドラの登録/解除を自動的（RAII）に行います。
+                 */
+                class UrcHandler
+                {
+                private:
+                    AtClient &AtClient_;
+                    std::list<UrcHandlerFunctionType>::const_iterator It_;
+
+                public:
+                    /**
+                     * @~Japanese
+                     * @brief コンストラクタ
+                     *
+                     * @param [in] atClient ATコマンドクライアントのインスタンス。
+                     * @param [in] handler URC処理ハンドラ。
+                     *
+                     * コンストラクタ。
+                     */
+                    UrcHandler(AtClient &atClient, const UrcHandlerFunctionType &handler)
+                        : AtClient_{atClient}
+                    {
+                        It_ = AtClient_.registerUrcHandler(handler);
+                    }
+
+                    /**
+                     * @~Japanese
+                     * @brief デストラクタ
+                     *
+                     * デストラクタ。
+                     */
+                    ~UrcHandler()
+                    {
+                        AtClient_.unregisterUrcHandler(It_);
+                    }
+
+                    UrcHandler(UrcHandler &) = delete;
+                    UrcHandler &operator=(UrcHandler &) = delete;
+                };
 
             private:
                 void writeCommand(const std::string &command)
@@ -88,7 +134,7 @@ namespace wiocellular
                  * URC(unsolicited result code)を処理するハンドラを登録します。
                  * 戻り値のイテレータを使って、後でハンドラを解除することができます。
                  */
-                std::list<UrcHandlerFunctionType>::iterator registerUrcHandler(const UrcHandlerFunctionType &handler)
+                std::list<UrcHandlerFunctionType>::const_iterator registerUrcHandler(const UrcHandlerFunctionType &handler)
                 {
                     return UrcHandlers_.insert(UrcHandlers_.end(), handler);
                 }
@@ -101,9 +147,25 @@ namespace wiocellular
                  *
                  * URC(unsolicited result code)を処理するハンドラを解除します。
                  */
-                void unregisterUrcHandler(const std::list<UrcHandlerFunctionType>::iterator &it)
+                void unregisterUrcHandler(std::list<UrcHandlerFunctionType>::const_iterator it)
                 {
                     UrcHandlers_.erase(it);
+                }
+
+                /**
+                 * @~Japanese
+                 * @brief URC処理ハンドラを登録
+                 *
+                 * @param [in] handler URC処理ハンドラ。
+                 * @return URCハンドラのユニークポインタ。
+                 *
+                 * URC(unsolicited result code)を処理するハンドラを登録します。
+                 * 戻り値を開放すると自動的にハンドラを解除します。
+                 */
+                std::unique_ptr<UrcHandler> registerUrcHandler2(const UrcHandlerFunctionType &handler)
+                {
+                    std::unique_ptr<UrcHandler> urcHandler(new UrcHandler(*this, handler));
+                    return std::move(urcHandler);
                 }
 
                 /**
