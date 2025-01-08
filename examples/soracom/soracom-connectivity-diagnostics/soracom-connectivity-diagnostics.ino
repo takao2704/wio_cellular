@@ -123,22 +123,22 @@ static void pingToSoracomNetwork(void) {
   constexpr uint32_t timeout = 15000;
 
   std::vector<std::string> pingResponse;
-  const auto handler = WioCellular.registerUrcHandler([&pingResponse](const std::string &response) -> bool {
-    if (response.starts_with("+QPING: ")) {
-      pingResponse.push_back(response);
-      return true;
+  {
+    const auto handler = WioCellular.registerUrcHandler2([&pingResponse](const std::string &response) -> bool {
+      if (response.starts_with("+QPING: ")) {
+        pingResponse.push_back(response);
+        return true;
+      }
+      return false;
+    });
+
+    ABORT_IF_FAILED(executeCommand("AT+QPING=1,\"pong.soracom.io\",3,3", 300000));
+    const auto start = millis();
+    while (pingResponse.size() < 3 + 1) {
+      WioCellular.doWork(timeout - (millis() - start));
+      if (millis() - start >= timeout) break;
     }
-    return false;
-  });
-
-  ABORT_IF_FAILED(executeCommand("AT+QPING=1,\"pong.soracom.io\",3,3", 300000));
-  const auto start = millis();
-  while (pingResponse.size() < 3 + 1) {
-    WioCellular.doWork(timeout - (millis() - start));
-    if (millis() - start >= timeout) break;
   }
-
-  WioCellular.unregisterUrcHandler(handler);
 
   // success
   //   +QPING: 0,"100.127.100.127",32,66,64

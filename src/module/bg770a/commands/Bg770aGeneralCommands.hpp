@@ -73,35 +73,33 @@ namespace wiocellular
                      */
                     WioCellularResult factoryDefault(int timeout)
                     {
-                        WioCellularResult result = WioCellularResult::Ok;
+                        WioCellularResult result;
 
-                        bool appRdy = false;
-                        const auto handler = static_cast<MODULE &>(*this).registerUrcHandler([&appRdy](const std::string &response) -> bool
-                                                                                             {
-                                                                                                if (response == "APP RDY")
-                                                                                                {
-                                                                                                    appRdy = true;
-                                                                                                    return true;
-                                                                                                }
-                                                                                                return false; });
-
-                        if ((result = static_cast<MODULE &>(*this).executeCommand("AT&F1", 300)) == WioCellularResult::Ok)
                         {
+                            bool appRdy = false;
+                            const auto handler = static_cast<MODULE &>(*this).registerUrcHandler2([&appRdy](const std::string &response) -> bool
+                                                                                                  {
+                                                                                                    if (response == "APP RDY")
+                                                                                                    {
+                                                                                                        appRdy = true;
+                                                                                                        return true;
+                                                                                                    }
+                                                                                                    return false; });
+
+                            if ((result = static_cast<MODULE &>(*this).executeCommand("AT&F1", 300)) != WioCellularResult::Ok)
+                            {
+                                return result;
+                            }
+
                             const auto start = millis();
                             while (!appRdy)
                             {
                                 static_cast<MODULE &>(*this).doWork(timeout - (millis() - start));
                                 if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
                                 {
-                                    result = WioCellularResult::RdyTimeout;
-                                    break;
+                                    return WioCellularResult::RdyTimeout;
                                 }
                             }
-                        }
-                        static_cast<MODULE &>(*this).unregisterUrcHandler(handler);
-                        if (result != WioCellularResult::Ok)
-                        {
-                            return result;
                         }
 
                         // Enable Hardware Flow Control
@@ -110,7 +108,7 @@ namespace wiocellular
                             return result;
                         }
 
-                        return result;
+                        return WioCellularResult::Ok;
                     }
 
                     /**
