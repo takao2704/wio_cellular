@@ -130,8 +130,6 @@ static int printPingSummary(String input) {
 }
 
 static void pingToSoracomNetwork(void) {
-  constexpr uint32_t timeout = 15000;
-
   std::vector<std::string> pingResponse;
   {
     const auto handler = WioCellular.registerUrcHandler2([&pingResponse](const std::string &response) -> bool {
@@ -143,11 +141,9 @@ static void pingToSoracomNetwork(void) {
     });
 
     ABORT_IF_FAILED(executeCommand("AT+QPING=1,\"pong.soracom.io\",3,3", 300000));
-    const auto start = millis();
-    while (pingResponse.size() < 3 + 1) {
-      WioCellular.doWork(timeout - (millis() - start));
-      if (millis() - start >= timeout) break;
-    }
+    WioCellular.doWork(15000, [&pingResponse]() {
+      return pingResponse.size() >= 3 + 1;
+    });
   }
 
   // success

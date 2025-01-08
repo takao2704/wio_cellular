@@ -312,14 +312,10 @@ namespace wiocellular
 #endif
                         }
 
-                        const auto start = millis();
-                        while (!appRdy)
+                        if (!at_client::AtClient<Bg770a<INTERFACE>>::doWork(timeout, [&appRdy]
+                                                                            { return appRdy; }))
                         {
-                            at_client::AtClient<Bg770a<INTERFACE>>::doWork(timeout - (millis() - start));
-                            if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
-                            {
-                                return WioCellularResult::RdyTimeout;
-                            }
+                            return WioCellularResult::RdyTimeout;
                         }
                     }
 

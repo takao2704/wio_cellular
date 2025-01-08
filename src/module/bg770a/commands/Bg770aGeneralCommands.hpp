@@ -75,8 +75,8 @@ namespace wiocellular
                     {
                         WioCellularResult result;
 
+                        bool appRdy = false;
                         {
-                            bool appRdy = false;
                             const auto handler = static_cast<MODULE &>(*this).registerUrcHandler2([&appRdy](const std::string &response) -> bool
                                                                                                   {
                                                                                                     if (response == "APP RDY")
@@ -91,14 +91,10 @@ namespace wiocellular
                                 return result;
                             }
 
-                            const auto start = millis();
-                            while (!appRdy)
+                            if (!static_cast<MODULE &>(*this).doWork(timeout, [&appRdy]
+                                                                     { return appRdy; }))
                             {
-                                static_cast<MODULE &>(*this).doWork(timeout - (millis() - start));
-                                if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
-                                {
-                                    return WioCellularResult::RdyTimeout;
-                                }
+                                return WioCellularResult::RdyTimeout;
                             }
                         }
 

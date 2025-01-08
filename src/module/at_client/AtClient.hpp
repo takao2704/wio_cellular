@@ -189,6 +189,36 @@ namespace wiocellular
 
                 /**
                  * @~Japanese
+                 * @brief URC処理を実行
+                 *
+                 * @param [in] timeout タイムアウト時間[ミリ秒]。
+                 * @param [in] completion 完了確認のハンドラ。
+                 * @retval true 完了確認のハンドラがtrueを返した
+                 * @retval false タイムアウト
+                 *
+                 * レスポンスを確認して、URC(unsolicited result code)の処理を実行します。
+                 * 永久にURC待ちしたいときはtimeoutに-1を指定します。
+                 * URCを受信したときにcompletionを実行します。completionがtrueを返すと関数から返ります。
+                 */
+                bool doWork(int timeout, const std::function<bool(void)> &completion)
+                {
+                    assert(completion);
+
+                    const auto start = millis();
+                    while (!completion())
+                    {
+                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        {
+                            return false;
+                        }
+                        doWork(timeout - (millis() - start));
+                    }
+
+                    return true;
+                }
+
+                /**
+                 * @~Japanese
                  * @brief URC処理を実行（タイムアウトまで）
                  *
                  * @param [in] timeout タイムアウト時間[ミリ秒]。
