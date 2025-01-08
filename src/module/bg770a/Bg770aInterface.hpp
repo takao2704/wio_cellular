@@ -290,14 +290,14 @@ namespace wiocellular
                     if (timeout > 0)
                     {
                         const auto start = millis();
-                        delay(0);
+                        yield();
                         timeout -= millis() - start;
                         if (timeout < 0)
                             timeout = 0;
                     }
                     else
                     {
-                        delay(0);
+                        yield();
                     }
                     xSemaphoreTake(MainUartReceived_, timeout >= 0 ? pdMS_TO_TICKS(timeout) : portMAX_DELAY); // FreeRTOS
                 }
