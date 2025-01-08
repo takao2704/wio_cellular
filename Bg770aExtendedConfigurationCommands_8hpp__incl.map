@@ -1,9 +1,16 @@
 <map id="Bg770aExtendedConfigurationCommands.hpp" name="Bg770aExtendedConfigurationCommands.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="204,5,423,47"/>
-<area shape="rect" id="node2" href="$AtParameterParser_8hpp.html" title=" " alt="" coords="5,95,221,136"/>
-<area shape="rect" id="node5" href="$Misc_8hpp.html" title=" " alt="" coords="246,102,381,129"/>
-<area shape="rect" id="node7" href="$WioCellularResult_8hpp.html" title=" " alt="" coords="405,102,571,129"/>
-<area shape="rect" id="node3" title=" " alt="" coords="185,184,244,211"/>
-<area shape="rect" id="node4" title=" " alt="" coords="82,184,145,211"/>
-<area shape="rect" id="node6" title=" " alt="" coords="283,184,344,211"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="204,5,423,45"/>
+<area shape="rect" id="Node000002" href="$AtParameterParser_8hpp.html" title=" " alt="" coords="5,93,221,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,48,171,90,169,85,268,43"/>
+<area shape="rect" id="Node000005" href="$Misc_8hpp.html" title=" " alt="" coords="246,101,381,126"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="316,46,316,87,311,87,311,46"/>
+<area shape="rect" id="Node000007" href="$WioCellularResult_8hpp.html" title=" " alt="" coords="405,101,571,126"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="353,43,454,92,451,97,350,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="185,181,244,207"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="139,131,190,170,187,175,136,136"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="82,181,145,207"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="116,134,116,167,111,167,111,134"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="300,128,242,175,238,171,297,124"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="283,181,344,207"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="316,126,316,167,311,167,311,126"/>
 </map>

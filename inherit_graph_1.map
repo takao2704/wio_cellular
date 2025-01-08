@@ -1,3 +1,5 @@
 <map id="クラス階層図" name="クラス階層図">
-<area shape="rect" id="node1" href="$classsuli3_1_1arduino_1_1DigitalInputPin.html" title=" " alt="" coords="5,5,240,47"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,20,84,45"/>
+<area shape="rect" id="Node000001" href="$classwiocellular_1_1board_1_1WioBg770a.html" title="Seeed Studio Wio BG770Aボード" alt="" coords="132,5,312,60"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="98,30,132,30,132,35,98,35"/>
 </map>

@@ -1,10 +1,23 @@
 <map id="Misc.hpp" name="Misc.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="616,5,696,32"/>
-<area shape="rect" id="node2" href="$Bg770a_8hpp.html" title=" " alt="" coords="607,169,705,196"/>
-<area shape="rect" id="node3" href="$Bg770aExtendedConfigurationCommands_8hpp.html" title=" " alt="" coords="27,80,245,121"/>
-<area shape="rect" id="node4" href="$Bg770aGeneralCommands_8hpp.html" title=" " alt="" coords="269,87,493,114"/>
-<area shape="rect" id="node5" href="$Bg770aNetworkServiceCommands_8hpp.html" title=" " alt="" coords="518,87,794,114"/>
-<area shape="rect" id="node6" href="$Bg770aPacketDomainCommands_8hpp.html" title=" " alt="" coords="819,87,1085,114"/>
-<area shape="rect" id="node7" href="$Bg770aSimRelatedCommands_8hpp.html" title=" " alt="" coords="1109,87,1357,114"/>
-<area shape="rect" id="node8" href="$Bg770aTcpipCommands_8hpp.html" title=" " alt="" coords="1382,87,1589,114"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="616,5,696,31"/>
+<area shape="rect" id="Node000002" href="$Bg770a_8hpp.html" title=" " alt="" coords="606,167,705,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="602,23,454,27,268,37,103,54,46,66,27,73,16,81,10,90,8,99,10,108,16,117,27,124,46,131,104,143,271,160,458,170,606,174,606,180,458,176,271,166,103,148,44,136,25,129,12,121,5,110,3,99,5,88,12,77,25,69,44,61,102,49,268,32,454,22,602,18"/>
+<area shape="rect" id="Node000003" href="$Bg770aExtendedConfigurationCommands_8hpp.html" title=" " alt="" coords="26,79,245,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="602,30,257,81,246,83,245,78,257,76,602,25"/>
+<area shape="rect" id="Node000004" href="$Bg770aGeneralCommands_8hpp.html" title=" " alt="" coords="269,86,493,111"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="604,37,422,89,420,83,602,32"/>
+<area shape="rect" id="Node000005" href="$Bg770aNetworkServiceCommands_8hpp.html" title=" " alt="" coords="518,86,794,111"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="658,44,658,86,653,86,653,44"/>
+<area shape="rect" id="Node000006" href="$Bg770aPacketDomainCommands_8hpp.html" title=" " alt="" coords="818,86,1085,111"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="710,31,909,83,908,88,709,36"/>
+<area shape="rect" id="Node000007" href="$Bg770aSimRelatedCommands_8hpp.html" title=" " alt="" coords="1109,86,1357,111"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="710,24,1097,76,1151,83,1150,89,1097,81,709,29"/>
+<area shape="rect" id="Node000008" href="$Bg770aTcpipCommands_8hpp.html" title=" " alt="" coords="1382,86,1588,111"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="710,20,992,39,1179,56,1369,76,1420,83,1420,89,1369,81,1179,61,992,45,709,25"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="259,116,606,168,606,173,258,122"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="435,112,616,164,615,169,433,118"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="658,125,658,166,653,166,653,125"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="896,117,699,169,698,164,895,112"/>
+<area shape="poly" id="edge11_Node000007_Node000002" title=" " alt="" coords="1138,116,1097,121,706,174,705,169,1097,116,1137,111"/>
+<area shape="poly" id="edge13_Node000008_Node000002" title=" " alt="" coords="1407,116,1369,121,1177,142,988,158,705,178,705,173,987,153,1176,137,1369,116,1406,111"/>
 </map>

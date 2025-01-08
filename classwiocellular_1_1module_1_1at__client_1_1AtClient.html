@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<meta name="generator" content="Doxygen 1.9.1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Wio Cellular: wiocellular::module::at_client::AtClient&lt; MODULE &gt; クラステンプレート</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
@@ -19,8 +19,8 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr style="height: 56px;">
-  <td id="projectalign" style="padding-left: 0.5em;">
+ <tr id="projectrow">
+  <td id="projectalign">
    <div id="projectname">Wio Cellular
    </div>
   </td>
@@ -29,21 +29,22 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 構築: Doxygen 1.9.1 -->
+<!-- 構築: Doxygen 1.9.8 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-var searchBox = new SearchBox("searchBox", "search",false,'検索','.html');
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
 /* @license-end */
 </script>
 <script type="text/javascript" src="menudata.js"></script>
 <script type="text/javascript" src="menu.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
 $(function() {
   initMenu('',true,false,'search.php','検索');
   $(document).ready(function() { init_search(); });
 });
-/* @license-end */</script>
+/* @license-end */
+</script>
 <div id="main-nav"></div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
@@ -54,9 +55,16 @@ $(function() {
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<iframe src="javascript:void(0)" frameborder="0" 
-        name="MSearchResults" id="MSearchResults">
-</iframe>
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">読み取り中…</div>
+<div class="SRStatus" id="Searching">検索中…</div>
+<div class="SRStatus" id="NoMatches">一致する文字列を見つけられません</div>
+</div>
+</div>
+</div>
 </div>
 
 <div id="nav-path" class="navpath">
@@ -66,11 +74,11 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">クラス</a> &#124;
 <a href="#pub-types">公開型</a> &#124;
 <a href="#pub-methods">公開メンバ関数</a> &#124;
 <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient-members.html">全メンバ一覧</a>  </div>
-  <div class="headertitle">
-<div class="title">wiocellular::module::at_client::AtClient&lt; MODULE &gt; クラステンプレート</div>  </div>
+  <div class="headertitle"><div class="title">wiocellular::module::at_client::AtClient&lt; MODULE &gt; クラステンプレート</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -79,55 +87,62 @@ $(function() {
 
 <p><code>#include &lt;AtClient.hpp&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+クラス</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient_1_1UrcHandler.html">UrcHandler</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">URCハンドラ  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient_1_1UrcHandler.html#details">[詳解]</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 公開型</h2></td></tr>
-<tr class="memitem:ad8399345f3e7f9140043f1e4ebf20de2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a> = bool(const std::string &amp;)</td></tr>
+<tr class="memitem:ad8399345f3e7f9140043f1e4ebf20de2" id="r_ad8399345f3e7f9140043f1e4ebf20de2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a> = bool(const std::string &amp;)</td></tr>
 <tr class="separator:ad8399345f3e7f9140043f1e4ebf20de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fe7d06075d76188bea6008616e9d875"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> = std::function&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a> &gt;</td></tr>
+<tr class="memitem:a3fe7d06075d76188bea6008616e9d875" id="r_a3fe7d06075d76188bea6008616e9d875"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> = std::function&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a> &gt;</td></tr>
 <tr class="separator:a3fe7d06075d76188bea6008616e9d875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b6ae43a4884bfc8d22c5d307fbe7c11"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a> = bool(const std::string &amp;)</td></tr>
+<tr class="memitem:a9b6ae43a4884bfc8d22c5d307fbe7c11" id="r_a9b6ae43a4884bfc8d22c5d307fbe7c11"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a> = bool(const std::string &amp;)</td></tr>
 <tr class="separator:a9b6ae43a4884bfc8d22c5d307fbe7c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae22c725b73ca2ddd68514d634dfa150e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ae22c725b73ca2ddd68514d634dfa150e">PredFunctionType</a> = std::function&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a> &gt;</td></tr>
+<tr class="memitem:ae22c725b73ca2ddd68514d634dfa150e" id="r_ae22c725b73ca2ddd68514d634dfa150e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ae22c725b73ca2ddd68514d634dfa150e">PredFunctionType</a> = std::function&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a> &gt;</td></tr>
 <tr class="separator:ae22c725b73ca2ddd68514d634dfa150e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 公開メンバ関数</h2></td></tr>
-<tr class="memitem:a125414fd2be2c64ed11df1ceb6fb371f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a125414fd2be2c64ed11df1ceb6fb371f">AtClient</a> (void)</td></tr>
-<tr class="memdesc:a125414fd2be2c64ed11df1ceb6fb371f"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a125414fd2be2c64ed11df1ceb6fb371f">[詳解]</a><br /></td></tr>
+<tr class="memitem:a125414fd2be2c64ed11df1ceb6fb371f" id="r_a125414fd2be2c64ed11df1ceb6fb371f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a125414fd2be2c64ed11df1ceb6fb371f">AtClient</a> (void)</td></tr>
+<tr class="memdesc:a125414fd2be2c64ed11df1ceb6fb371f"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ  <br /></td></tr>
 <tr class="separator:a125414fd2be2c64ed11df1ceb6fb371f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad92c14fff409a23b26bd52b85e15207"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aad92c14fff409a23b26bd52b85e15207">registerUrcHandler</a> (const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &amp;handler)</td></tr>
-<tr class="memdesc:aad92c14fff409a23b26bd52b85e15207"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理ハンドラを登録  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aad92c14fff409a23b26bd52b85e15207">[詳解]</a><br /></td></tr>
-<tr class="separator:aad92c14fff409a23b26bd52b85e15207"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40585a9004ea1d6b71fbbf9acd9d0fae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a40585a9004ea1d6b71fbbf9acd9d0fae">unregisterUrcHandler</a> (const std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::iterator &amp;it)</td></tr>
-<tr class="memdesc:a40585a9004ea1d6b71fbbf9acd9d0fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理ハンドラを解除  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a40585a9004ea1d6b71fbbf9acd9d0fae">[詳解]</a><br /></td></tr>
-<tr class="separator:a40585a9004ea1d6b71fbbf9acd9d0fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed294dea60a4e7b6829053c396e1ede6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aed294dea60a4e7b6829053c396e1ede6">doWork</a> (int timeout)</td></tr>
-<tr class="memdesc:aed294dea60a4e7b6829053c396e1ede6"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理を実行  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aed294dea60a4e7b6829053c396e1ede6">[詳解]</a><br /></td></tr>
+<tr class="memitem:a4a2d837d9f752c316747b1b9b7c200c0" id="r_a4a2d837d9f752c316747b1b9b7c200c0"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a4a2d837d9f752c316747b1b9b7c200c0">registerUrcHandler</a> (const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &amp;handler)</td></tr>
+<tr class="memdesc:a4a2d837d9f752c316747b1b9b7c200c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理ハンドラを登録  <br /></td></tr>
+<tr class="separator:a4a2d837d9f752c316747b1b9b7c200c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd383c4f8e193f49b8ba4b48cd56f1e" id="r_a3bd383c4f8e193f49b8ba4b48cd56f1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3bd383c4f8e193f49b8ba4b48cd56f1e">unregisterUrcHandler</a> (std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::const_iterator it)</td></tr>
+<tr class="memdesc:a3bd383c4f8e193f49b8ba4b48cd56f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理ハンドラを解除  <br /></td></tr>
+<tr class="separator:a3bd383c4f8e193f49b8ba4b48cd56f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02d14c0c0918df7ff61a71999c1c4526" id="r_a02d14c0c0918df7ff61a71999c1c4526"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient_1_1UrcHandler.html">UrcHandler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a02d14c0c0918df7ff61a71999c1c4526">registerUrcHandler2</a> (const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &amp;handler)</td></tr>
+<tr class="memdesc:a02d14c0c0918df7ff61a71999c1c4526"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理ハンドラを登録  <br /></td></tr>
+<tr class="separator:a02d14c0c0918df7ff61a71999c1c4526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed294dea60a4e7b6829053c396e1ede6" id="r_aed294dea60a4e7b6829053c396e1ede6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aed294dea60a4e7b6829053c396e1ede6">doWork</a> (int timeout)</td></tr>
+<tr class="memdesc:aed294dea60a4e7b6829053c396e1ede6"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理を実行  <br /></td></tr>
 <tr class="separator:aed294dea60a4e7b6829053c396e1ede6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbf6b5ea52f9a4e8a638bf91993402c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#acbf6b5ea52f9a4e8a638bf91993402c2">doWorkUntil</a> (int timeout)</td></tr>
-<tr class="memdesc:acbf6b5ea52f9a4e8a638bf91993402c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理を実行（タイムアウトまで）  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#acbf6b5ea52f9a4e8a638bf91993402c2">[詳解]</a><br /></td></tr>
+<tr class="memitem:acbf6b5ea52f9a4e8a638bf91993402c2" id="r_acbf6b5ea52f9a4e8a638bf91993402c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#acbf6b5ea52f9a4e8a638bf91993402c2">doWorkUntil</a> (int timeout)</td></tr>
+<tr class="memdesc:acbf6b5ea52f9a4e8a638bf91993402c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">URC処理を実行（タイムアウトまで）  <br /></td></tr>
 <tr class="separator:acbf6b5ea52f9a4e8a638bf91993402c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba5416351e227e039ce5aac1ab0a75c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aba5416351e227e039ce5aac1ab0a75c8">writeAndWaitCommand</a> (const std::string &amp;command, int timeout)</td></tr>
-<tr class="memdesc:aba5416351e227e039ce5aac1ab0a75c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">コマンド書き込みと待機  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aba5416351e227e039ce5aac1ab0a75c8">[詳解]</a><br /></td></tr>
+<tr class="memitem:aba5416351e227e039ce5aac1ab0a75c8" id="r_aba5416351e227e039ce5aac1ab0a75c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aba5416351e227e039ce5aac1ab0a75c8">writeAndWaitCommand</a> (const std::string &amp;command, int timeout)</td></tr>
+<tr class="memdesc:aba5416351e227e039ce5aac1ab0a75c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">コマンド書き込みと待機  <br /></td></tr>
 <tr class="separator:aba5416351e227e039ce5aac1ab0a75c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8277b704fabb4f1d9b65bc0661efc3ae"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a8277b704fabb4f1d9b65bc0661efc3ae">readResponse</a> (int timeout, const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ae22c725b73ca2ddd68514d634dfa150e">PredFunctionType</a> &amp;pred=nullptr)</td></tr>
-<tr class="memdesc:a8277b704fabb4f1d9b65bc0661efc3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">レスポンス読み込み  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a8277b704fabb4f1d9b65bc0661efc3ae">[詳解]</a><br /></td></tr>
+<tr class="memitem:a8277b704fabb4f1d9b65bc0661efc3ae" id="r_a8277b704fabb4f1d9b65bc0661efc3ae"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a8277b704fabb4f1d9b65bc0661efc3ae">readResponse</a> (int timeout, const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ae22c725b73ca2ddd68514d634dfa150e">PredFunctionType</a> &amp;pred=nullptr)</td></tr>
+<tr class="memdesc:a8277b704fabb4f1d9b65bc0661efc3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">レスポンス読み込み  <br /></td></tr>
 <tr class="separator:a8277b704fabb4f1d9b65bc0661efc3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dbbce6a0c85e72f6f5b3b3f4ce479c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a5dbbce6a0c85e72f6f5b3b3f4ce479c4">writeBinary</a> (const void *data, size_t dataSize)</td></tr>
-<tr class="memdesc:a5dbbce6a0c85e72f6f5b3b3f4ce479c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリ書き込み  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a5dbbce6a0c85e72f6f5b3b3f4ce479c4">[詳解]</a><br /></td></tr>
+<tr class="memitem:a5dbbce6a0c85e72f6f5b3b3f4ce479c4" id="r_a5dbbce6a0c85e72f6f5b3b3f4ce479c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a5dbbce6a0c85e72f6f5b3b3f4ce479c4">writeBinary</a> (const void *data, size_t dataSize)</td></tr>
+<tr class="memdesc:a5dbbce6a0c85e72f6f5b3b3f4ce479c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリ書き込み  <br /></td></tr>
 <tr class="separator:a5dbbce6a0c85e72f6f5b3b3f4ce479c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2691bbe636837b0d3e2a6117e74ca08"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ab2691bbe636837b0d3e2a6117e74ca08">readBinary</a> (void *data, size_t dataSize, int timeout)</td></tr>
-<tr class="memdesc:ab2691bbe636837b0d3e2a6117e74ca08"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリ読み込み  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ab2691bbe636837b0d3e2a6117e74ca08">[詳解]</a><br /></td></tr>
+<tr class="memitem:ab2691bbe636837b0d3e2a6117e74ca08" id="r_ab2691bbe636837b0d3e2a6117e74ca08"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ab2691bbe636837b0d3e2a6117e74ca08">readBinary</a> (void *data, size_t dataSize, int timeout)</td></tr>
+<tr class="memdesc:ab2691bbe636837b0d3e2a6117e74ca08"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリ読み込み  <br /></td></tr>
 <tr class="separator:ab2691bbe636837b0d3e2a6117e74ca08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41d4ff97dc85187aa970a60bb5f17105"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a41d4ff97dc85187aa970a60bb5f17105">readBinaryDiscard</a> (size_t dataSize, int timeout)</td></tr>
-<tr class="memdesc:a41d4ff97dc85187aa970a60bb5f17105"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリ読み込み（読み捨て）  <a href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a41d4ff97dc85187aa970a60bb5f17105">[詳解]</a><br /></td></tr>
+<tr class="memitem:a41d4ff97dc85187aa970a60bb5f17105" id="r_a41d4ff97dc85187aa970a60bb5f17105"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a41d4ff97dc85187aa970a60bb5f17105">readBinaryDiscard</a> (size_t dataSize, int timeout)</td></tr>
+<tr class="memdesc:a41d4ff97dc85187aa970a60bb5f17105"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリ読み込み（読み捨て）  <br /></td></tr>
 <tr class="separator:a41d4ff97dc85187aa970a60bb5f17105"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">詳解</h2>
-<div class="textblock"><h3>template&lt;typename MODULE&gt;<br />
-class wiocellular::module::at_client::AtClient&lt; MODULE &gt;</h3>
-
-<p>ATコマンドクライアント </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename MODULE&gt;<br />
+class wiocellular::module::at_client::AtClient&lt; MODULE &gt;</div><p>ATコマンドクライアント </p>
 <dl class="tparams"><dt>テンプレート引数</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">MODULE</td><td>モジュールのクラス</td></tr>
@@ -136,8 +151,8 @@ class wiocellular::module::at_client::AtClient&lt; MODULE &gt;</h3>
 </dl>
 <p>ATコマンドのクライアントのクラスです。 </p>
 </div><h2 class="groupheader">型定義メンバ詳解</h2>
-<a id="ae22c725b73ca2ddd68514d634dfa150e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae22c725b73ca2ddd68514d634dfa150e">&#9670;&nbsp;</a></span>PredFunctionType</h2>
+<a id="ae22c725b73ca2ddd68514d634dfa150e" name="ae22c725b73ca2ddd68514d634dfa150e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22c725b73ca2ddd68514d634dfa150e">&#9670;&#160;</a></span>PredFunctionType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,15 +160,15 @@ class wiocellular::module::at_client::AtClient&lt; MODULE &gt;</h3>
 template&lt;typename MODULE &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ae22c725b73ca2ddd68514d634dfa150e">PredFunctionType</a> =  std::function&lt;<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::PredFunctionType =  std::function&lt;<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a9b6ae43a4884bfc8d22c5d307fbe7c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b6ae43a4884bfc8d22c5d307fbe7c11">&#9670;&nbsp;</a></span>PredicateType</h2>
+<a id="a9b6ae43a4884bfc8d22c5d307fbe7c11" name="a9b6ae43a4884bfc8d22c5d307fbe7c11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b6ae43a4884bfc8d22c5d307fbe7c11">&#9670;&#160;</a></span>PredicateType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,15 +176,15 @@ template&lt;typename MODULE &gt; </div>
 template&lt;typename MODULE &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a9b6ae43a4884bfc8d22c5d307fbe7c11">PredicateType</a> =  bool(const std::string &amp;)</td>
+          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::PredicateType =  bool(const std::string &amp;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a3fe7d06075d76188bea6008616e9d875"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fe7d06075d76188bea6008616e9d875">&#9670;&nbsp;</a></span>UrcHandlerFunctionType</h2>
+<a id="a3fe7d06075d76188bea6008616e9d875" name="a3fe7d06075d76188bea6008616e9d875"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fe7d06075d76188bea6008616e9d875">&#9670;&#160;</a></span>UrcHandlerFunctionType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,15 +192,15 @@ template&lt;typename MODULE &gt; </div>
 template&lt;typename MODULE &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> =  std::function&lt;<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a>&gt;</td>
+          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::UrcHandlerFunctionType =  std::function&lt;<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ad8399345f3e7f9140043f1e4ebf20de2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8399345f3e7f9140043f1e4ebf20de2">&#9670;&nbsp;</a></span>UrcHandlerType</h2>
+<a id="ad8399345f3e7f9140043f1e4ebf20de2" name="ad8399345f3e7f9140043f1e4ebf20de2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8399345f3e7f9140043f1e4ebf20de2">&#9670;&#160;</a></span>UrcHandlerType</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +208,7 @@ template&lt;typename MODULE &gt; </div>
 template&lt;typename MODULE &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#ad8399345f3e7f9140043f1e4ebf20de2">UrcHandlerType</a> =  bool(const std::string &amp;)</td>
+          <td class="memname">using <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::UrcHandlerType =  bool(const std::string &amp;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -201,8 +216,8 @@ template&lt;typename MODULE &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">構築子と解体子</h2>
-<a id="a125414fd2be2c64ed11df1ceb6fb371f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a125414fd2be2c64ed11df1ceb6fb371f">&#9670;&nbsp;</a></span>AtClient()</h2>
+<a id="a125414fd2be2c64ed11df1ceb6fb371f" name="a125414fd2be2c64ed11df1ceb6fb371f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a125414fd2be2c64ed11df1ceb6fb371f">&#9670;&#160;</a></span>AtClient()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,7 +228,7 @@ template&lt;typename MODULE &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">AtClient</a> </td>
+          <td class="memname"><a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::AtClient </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -233,8 +248,8 @@ template&lt;typename MODULE &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">関数詳解</h2>
-<a id="aed294dea60a4e7b6829053c396e1ede6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed294dea60a4e7b6829053c396e1ede6">&#9670;&nbsp;</a></span>doWork()</h2>
+<a id="aed294dea60a4e7b6829053c396e1ede6" name="aed294dea60a4e7b6829053c396e1ede6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed294dea60a4e7b6829053c396e1ede6">&#9670;&#160;</a></span>doWork()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,8 +285,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="acbf6b5ea52f9a4e8a638bf91993402c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbf6b5ea52f9a4e8a638bf91993402c2">&#9670;&nbsp;</a></span>doWorkUntil()</h2>
+<a id="acbf6b5ea52f9a4e8a638bf91993402c2" name="acbf6b5ea52f9a4e8a638bf91993402c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbf6b5ea52f9a4e8a638bf91993402c2">&#9670;&#160;</a></span>doWorkUntil()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -307,8 +322,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="ab2691bbe636837b0d3e2a6117e74ca08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2691bbe636837b0d3e2a6117e74ca08">&#9670;&nbsp;</a></span>readBinary()</h2>
+<a id="ab2691bbe636837b0d3e2a6117e74ca08" name="ab2691bbe636837b0d3e2a6117e74ca08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2691bbe636837b0d3e2a6117e74ca08">&#9670;&#160;</a></span>readBinary()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -369,8 +384,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="a41d4ff97dc85187aa970a60bb5f17105"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41d4ff97dc85187aa970a60bb5f17105">&#9670;&nbsp;</a></span>readBinaryDiscard()</h2>
+<a id="a41d4ff97dc85187aa970a60bb5f17105" name="a41d4ff97dc85187aa970a60bb5f17105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d4ff97dc85187aa970a60bb5f17105">&#9670;&#160;</a></span>readBinaryDiscard()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -424,8 +439,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="a8277b704fabb4f1d9b65bc0661efc3ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8277b704fabb4f1d9b65bc0661efc3ae">&#9670;&nbsp;</a></span>readResponse()</h2>
+<a id="a8277b704fabb4f1d9b65bc0661efc3ae" name="a8277b704fabb4f1d9b65bc0661efc3ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8277b704fabb4f1d9b65bc0661efc3ae">&#9670;&#160;</a></span>readResponse()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -479,8 +494,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="aad92c14fff409a23b26bd52b85e15207"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad92c14fff409a23b26bd52b85e15207">&#9670;&nbsp;</a></span>registerUrcHandler()</h2>
+<a id="a4a2d837d9f752c316747b1b9b7c200c0" name="a4a2d837d9f752c316747b1b9b7c200c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a2d837d9f752c316747b1b9b7c200c0">&#9670;&#160;</a></span>registerUrcHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -491,7 +506,7 @@ template&lt;typename MODULE &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::list&lt;<a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a>&gt;::iterator <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::registerUrcHandler </td>
+          <td class="memname">std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::const_iterator <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::registerUrcHandler </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &amp;&#160;</td>
           <td class="paramname"><em>handler</em></td><td>)</td>
@@ -517,8 +532,46 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="a40585a9004ea1d6b71fbbf9acd9d0fae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40585a9004ea1d6b71fbbf9acd9d0fae">&#9670;&nbsp;</a></span>unregisterUrcHandler()</h2>
+<a id="a02d14c0c0918df7ff61a71999c1c4526" name="a02d14c0c0918df7ff61a71999c1c4526"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02d14c0c0918df7ff61a71999c1c4526">&#9670;&#160;</a></span>registerUrcHandler2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient_1_1UrcHandler.html">UrcHandler</a> &gt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::registerUrcHandler2 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &amp;&#160;</td>
+          <td class="paramname"><em>handler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>URC処理ハンドラを登録 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">handler</td><td>URC処理ハンドラ。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>URCハンドラのユニークポインタ。</dd></dl>
+<p>URC(unsolicited result code)を処理するハンドラを登録します。 戻り値を開放すると自動的にハンドラを解除します。 </p>
+
+</div>
+</div>
+<a id="a3bd383c4f8e193f49b8ba4b48cd56f1e" name="a3bd383c4f8e193f49b8ba4b48cd56f1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd383c4f8e193f49b8ba4b48cd56f1e">&#9670;&#160;</a></span>unregisterUrcHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -531,7 +584,7 @@ template&lt;typename MODULE &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html">wiocellular::module::at_client::AtClient</a>&lt; MODULE &gt;::unregisterUrcHandler </td>
           <td>(</td>
-          <td class="paramtype">const std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::iterator &amp;&#160;</td>
+          <td class="paramtype">std::list&lt; <a class="el" href="classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a3fe7d06075d76188bea6008616e9d875">UrcHandlerFunctionType</a> &gt;::const_iterator&#160;</td>
           <td class="paramname"><em>it</em></td><td>)</td>
           <td></td>
         </tr>
@@ -554,8 +607,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="aba5416351e227e039ce5aac1ab0a75c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba5416351e227e039ce5aac1ab0a75c8">&#9670;&nbsp;</a></span>writeAndWaitCommand()</h2>
+<a id="aba5416351e227e039ce5aac1ab0a75c8" name="aba5416351e227e039ce5aac1ab0a75c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba5416351e227e039ce5aac1ab0a75c8">&#9670;&#160;</a></span>writeAndWaitCommand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -602,8 +655,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="a5dbbce6a0c85e72f6f5b3b3f4ce479c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5dbbce6a0c85e72f6f5b3b3f4ce479c4">&#9670;&nbsp;</a></span>writeBinary()</h2>
+<a id="a5dbbce6a0c85e72f6f5b3b3f4ce479c4" name="a5dbbce6a0c85e72f6f5b3b3f4ce479c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dbbce6a0c85e72f6f5b3b3f4ce479c4">&#9670;&#160;</a></span>writeBinary()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -656,7 +709,7 @@ template&lt;typename MODULE &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-構築:&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+構築:&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
 </small></address>
 </body>
 </html>
