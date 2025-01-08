@@ -9,6 +9,7 @@
 //   http://librarymanager#ArduinoJson 7.0.4
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <WioCellular.h>
 #include <ArduinoJson.h>
 
@@ -23,9 +24,19 @@ static constexpr int INTERVAL = 1000 * 60 * 5;      // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
 
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
+
 static JsonDocument JsonDoc;
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();

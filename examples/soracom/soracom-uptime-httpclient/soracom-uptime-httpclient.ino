@@ -10,6 +10,7 @@
 //   http://librarymanager#ArduinoHttpClient 0.6.1
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <map>
 #include <WioCellular.h>
 #include <ArduinoJson.h>
@@ -27,16 +28,25 @@ static constexpr int INTERVAL = 1000 * 60 * 5;      // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
 
-#define ABORT_IF_FAILED(result) \
-  do { \
-    if ((result) != WioCellularResult::Ok) abort(); \
-  } while (0)
-
 struct HttpResponse {
   int statusCode;
   std::map<std::string, std::string> headers;
   std::string body;
 };
+
+#define ABORT_IF_FAILED(result) \
+  do { \
+    if ((result) != WioCellularResult::Ok) abort(); \
+  } while (0)
+
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
 
 static constexpr int PDP_CONTEXT_ID = 1;
 static constexpr int SOCKET_ID = 0;
@@ -45,6 +55,7 @@ static JsonDocument JsonDoc;
 static WioCellularTcpClient<WioCellularModule> TcpClient{ WioCellular, PDP_CONTEXT_ID, SOCKET_ID };
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();

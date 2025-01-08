@@ -9,6 +9,7 @@
 //   https://github.com/matsujirushi/ntshell 0.3.1
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <nrfx_power.h>
 #include <ntshell.h>     // Natural Tiny Shell
 #include <util/ntopt.h>  // Natural Tiny Shell
@@ -20,6 +21,15 @@ static const char APN[] = "soracom.io";
 
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
+
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
 
 static constexpr int SOCKET_ID = 0;
 
@@ -71,6 +81,7 @@ static const CommandType CommandList[] = {
 };
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();

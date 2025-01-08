@@ -9,6 +9,7 @@
 //   http://librarymanager#ArduinoJson 7.0.4
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <WioCellular.h>
 #include <ArduinoJson.h>
 
@@ -31,6 +32,15 @@ static constexpr int RECEIVE_TIMEOUT = 1000 * 10;     // [ms]
     if ((result) != WioCellularResult::Ok) abort(); \
   } while (0)
 
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
+
 static SemaphoreHandle_t CellularWorkSem;
 static SemaphoreHandle_t CellularStartSem;
 static SemaphoreHandle_t MeasureSem;
@@ -39,6 +49,7 @@ static QueueSetHandle_t QueueSet;
 static JsonDocument JsonDoc;
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();

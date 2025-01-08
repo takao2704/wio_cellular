@@ -10,7 +10,17 @@
 //   http://librarymanager#SdFat%20-%20Adafruit%20Fork 2.2.3
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <Adafruit_SPIFlash.h>
+
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
 
 static const SPIFlash_Device_t SPIFLASH_DEVICE = FERAM_DEVICE_CONFIG;
 
@@ -19,6 +29,7 @@ static Adafruit_FlashTransport_SPI FlashTransport(PIN_FERAM_CS, FlashSpi);
 static Adafruit_SPIFlash Flash(&FlashTransport);
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();
