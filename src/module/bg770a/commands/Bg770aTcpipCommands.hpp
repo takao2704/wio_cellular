@@ -38,98 +38,11 @@ namespace wiocellular
                 private:
                     static constexpr int COMMAND_ECHO_TIMEOUT = 10000;
 
-                public:
-                    /**
-                     * @~Japanese
-                     * @brief ソケットから受信する最大バイト数
-                     */
-                    static constexpr size_t RECEIVE_SOCKET_SIZE_MAX = 1500;
-
                 private:
                     bool UrcSocketReceiveAttached_;
                     std::map<int, bool> UrcSocketReceiveNofity_;
 
                 public:
-                    /**
-                     * @~Japanese
-                     * @brief ソケットサービスステータス
-                     */
-                    struct SocketStatus
-                    {
-                        /**
-                         * @~Japanese
-                         * @brief 接続ID
-                         * * 0~11
-                         */
-                        int connectId;
-                        /**
-                         * @~Japanese
-                         * @brief サービスタイプ
-                         * * "TCP": TCPクライアント
-                         * * "UDP": UDPクライアント
-                         * * "TCP LISTENER": TCPサーバーのリスナー
-                         * * "TCP INCOMING": TCPサーバーの接続
-                         * * "UDP SERVICE": UDP
-                         */
-                        std::string serviceType;
-                        /**
-                         * @~Japanese
-                         * @brief IPアドレス
-                         */
-                        std::string ipAddress;
-                        /**
-                         * @~Japanese
-                         * @brief リモートポート番号
-                         * * 0~65535
-                         */
-                        int remotePort;
-                        /**
-                         * @~Japanese
-                         * @brief ローカルポート番号
-                         * * 0~65535
-                         */
-                        int localPort;
-                        /**
-                         * @~Japanese
-                         * @brief ソケット状態
-                         * * 0: 初期（未接続）
-                         * * 1: 接続中
-                         * * 2: 接続済み
-                         * * 3: 接続待ち
-                         * * 4: 切断中
-                         */
-                        int socketState;
-                        /**
-                         * @~Japanese
-                         * @brief PDPコンテキストID
-                         * * 1~5
-                         */
-                        int cid;
-                        /**
-                         * @~Japanese
-                         * @brief サーバーの接続ID
-                         * serviceTypeが"TCP INCOMING"のときのみ有効。
-                         */
-                        int serverId;
-                        /**
-                         * @~Japanese
-                         * @brief データアクセスモード
-                         * * 0: バッファアクセスモード
-                         * * 1: ダイレクトプッシュモード
-                         * * 2: 透過伝送モード
-                         */
-                        int accessMode;
-                        /**
-                         * @~Japanese
-                         * @brief COMポート
-                         * * "main": MAIN UART
-                         * * "aux": AUX UART
-                         * * "emux": EMUXモード
-                         * * "usb": USB
-                         */
-                        std::string atPort;
-                    };
-
                     /**
                      * @~Japanese
                      * @brief コンストラクタ
@@ -158,6 +71,7 @@ namespace wiocellular
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
                      * > 2.3.5. AT+QIOPEN Open a Socket Service
                      */
+                    [[deprecated("Use openSocket2() instead.")]]
                     WioCellularResult openSocket(int cid, int connectId, const std::string &serviceType, const std::string &ipAddress, int remotePort, int localPort)
                     {
                         assert(1 <= cid && cid <= 5);
@@ -243,6 +157,7 @@ namespace wiocellular
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
                      * > 2.3.6. AT+QICLOSE Close a Socket Service
                      */
+                    [[deprecated("Use closeSocket2() instead.")]]
                     WioCellularResult closeSocket(int connectId)
                     {
                         assert(0 <= connectId && connectId <= 11);
@@ -261,41 +176,6 @@ namespace wiocellular
 
                     /**
                      * @~Japanese
-                     * @brief ソケットサービスステータスを取得
-                     *
-                     * @param [in] cid PDPコンテキストID。
-                     * @param [out] statuses ソケットサービスステータス。nullptrを指定すると値を代入しません。
-                     * @return 実行結果。
-                     *
-                     * ソケットサービスステータスを取得します。
-                     *
-                     * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
-                     * > 2.3.7. AT+QISTATE Query Socket Service Status
-                     */
-                    WioCellularResult getSocketStatus(int cid, std::vector<SocketStatus> *statuses)
-                    {
-                        assert(1 <= cid && cid <= 5);
-
-                        if (statuses)
-                            statuses->clear();
-
-                        return static_cast<MODULE &>(*this).queryCommand(
-                            internal::stringFormat("AT+QISTATE=0,%d", cid), [statuses](const std::string &response) -> bool
-                            {
-                                std::string responseParameter;
-                                if (internal::stringStartsWith(response, "+QISTATE: ", &responseParameter))
-                                {
-                                    at_client::AtParameterParser parser{responseParameter};
-                                    if (parser.size() != 10) return false;
-                                    if (statuses) statuses->push_back({std::stoi(parser[0]), parser[1], parser[2], std::stoi(parser[3]), std::stoi(parser[4]), std::stoi(parser[5]), std::stoi(parser[6]), std::stoi(parser[7]), std::stoi(parser[8]), parser[9]});
-                                    return true;
-                                }
-                                return false; },
-                            300);
-                    }
-
-                    /**
-                     * @~Japanese
                      * @brief 未使用の接続IDを取得
                      *
                      * @param [in] cid PDPコンテキストID。
@@ -307,6 +187,7 @@ namespace wiocellular
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
                      * > 2.3.7. AT+QISTATE Query Socket Service Status
                      */
+                    [[deprecated]]
                     WioCellularResult getSocketUnusedConnectId(int cid, int *unusedConnectId)
                     {
                         assert(1 <= cid && cid <= 5);
@@ -360,6 +241,7 @@ namespace wiocellular
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
                      * > 2.3.8. AT+QISEND Send Data
                      */
+                    [[deprecated("Use sendSocket2() instead.")]]
                     WioCellularResult sendSocket(int connectId, const void *data, size_t dataSize)
                     {
                         assert(0 <= connectId && connectId <= 11);
@@ -392,6 +274,7 @@ namespace wiocellular
                      *
                      * ソケットへ送信します。
                      */
+                    [[deprecated("Use sendSocket2() instead.")]]
                     WioCellularResult sendSocket(int connectId, const std::string &data)
                     {
                         return sendSocket(connectId, data.data(), data.size());
@@ -410,6 +293,7 @@ namespace wiocellular
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
                      * > 2.3.9. AT+QIRD Retrieve the Received TCP/IP Data
                      */
+                    [[deprecated("Use receiveSocket2() instead.")]]
                     WioCellularResult getSocketReceiveAvailable(int connectId, size_t *availableSize)
                     {
                         assert(0 <= connectId && connectId <= 11);
@@ -449,6 +333,7 @@ namespace wiocellular
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
                      * > 2.3.9. AT+QIRD Retrieve the Received TCP/IP Data
                      */
+                    [[deprecated("Use receiveSocket2() instead.")]]
                     WioCellularResult receiveSocket(int connectId, void *data, size_t dataSize, size_t *readDataSize)
                     {
                         assert(0 <= connectId && connectId <= 11);
@@ -500,6 +385,7 @@ namespace wiocellular
                      * ソケットから受信します。
                      * 永久に待機したいときはtimeoutに-1を指定します。
                      */
+                    [[deprecated("Use receiveSocket2() instead.")]]
                     WioCellularResult receiveSocket(int connectId, void *data, size_t dataSize, size_t *readDataSize, int timeout)
                     {
                         WioCellularResult result = WioCellularResult::Ok;

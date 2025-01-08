@@ -63,6 +63,31 @@ enum class WioCellularResult
      * 引数が範囲外
      */
     ArgumentOutOfRange = 9,
+    /**
+     * @~Japanese
+     * 不正な操作
+     */
+    InvalidOperation = 10,
+    /**
+     * @~Japanese
+     * リソースが不足
+     */
+    InsufficientResources = 11,
+    /**
+     * @~Japanese
+     * 接続でタイムアウト
+     */
+    ConnectTimeout = 12,
+    /**
+     * @~Japanese
+     * 接続でエラー
+     */
+    ConnectError = 13,
+    /**
+     * @~Japanese
+     * クローズ中
+     */
+    Closing = 14,
 };
 
 /**
@@ -76,16 +101,21 @@ enum class WioCellularResult
  */
 static constexpr const char *WioCellularResultToString(WioCellularResult result)
 {
-    return result == WioCellularResult::Ok ? "Ok" : result == WioCellularResult::WaitCommandTimeout ? "WaitCommandTimeout"
-                                                : result == WioCellularResult::ReadResponseTimeout  ? "ReadResponseTimeout"
-                                                : result == WioCellularResult::CommandRejected      ? "CommandRejected"
-                                                : result == WioCellularResult::RdyTimeout           ? "RdyTimeout"
-                                                : result == WioCellularResult::OpenTimeout          ? "OpenTimeout"
-                                                : result == WioCellularResult::OpenError            ? "OpenError"
-                                                : result == WioCellularResult::ReceiveTimeout       ? "ReceiveTimeout"
-                                                : result == WioCellularResult::NotActivate          ? "NotActivate"
-                                                : result == WioCellularResult::ArgumentOutOfRange   ? "ArgumentOutOfRange"
-                                                                                                    : "Unknown";
+    return result == WioCellularResult::Ok ? "Ok" : result == WioCellularResult::WaitCommandTimeout  ? "WaitCommandTimeout"
+                                                : result == WioCellularResult::ReadResponseTimeout   ? "ReadResponseTimeout"
+                                                : result == WioCellularResult::CommandRejected       ? "CommandRejected"
+                                                : result == WioCellularResult::RdyTimeout            ? "RdyTimeout"
+                                                : result == WioCellularResult::OpenTimeout           ? "OpenTimeout"
+                                                : result == WioCellularResult::OpenError             ? "OpenError"
+                                                : result == WioCellularResult::ReceiveTimeout        ? "ReceiveTimeout"
+                                                : result == WioCellularResult::NotActivate           ? "NotActivate"
+                                                : result == WioCellularResult::ArgumentOutOfRange    ? "ArgumentOutOfRange"
+                                                : result == WioCellularResult::InvalidOperation      ? "InvalidOperation"
+                                                : result == WioCellularResult::InsufficientResources ? "InsufficientResources"
+                                                : result == WioCellularResult::ConnectTimeout        ? "ConnectTimeout"
+                                                : result == WioCellularResult::ConnectError          ? "ConnectError"
+                                                : result == WioCellularResult::Closing               ? "Closing"
+                                                                                                     : "Unknown";
 }
 
 #endif // WIOCELLULARRESULT_HPP

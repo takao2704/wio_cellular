@@ -11,6 +11,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include "../../internal/CountdownTimer.hpp"
 
 namespace wiocellular
 {
@@ -164,8 +165,7 @@ namespace wiocellular
                  */
                 std::unique_ptr<UrcHandler> registerUrcHandler2(const UrcHandlerFunctionType &handler)
                 {
-                    std::unique_ptr<UrcHandler> urcHandler(new UrcHandler(*this, handler));
-                    return std::move(urcHandler);
+                    return std::make_unique<UrcHandler>(*this, handler);
                 }
 
                 /**

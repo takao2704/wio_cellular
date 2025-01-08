@@ -24,9 +24,10 @@ static const char HOST[] = "metadata.soracom.io";
 static const char PATH[] = "/v1/subscriber/tags";
 static constexpr int PORT = 80;
 
-static constexpr int INTERVAL = 1000 * 60 * 5;      // [ms]
-static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
-static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
+static constexpr int INTERVAL = 1000 * 60 * 5;         // [ms]
+static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
+static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
+static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 
 struct HttpResponse {
   int statusCode;
@@ -48,11 +49,7 @@ static void abortHandler(int sig) {
   }
 }
 
-static constexpr int PDP_CONTEXT_ID = 1;
-static constexpr int SOCKET_ID = 0;
-
 static JsonDocument JsonDoc;
-static WioCellularTcpClient<WioCellularModule> TcpClient{ WioCellular, PDP_CONTEXT_ID, SOCKET_ID };
 
 void setup(void) {
   signal(SIGABRT, abortHandler);
@@ -77,44 +74,50 @@ void setup(void) {
   WioNetwork.config.apn = APN;
   WioNetwork.begin();
 
+  if (!WioCellular.doWork(NETWORK_TIMEOUT, [] {
+        return WioNetwork.canCommunicate();
+      })) abort();
+
   digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop(void) {
-  if (WioNetwork.canCommunicate()) {
-    digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);
 
-    JsonDoc.clear();
-    if (generateRequestBody(JsonDoc)) {
-      std::string jsonStr;
-      serializeJson(JsonDoc, jsonStr);
-      Serial.println(jsonStr.c_str());
+  JsonDoc.clear();
+  if (generateRequestBody(JsonDoc)) {
+    std::string jsonStr;
+    serializeJson(JsonDoc, jsonStr);
+    Serial.println(jsonStr.c_str());
 
-      HttpResponse response = httpRequest(TcpClient, HOST, PORT, PATH, "PUT", "application/json", jsonStr.c_str());
-
-      Serial.println("Header(s):");
-      for (auto header : response.headers) {
-        Serial.print("  ");
-        Serial.print(header.first.c_str());
-        Serial.print(" : ");
-        Serial.print(header.second.c_str());
-        Serial.println();
-      }
-      Serial.print("Body: ");
-      Serial.println(response.body.c_str());
-
-      if (response.statusCode == 200) {
-        JsonDoc.clear();
-        deserializeJson(JsonDoc, response.body.c_str());
-        // Output the IMSI field as an example of how to use the response
-        Serial.print("Response imsi> ");
-        Serial.print(JsonDoc["imsi"].as<String>());
-        Serial.println();
-      }
+    HttpResponse response;
+    {
+      WioCellularArduinoTcpClient<WioCellularModule> client{ WioCellular, WioNetwork.config.pdpContextId };
+      response = httpRequest(client, HOST, PORT, PATH, "PUT", "application/json", jsonStr.c_str());
     }
 
-    digitalWrite(LED_BUILTIN, LOW);
+    Serial.println("Header(s):");
+    for (auto header : response.headers) {
+      Serial.print("  ");
+      Serial.print(header.first.c_str());
+      Serial.print(" : ");
+      Serial.print(header.second.c_str());
+      Serial.println();
+    }
+    Serial.print("Body: ");
+    Serial.println(response.body.c_str());
+
+    if (response.statusCode == 200) {
+      JsonDoc.clear();
+      deserializeJson(JsonDoc, response.body.c_str());
+      // Output the IMSI field as an example of how to use the response
+      Serial.print("Response imsi> ");
+      Serial.print(JsonDoc["imsi"].as<String>());
+      Serial.println();
+    }
   }
+
+  digitalWrite(LED_BUILTIN, LOW);
 
   WioCellular.doWorkUntil(INTERVAL);
 }

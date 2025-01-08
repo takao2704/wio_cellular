@@ -51,6 +51,10 @@ extern WioCellularNetwork WioNetwork;
 
 #endif
 
-#include "client/WioCellularTcpClient.hpp"
+#include "client/WioCellularArduinoTcpClient.hpp"
+#include "client/WioCellularTcpClient2.hpp"
+
+template <typename MODULE>
+using WioCellularTcpClient2 = wiocellular::client::WioCellularTcpClient2<MODULE>;
 
 #endif // WIOCELLULAR_HPP
