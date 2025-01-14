@@ -91,6 +91,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 実行コマンドを実行します。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  */
                 WioCellularResult executeCommand(const std::string &command, int timeout)
                 {
@@ -139,6 +140,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 問い合わせコマンドを実行します。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  * informaton textを読み込んだときはinformationTextHandlerを呼び出します。
                  */
                 WioCellularResult queryCommand(const std::string &command, const std::function<bool(const std::string &response)> &informationTextHandler, int timeout)
@@ -195,6 +197,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 問い合わせコマンドを実行します。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  * informaton textを読み込んだときはinformationTextHandlerを呼び出します。
                  */
                 WioCellularResult sendCommand(const std::string &command, std::function<bool(const std::string &response)> informationTextHandler, int timeout)
@@ -251,6 +254,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 電源をオンします。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  * 処理完了までに10秒程度かかります．
                  */
                 WioCellularResult powerOn(int timeout)

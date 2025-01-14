@@ -11,6 +11,7 @@
 #include <map>
 #include <vector>
 #include "module/at_client/AtParameterParser.hpp"
+#include "internal/CountdownTimer.hpp"
 #include "internal/Misc.hpp"
 #include "WioCellularResult.hpp"
 
@@ -206,11 +207,11 @@ namespace wiocellular
                         if ((result = static_cast<MODULE &>(*this).executeCommand(internal::stringFormat("AT+QIOPEN=%d,%d,\"%s\",\"%s\",%d,%d", cid, connectId, serviceType.c_str(), ipAddress.c_str(), remotePort, localPort), 300)) == WioCellularResult::Ok)
                         {
                             constexpr int timeout = 150000;
-                            const auto start = millis();
+                            wiocellular::internal::CountdownTimer timer{timeout};
                             while (!opened)
                             {
-                                static_cast<MODULE &>(*this).doWork(timeout - (millis() - start));
-                                if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                                static_cast<MODULE &>(*this).doWork(timer.remaining());
+                                if (timer.isTimeout())
                                 {
                                     result = WioCellularResult::OpenTimeout;
                                     break;
@@ -497,12 +498,13 @@ namespace wiocellular
                      * @return 実行結果。
                      *
                      * ソケットから受信します。
+                     * 永久に待機したいときはtimeoutに-1を指定します。
                      */
                     WioCellularResult receiveSocket(int connectId, void *data, size_t dataSize, size_t *readDataSize, int timeout)
                     {
                         WioCellularResult result = WioCellularResult::Ok;
 
-                        const auto start = millis();
+                        wiocellular::internal::CountdownTimer timer{timeout};
                         while (true)
                         {
                             if ((result = receiveSocket(connectId, data, dataSize, readDataSize)) != WioCellularResult::Ok)
@@ -516,8 +518,8 @@ namespace wiocellular
 
                             do
                             {
-                                static_cast<MODULE &>(*this).doWork(timeout - (millis() - start));
-                                if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                                static_cast<MODULE &>(*this).doWork(timer.remaining());
+                                if (timer.isTimeout())
                                 {
                                     return WioCellularResult::ReceiveTimeout;
                                 }

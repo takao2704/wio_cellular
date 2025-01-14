@@ -66,6 +66,7 @@ namespace wiocellular
                      * @return 実行結果。
                      *
                      * 全ての設定を工場出荷時のデフォルトにします。
+                     * 永久に待機したいときはtimeoutに-1を指定します。
                      * 処理完了までに20秒程度かかります．
                      *
                      * > BG77xA-GL&BG95xA-GL AT Commands Manual @n

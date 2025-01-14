@@ -204,14 +204,14 @@ namespace wiocellular
                 {
                     assert(completion);
 
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     while (!completion())
                     {
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return false;
                         }
-                        doWork(timeout - (millis() - start));
+                        doWork(timer.remaining());
                     }
 
                     return true;
@@ -229,15 +229,14 @@ namespace wiocellular
                  */
                 void doWorkUntil(int timeout)
                 {
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     while (true)
                     {
-                        const auto elapsed = millis() - start;
-                        if (elapsed >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
-                            break;
+                            return;
                         }
-                        doWork(timeout - elapsed);
+                        doWork(timer.remaining());
                     }
                 }
 
@@ -290,10 +289,10 @@ namespace wiocellular
                  */
                 std::string readResponse(int timeout, const PredFunctionType &pred = nullptr)
                 {
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     while (true)
                     {
-                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timeout - (millis() - start));
+                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timer.remaining());
 
                         while (true)
                         {
@@ -331,7 +330,7 @@ namespace wiocellular
                             }
                         }
 
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return {};
                         }
@@ -375,11 +374,11 @@ namespace wiocellular
                 {
                     assert(dataSize >= 1);
 
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     size_t i = 0;
                     while (true)
                     {
-                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timeout - (millis() - start));
+                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timer.remaining());
 
                         while (true)
                         {
@@ -397,7 +396,7 @@ namespace wiocellular
                             }
                         }
 
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return false;
                         }
@@ -420,11 +419,11 @@ namespace wiocellular
                 {
                     assert(dataSize >= 1);
 
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     size_t i = 0;
                     while (true)
                     {
-                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timeout - (millis() - start));
+                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timer.remaining());
 
                         while (true)
                         {
@@ -440,7 +439,7 @@ namespace wiocellular
                             }
                         }
 
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return false;
                         }
