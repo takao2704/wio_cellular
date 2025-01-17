@@ -25,7 +25,7 @@ static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
 
 static constexpr int PDP_CONTEXT_ID = 1;
 static constexpr int SOCKET_ID = 0;
-static WioCellularTcpClient<WioCellularModule> TcpClient{ WioCellular, PDP_CONTEXT_ID, SOCKET_ID };
+static WioCellularArduinoTcpClient<WioCellularModule> TcpClient{ WioCellular, PDP_CONTEXT_ID };
 
 #define ENDPOINT "beam.soracom.io"
 #define PORT (1883)
@@ -39,7 +39,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println("] ");
 
   String payload_str = "";
-  for (int i = 0; i < length; i++) {  // Parse Message
+  for (unsigned int i = 0; i < length; i++) {  // Parse Message
     payload_str += (char)payload[i];
   }
   Serial.println(payload_str);
