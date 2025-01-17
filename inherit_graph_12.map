@@ -1,17 +1,3 @@
 <map id="クラス階層図" name="クラス階層図">
-<area shape="rect" id="Node000000" href="$classwiocellular_1_1module_1_1at__client_1_1AtClient.html" title=" " alt="" coords="42,5,245,60"/>
-<area shape="rect" id="Node000001" href="$classwiocellular_1_1module_1_1bg770a_1_1Bg770a.html" title="Quectel BG770Aモジュール" alt="" coords="329,286,565,326"/>
-<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="259,57,283,70,312,95,339,122,384,182,418,240,440,284,435,287,413,243,380,185,335,126,309,98,280,75,256,61"/>
-<area shape="rect" id="Node000002" href="$classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aExtendedConfigurationCommands.html" title=" " alt="" coords="5,85,281,154"/>
-<area shape="poly" id="edge4_Node000002_Node000001" title=" " alt="" coords="271,157,283,164,327,192,367,225,429,284,425,288,364,229,323,197,280,168,268,162"/>
-<area shape="rect" id="Node000003" href="$classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aGeneralCommands.html" title=" " alt="" coords="42,178,245,247"/>
-<area shape="poly" id="edge5_Node000003_Node000001" title=" " alt="" coords="259,245,382,283,380,288,257,250"/>
-<area shape="rect" id="Node000004" href="$classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html" title=" " alt="" coords="19,271,267,341"/>
-<area shape="poly" id="edge6_Node000004_Node000001" title=" " alt="" coords="281,303,329,303,329,309,281,309"/>
-<area shape="rect" id="Node000005" href="$classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aPacketDomainCommands.html" title=" " alt="" coords="24,365,263,434"/>
-<area shape="poly" id="edge7_Node000005_Node000001" title=" " alt="" coords="269,358,381,323,382,329,271,363"/>
-<area shape="rect" id="Node000006" href="$classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html" title=" " alt="" coords="33,458,253,527"/>
-<area shape="poly" id="edge8_Node000006_Node000001" title=" " alt="" coords="265,452,280,444,323,415,364,383,425,324,429,328,367,387,327,420,283,448,267,456"/>
-<area shape="rect" id="Node000007" href="$classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html" title=" " alt="" coords="48,551,239,621"/>
-<area shape="poly" id="edge9_Node000007_Node000001" title=" " alt="" coords="250,555,280,537,308,513,334,486,379,426,413,369,435,325,440,327,418,371,384,429,338,489,312,517,283,542,253,559"/>
+<area shape="rect" id="Node000000" href="$classwiocellular_1_1internal_1_1CountdownTimer.html" title=" " alt="" coords="5,5,156,45"/>
 </map>

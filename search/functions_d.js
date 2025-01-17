@@ -7,5 +7,6 @@ var searchData=
   ['receivesocket_4',['receivesocket',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#ad818090b0b23d222babe82314da899fc',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands::receiveSocket(int connectId, void *data, size_t dataSize, size_t *readDataSize)'],['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#acfc882c88897887a037758b477cfab5c',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands::receiveSocket(int connectId, void *data, size_t dataSize, size_t *readDataSize, int timeout)']]],
   ['registerurchandler_5',['registerUrcHandler',['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a4a2d837d9f752c316747b1b9b7c200c0',1,'wiocellular::module::at_client::AtClient']]],
   ['registerurchandler2_6',['registerUrcHandler2',['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a02d14c0c0918df7ff61a71999c1c4526',1,'wiocellular::module::at_client::AtClient']]],
-  ['reset_7',['reset',['../classwiocellular_1_1module_1_1bg770a_1_1Bg770aInterface.html#a21f07c70549f8c016f325b4b771658b6',1,'wiocellular::module::bg770a::Bg770aInterface']]]
+  ['remaining_7',['remaining',['../classwiocellular_1_1internal_1_1CountdownTimer.html#a013a301e19909f94a056de479f5bdbb5',1,'wiocellular::internal::CountdownTimer']]],
+  ['reset_8',['reset',['../classwiocellular_1_1module_1_1bg770a_1_1Bg770aInterface.html#a21f07c70549f8c016f325b4b771658b6',1,'wiocellular::module::bg770a::Bg770aInterface']]]
 ];

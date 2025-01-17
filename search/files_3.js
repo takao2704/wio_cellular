@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['misc_2ehpp_0',['Misc.hpp',['../Misc_8hpp.html',1,'']]]
+  ['digitalinputpin_2ehpp_0',['DigitalInputPin.hpp',['../DigitalInputPin_8hpp.html',1,'']]],
+  ['digitaloutputpin_2ehpp_1',['DigitalOutputPin.hpp',['../DigitalOutputPin_8hpp.html',1,'']]]
 ];

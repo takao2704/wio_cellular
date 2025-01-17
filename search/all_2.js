@@ -9,5 +9,7 @@ var searchData=
   ['connected_6',['connected',['../classWioCellularTcpClient.html#a261e52e7a19efdbf045d286b8313d386',1,'WioCellularTcpClient::connected()'],['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a409c7326f808aa0d5a675fff75e77cf2a2ec0d16e4ca169baedb9b2d50ec5c6d7',1,'wiocellular::network::Bg770aNetwork::Connected']]],
   ['connected_5f_7',['Connected_',['../classWioCellularTcpClient.html#a2013f19a40a2141f587958ab8e818d0e',1,'WioCellularTcpClient']]],
   ['connectid_8',['connectId',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands_1_1SocketStatus.html#a4ea1de6730a683a9321a6f34b8f5b6f8',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands::SocketStatus']]],
-  ['connectid_5f_9',['ConnectId_',['../classWioCellularTcpClient.html#a18bdd7a21722ee81f37907c621d7344d',1,'WioCellularTcpClient']]]
+  ['connectid_5f_9',['ConnectId_',['../classWioCellularTcpClient.html#a18bdd7a21722ee81f37907c621d7344d',1,'WioCellularTcpClient']]],
+  ['countdowntimer_10',['countdowntimer',['../classwiocellular_1_1internal_1_1CountdownTimer.html',1,'wiocellular::internal::CountdownTimer'],['../classwiocellular_1_1internal_1_1CountdownTimer.html#a5dd2f4c38e5e25e6f8acfbfc2afbd882',1,'wiocellular::internal::CountdownTimer::CountdownTimer()']]],
+  ['countdowntimer_2ehpp_11',['CountdownTimer.hpp',['../CountdownTimer_8hpp.html',1,'']]]
 ];
