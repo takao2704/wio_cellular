@@ -114,7 +114,10 @@ public:
             return 0;
 
         if (!TcpClient_.waitforConnect(ConnectionTimeout_))
+        {
+            TcpClient_.close();
             return 0;
+        }
 
         return 1;
     }
