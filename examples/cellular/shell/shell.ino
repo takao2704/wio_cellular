@@ -21,7 +21,6 @@
 static const char APN[] = "soracom.io";
 
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
-static constexpr int CONNECT_TIMEOUT = 1000 * 10;   // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
 
 static void abortHandler(int sig) {
@@ -328,7 +327,7 @@ static int CommandSocketOpen(int argc, char **argv) {
     return 1;
   }
 
-  if (!TcpClient->waitforConnect(CONNECT_TIMEOUT)) {
+  if (!TcpClient->waitforConnect()) {
     TcpClient.reset();
     Serial.printf("Failed to connect. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
     return 1;

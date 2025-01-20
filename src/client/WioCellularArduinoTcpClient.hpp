@@ -59,7 +59,7 @@ public:
     WioCellularArduinoTcpClient(MODULE &module, int pdpContextId) : Module_{module},
                                                                     TcpClient_{module},
                                                                     PdpContextId_{pdpContextId},
-                                                                    ConnectionTimeout_{3000}
+                                                                    ConnectionTimeout_{150000}
     {
     }
 

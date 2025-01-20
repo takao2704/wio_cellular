@@ -69,6 +69,7 @@ namespace wiocellular::client
         inline static std::bitset<12> UsedConnectIds_;
         int ConnectId_;
         bool ReceivedNofity_;
+        uint32_t openedTime_;
 
     private:
         void setState(State state)
@@ -150,7 +151,13 @@ namespace wiocellular::client
          *
          * コンストラクタ。
          */
-        WioCellularTcpClient2(MODULE &module) : Module_{module}, State_{State::Closed}, LastResult_{WioCellularResult::Ok}, UrcHandler_{nullptr}, ConnectId_{-1}, ReceivedNofity_{false}
+        WioCellularTcpClient2(MODULE &module) : Module_{module},
+                                                State_{State::Closed},
+                                                LastResult_{WioCellularResult::Ok},
+                                                UrcHandler_{nullptr},
+                                                ConnectId_{-1},
+                                                ReceivedNofity_{false},
+                                                openedTime_{0}
         {
         }
 
@@ -217,6 +224,7 @@ namespace wiocellular::client
             }
 
             setState(State::Opened);
+            openedTime_ = millis();
 
             LastResult_ = WioCellularResult::Ok;
             return true;
@@ -234,7 +242,7 @@ namespace wiocellular::client
          * 永久に待機したいときはtimeoutに-1を指定します。
          * エラーの詳細をgetLastResult()で取得できます。
          */
-        bool waitforConnect(int timeout)
+        bool waitforConnect(int timeout = 150000)
         {
             if (getState() != State::Opened)
             {
@@ -272,6 +280,16 @@ namespace wiocellular::client
         {
             if (getState() != State::Closed)
             {
+                // The socket cannot be closed during a connect. (X_X)
+                // Therefore, if the timeout period is short, wait for a certain period of time.
+                if (getState() == State::Opened && millis() - openedTime_ < 150000)
+                {
+                    const auto wait = 150000 - (millis() - openedTime_);
+                    printf("---> WioCellularTcpClient2<%d> forced to wait %lu\n", ConnectId_, wait);
+                    WioCellular.doWork(wait, [this]
+                                       { return getState() != State::Opened; });
+                }
+
                 if (const auto result = Module_.closeSocket2(ConnectId_); result != WioCellularResult::Ok)
                 {
                     LastResult_ = result;

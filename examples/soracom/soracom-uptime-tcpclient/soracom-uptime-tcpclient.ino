@@ -63,10 +63,7 @@ void setup(void) {
   WioNetwork.config.ltemBand = LTEM_BAND;
   WioNetwork.config.apn = APN;
   WioNetwork.begin();
-
-  if (!WioCellular.doWork(NETWORK_TIMEOUT, [] {
-        return WioNetwork.canCommunicate();
-      })) abort();
+  if (!WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) abort();
 
   digitalWrite(LED_BUILTIN, LOW);
 }

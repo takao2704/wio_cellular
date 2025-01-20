@@ -26,7 +26,6 @@ static constexpr int PSM_PERIOD = 60 * 6;              // [s]
 static constexpr int PSM_ACTIVE = 2;                   // [s]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
 static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
-static constexpr int CONNECT_TIMEOUT = 1000 * 10;      // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 
 #define ABORT_IF_FAILED(result) \
@@ -81,10 +80,7 @@ void setup(void) {
   WioNetwork.config.ltemBand = LTEM_BAND;
   WioNetwork.config.apn = APN;
   WioNetwork.begin();
-
-  if (!WioCellular.doWork(NETWORK_TIMEOUT, [] {
-        return WioNetwork.canCommunicate();
-      })) abort();
+  if (!WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) abort();
 
   assert(xTimerStart(xTimerCreate("CellularStart", pdMS_TO_TICKS(START_DELAY), pdFALSE, CellularStartSem, semaphoreGiveTimerHandler), 0) == pdPASS);
 
@@ -147,7 +143,7 @@ static bool send(const JsonDocument& doc) {
       return false;
     }
 
-    if (!client.waitforConnect(CONNECT_TIMEOUT)) {
+    if (!client.waitforConnect()) {
       Serial.printf("ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
