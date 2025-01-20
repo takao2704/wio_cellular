@@ -9,6 +9,8 @@
 //   https://github.com/matsujirushi/ntshell 0.3.1
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
+#include <memory>
 #include <nrfx_power.h>
 #include <ntshell.h>     // Natural Tiny Shell
 #include <util/ntopt.h>  // Natural Tiny Shell
@@ -21,7 +23,16 @@ static const char APN[] = "soracom.io";
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
 
-static constexpr int SOCKET_ID = 0;
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
+
+static std::unique_ptr<WioCellularTcpClient2<WioCellularModule>> TcpClient;
 
 static ntshell_t Shell;
 
@@ -71,6 +82,7 @@ static const CommandType CommandList[] = {
 };
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -303,7 +315,23 @@ static int CommandSocketOpen(int argc, char **argv) {
     return 1;
   }
 
-  WioCellular.openSocket(WioNetwork.config.pdpContextId, SOCKET_ID, argv[1], argv[2], atoi(argv[3]), 0);
+  if (TcpClient) {
+    Serial.printf("Already opened.\n");
+    return 1;
+  }
+
+  TcpClient = std::make_unique<WioCellularTcpClient2<WioCellularModule>>(WioCellular);
+  if (!TcpClient->open(WioNetwork.config.pdpContextId, argv[2], atoi(argv[3]))) {
+    TcpClient.reset();
+    Serial.printf("Failed to open. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
+    return 1;
+  }
+
+  if (!TcpClient->waitforConnect()) {
+    TcpClient.reset();
+    Serial.printf("Failed to connect. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
+    return 1;
+  }
 
   return 0;
 }
@@ -314,24 +342,36 @@ static int CommandSocketSend(int argc, char **argv) {
     return 1;
   }
 
-  WioCellular.sendSocket(SOCKET_ID, argv[1]);
+  if (!TcpClient) {
+    Serial.printf("Not opened.\n");
+    return 1;
+  }
+
+  if (!TcpClient->send(argv[1], strlen(argv[1]))) {
+    Serial.printf("Failed to send socket. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
+    return 1;
+  }
 
   return 0;
 }
 
 static int CommandSocketReceive(int argc, char **argv) {
-  size_t available;
-  WioCellular.getSocketReceiveAvailable(SOCKET_ID, &available);
-  if (available >= 1) {
-    char data[available];
-    size_t dataSize;
-    WioCellular.receiveSocket(SOCKET_ID, data, sizeof(data), &dataSize);
-    Serial.printf("%d: ", dataSize);
-    for (size_t i = 0; i < dataSize; ++i) {
-      Serial.printf("%02X ", data[i]);
-    }
-    Serial.printf("\n");
+  if (!TcpClient) {
+    Serial.printf("Not opened.\n");
+    return 1;
   }
+
+  static uint8_t data[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
+  size_t dataSize;
+  if (!TcpClient->receive(data, sizeof(data), &dataSize)) {
+    Serial.printf("Failed to receive socket. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
+    return 1;
+  }
+  Serial.printf("%d: ", dataSize);
+  for (size_t i = 0; i < dataSize; ++i) {
+    Serial.printf("%02X ", data[i]);
+  }
+  Serial.printf("\n");
 
   return 0;
 }
@@ -342,13 +382,21 @@ static int CommandSocketSendReceive(int argc, char **argv) {
     return 1;
   }
 
-  WioCellular.sendSocket(SOCKET_ID, argv[1]);
+  if (!TcpClient) {
+    Serial.printf("Not opened.\n");
+    return 1;
+  }
 
-  static char data[1500];
+  if (!TcpClient->send(argv[1], strlen(argv[1]))) {
+    Serial.printf("Failed to send socket. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
+    return 1;
+  }
+
+  static uint8_t data[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
   size_t dataSize;
-  if (WioCellular.receiveSocket(SOCKET_ID, data, sizeof(data), &dataSize, RECEIVE_TIMEOUT) != WioCellularResult::Ok) {
-    Serial.printf("RECEIVE ERROR\n");
-    return 0;
+  if (!TcpClient->receive(data, sizeof(data), &dataSize, RECEIVE_TIMEOUT)) {
+    Serial.printf("Failed to receive socket. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
+    return 1;
   }
   Serial.printf("%d: ", dataSize);
   for (size_t i = 0; i < dataSize; ++i) {
@@ -360,7 +408,7 @@ static int CommandSocketSendReceive(int argc, char **argv) {
 }
 
 static int CommandSocketClose(int argc, char **argv) {
-  WioCellular.closeSocket(SOCKET_ID);
+  TcpClient.reset();
 
   return 0;
 }

@@ -9,6 +9,7 @@
 //   http://librarymanager#ArduinoJson 7.0.4
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <WioCellular.h>
 #include <ArduinoJson.h>
 
@@ -19,17 +20,27 @@ static const char APN[] = "soracom.io";
 static const char HOST[] = "uni.soracom.io";
 static constexpr int PORT = 23080;
 
-static constexpr int START_DELAY = 1000 * 10;         // [ms]
-static constexpr int MEASURE_PERIOD = 1000 * 60 * 5;  // [ms]
-static constexpr int PSM_PERIOD = 60 * 6;             // [s]
-static constexpr int PSM_ACTIVE = 2;                  // [s]
-static constexpr int POWER_ON_TIMEOUT = 1000 * 20;    // [ms]
-static constexpr int RECEIVE_TIMEOUT = 1000 * 10;     // [ms]
+static constexpr int START_DELAY = 1000 * 10;          // [ms]
+static constexpr int MEASURE_PERIOD = 1000 * 60 * 5;   // [ms]
+static constexpr int PSM_PERIOD = 60 * 6;              // [s]
+static constexpr int PSM_ACTIVE = 2;                   // [s]
+static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
+static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
+static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 
 #define ABORT_IF_FAILED(result) \
   do { \
     if ((result) != WioCellularResult::Ok) abort(); \
   } while (0)
+
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
 
 static SemaphoreHandle_t CellularWorkSem;
 static SemaphoreHandle_t CellularStartSem;
@@ -39,6 +50,7 @@ static QueueSetHandle_t QueueSet;
 static JsonDocument JsonDoc;
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -68,6 +80,7 @@ void setup(void) {
   WioNetwork.config.ltemBand = LTEM_BAND;
   WioNetwork.config.apn = APN;
   WioNetwork.begin();
+  if (!WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) abort();
 
   assert(xTimerStart(xTimerCreate("CellularStart", pdMS_TO_TICKS(START_DELAY), pdFALSE, CellularStartSem, semaphoreGiveTimerHandler), 0) == pdPASS);
 
@@ -75,7 +88,7 @@ void setup(void) {
 }
 
 void loop(void) {
-  Serial.flush();
+  yield();
   const auto activatedMember = xQueueSelectFromSet(QueueSet, portMAX_DELAY);
   assert(activatedMember);
 
@@ -118,57 +131,48 @@ static bool measure(JsonDocument& doc) {
 static bool send(const JsonDocument& doc) {
   Serial.println("### Sending");
 
-  int socketId;
-  if (WioCellular.getSocketUnusedConnectId(WioNetwork.config.pdpContextId, &socketId) != WioCellularResult::Ok) {
-    Serial.println("ERROR: Failed to get unused connect id");
-    return false;
-  }
-
   Serial.print("Connecting ");
   Serial.print(HOST);
   Serial.print(":");
   Serial.println(PORT);
-  if (WioCellular.openSocket(WioNetwork.config.pdpContextId, socketId, "TCP", HOST, PORT, 0) != WioCellularResult::Ok) {
-    Serial.println("ERROR: Failed to open socket");
-    return false;
-  }
 
-  bool result = true;
+  {
+    WioCellularTcpClient2<WioCellularModule> client{ WioCellular };
+    if (!client.open(WioNetwork.config.pdpContextId, HOST, PORT)) {
+      Serial.printf("ERROR: Failed to open %s\n", WioCellularResultToString(client.getLastResult()));
+      return false;
+    }
 
-  if (result) {
+    if (!client.waitforConnect()) {
+      Serial.printf("ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
+      return false;
+    }
+
     Serial.print("Sending ");
     std::string str;
     serializeJson(doc, str);
     printData(Serial, str.data(), str.size());
     Serial.println();
-    if (WioCellular.sendSocket(socketId, str.data(), str.size()) != WioCellularResult::Ok) {
-      Serial.println("ERROR: Failed to send socket");
-      result = false;
+    if (!client.send(str.data(), str.size())) {
+      Serial.printf("ERROR: Failed to send socket %s\n", WioCellularResultToString(client.getLastResult()));
+      return false;
     }
-  }
 
-  static uint8_t recvData[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
-  size_t recvSize;
-  if (result) {
     Serial.println("Receiving");
-    if (WioCellular.receiveSocket(socketId, recvData, sizeof(recvData), &recvSize, RECEIVE_TIMEOUT) != WioCellularResult::Ok) {
-      Serial.println("ERROR: Failed to receive socket");
-      result = false;
-    } else {
-      printData(Serial, recvData, recvSize);
-      Serial.println();
+    static uint8_t recvData[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
+    size_t recvSize;
+    if (!client.receive(recvData, sizeof(recvData), &recvSize, RECEIVE_TIMEOUT)) {
+      Serial.printf("ERROR: Failed to receive socket %s\n", WioCellularResultToString(client.getLastResult()));
+      return false;
     }
+
+    printData(Serial, recvData, recvSize);
+    Serial.println();
   }
 
-  if (WioCellular.closeSocket(socketId) != WioCellularResult::Ok) {
-    Serial.println("ERROR: Failed to close socket");
-    result = false;
-  }
+  Serial.println("### Completed");
 
-  if (result)
-    Serial.println("### Completed");
-
-  return result;
+  return true;
 }
 
 static void semaphoreGiveTimerHandler(TimerHandle_t timer) {

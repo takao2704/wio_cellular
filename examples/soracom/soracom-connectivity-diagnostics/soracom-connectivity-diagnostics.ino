@@ -13,6 +13,7 @@
  */
 
 #include <Adafruit_TinyUSB.h>
+#include <csignal>
 #include <WioCellular.h>
 
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
@@ -22,6 +23,15 @@ static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
   do { \
     if ((result) != WioCellularResult::Ok) abort(); \
   } while (0)
+
+static void abortHandler(int sig) {
+  while (true) {
+    ledOn(LED_BUILTIN);
+    delay(100);
+    ledOff(LED_BUILTIN);
+    delay(100);
+  }
+}
 
 static WioCellularResult queryCommand(const char *command, int timeout) {
   CONSOLE.print("> ");
@@ -120,25 +130,21 @@ static int printPingSummary(String input) {
 }
 
 static void pingToSoracomNetwork(void) {
-  constexpr uint32_t timeout = 15000;
-
   std::vector<std::string> pingResponse;
-  const auto handler = WioCellular.registerUrcHandler([&pingResponse](const std::string &response) -> bool {
-    if (response.starts_with("+QPING: ")) {
-      pingResponse.push_back(response);
-      return true;
-    }
-    return false;
-  });
+  {
+    const auto handler = WioCellular.registerUrcHandler2([&pingResponse](const std::string &response) -> bool {
+      if (response.starts_with("+QPING: ")) {
+        pingResponse.push_back(response);
+        return true;
+      }
+      return false;
+    });
 
-  ABORT_IF_FAILED(executeCommand("AT+QPING=1,\"pong.soracom.io\",3,3", 300000));
-  const auto start = millis();
-  while (pingResponse.size() < 3 + 1) {
-    WioCellular.doWork(timeout - (millis() - start));
-    if (millis() - start >= timeout) break;
+    ABORT_IF_FAILED(executeCommand("AT+QPING=1,\"pong.soracom.io\",3,3", 300000));
+    WioCellular.doWork(15000, [&pingResponse]() {
+      return pingResponse.size() >= 3 + 1;
+    });
   }
-
-  WioCellular.unregisterUrcHandler(handler);
 
   // success
   //   +QPING: 0,"100.127.100.127",32,66,64
@@ -162,6 +168,7 @@ static void pingToSoracomNetwork(void) {
 }
 
 void setup(void) {
+  signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
     const auto start = millis();

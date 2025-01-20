@@ -13,6 +13,7 @@
 #include "commands/Bg770aPacketDomainCommands.hpp"
 #include "commands/Bg770aSimRelatedCommands.hpp"
 #include "commands/Bg770aTcpipCommands.hpp"
+#include "commands/Bg770aTcpipCommands2.hpp"
 
 #include "module/at_client/AtClient.hpp"
 #include "internal/Misc.hpp"
@@ -40,7 +41,8 @@ namespace wiocellular
                            public commands::Bg770aNetworkServiceCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aPacketDomainCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aSimRelatedCommands<Bg770a<INTERFACE>>,
-                           public commands::Bg770aTcpipCommands<Bg770a<INTERFACE>>
+                           public commands::Bg770aTcpipCommands<Bg770a<INTERFACE>>,
+                           public commands::Bg770aTcpipCommands2<Bg770a<INTERFACE>>
             {
                 friend class at_client::AtClient<Bg770a<INTERFACE>>;
 
@@ -91,6 +93,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 実行コマンドを実行します。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  */
                 WioCellularResult executeCommand(const std::string &command, int timeout)
                 {
@@ -139,6 +142,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 問い合わせコマンドを実行します。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  * informaton textを読み込んだときはinformationTextHandlerを呼び出します。
                  */
                 WioCellularResult queryCommand(const std::string &command, const std::function<bool(const std::string &response)> &informationTextHandler, int timeout)
@@ -195,6 +199,7 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 問い合わせコマンドを実行します。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  * informaton textを読み込んだときはinformationTextHandlerを呼び出します。
                  */
                 WioCellularResult sendCommand(const std::string &command, std::function<bool(const std::string &response)> informationTextHandler, int timeout)
@@ -251,26 +256,48 @@ namespace wiocellular
                  * @return 実行結果。
                  *
                  * 電源をオンします。
+                 * 永久に待機したいときはtimeoutに-1を指定します。
                  * 処理完了までに10秒程度かかります．
                  */
                 WioCellularResult powerOn(int timeout)
                 {
-                    WioCellularResult result = WioCellularResult::Ok;
-
                     bool appRdy = false;
-                    const auto handler = at_client::AtClient<Bg770a<INTERFACE>>::registerUrcHandler([&appRdy](const std::string &response) -> bool
-                                                                                                    {
-                                                                                                        if (response == "APP RDY")
-                                                                                                        {
-                                                                                                            appRdy = true;
-                                                                                                            return true;
-                                                                                                        }
-                                                                                                        return false; });
-
-                    if (!getInterface().isActive())
                     {
-                        getInterface().powerOn();
+                        const auto handler = at_client::AtClient<Bg770a<INTERFACE>>::registerUrcHandler2([&appRdy](const std::string &response) -> bool
+                                                                                                         {
+                                                                                                            if (response == "APP RDY")
+                                                                                                            {
+                                                                                                                appRdy = true;
+                                                                                                                return true;
+                                                                                                            }
+                                                                                                            return false; });
+
                         if (!getInterface().isActive())
+                        {
+                            getInterface().powerOn();
+                            if (!getInterface().isActive())
+                            {
+#if defined(BOARD_VERSION_ES2)
+                                delay(2 + 2);
+                                digitalWrite(PIN_VSYS_3V3_ENABLE, LOW);
+                                delay(100 + 2);
+                                digitalWrite(PIN_VSYS_3V3_ENABLE, HIGH);
+                                delay(2 + 2);
+                                getInterface().powerOn();
+                                if (!getInterface().isActive())
+                                {
+                                    printf("---> Interface is not active when powerOn()\n");
+                                    return WioCellularResult::NotActivate;
+                                }
+#elif defined(BOARD_VERSION_1_0)
+                                printf("---> Interface is not active when powerOn()\n");
+                                return WioCellularResult::NotActivate;
+#else
+#error "Unknown board version"
+#endif
+                            }
+                        }
+                        else
                         {
 #if defined(BOARD_VERSION_ES2)
                             delay(2 + 2);
@@ -282,55 +309,23 @@ namespace wiocellular
                             if (!getInterface().isActive())
                             {
                                 printf("---> Interface is not active when powerOn()\n");
-                                result = WioCellularResult::NotActivate;
+                                return WioCellularResult::NotActivate;
                             }
 #elif defined(BOARD_VERSION_1_0)
-                            printf("---> Interface is not active when powerOn()\n");
-                            result = WioCellularResult::NotActivate;
+                            getInterface().reset();
 #else
 #error "Unknown board version"
 #endif
                         }
-                    }
-                    else
-                    {
-#if defined(BOARD_VERSION_ES2)
-                        delay(2 + 2);
-                        digitalWrite(PIN_VSYS_3V3_ENABLE, LOW);
-                        delay(100 + 2);
-                        digitalWrite(PIN_VSYS_3V3_ENABLE, HIGH);
-                        delay(2 + 2);
-                        getInterface().powerOn();
-                        if (!getInterface().isActive())
+
+                        if (!at_client::AtClient<Bg770a<INTERFACE>>::doWork(timeout, [&appRdy]
+                                                                            { return appRdy; }))
                         {
-                            printf("---> Interface is not active when powerOn()\n");
-                            result = WioCellularResult::NotActivate;
-                        }
-#elif defined(BOARD_VERSION_1_0)
-                        getInterface().reset();
-#else
-#error "Unknown board version"
-#endif
-                    }
-                    if (result == WioCellularResult::Ok)
-                    {
-                        const auto start = millis();
-                        while (!appRdy)
-                        {
-                            at_client::AtClient<Bg770a<INTERFACE>>::doWork(timeout - (millis() - start));
-                            if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
-                            {
-                                result = WioCellularResult::RdyTimeout;
-                                break;
-                            }
+                            return WioCellularResult::RdyTimeout;
                         }
                     }
 
-                    at_client::AtClient<Bg770a<INTERFACE>>::unregisterUrcHandler(handler);
-                    if (result != WioCellularResult::Ok)
-                    {
-                        return result;
-                    }
+                    WioCellularResult result;
 
                     // Enable Hardware Flow Control
                     if ((result = executeCommand("AT+IFC=2,2", 300)) != WioCellularResult::Ok)
@@ -344,7 +339,7 @@ namespace wiocellular
                         return result;
                     }
 
-                    return result;
+                    return WioCellularResult::Ok;
                 }
 
                 /**

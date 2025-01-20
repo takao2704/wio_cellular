@@ -9,7 +9,9 @@
 
 #include <functional>
 #include <list>
+#include <memory>
 #include <string>
+#include "../../internal/CountdownTimer.hpp"
 
 namespace wiocellular
 {
@@ -42,6 +44,51 @@ namespace wiocellular
             private:
                 std::string Response_;
                 std::list<UrcHandlerFunctionType> UrcHandlers_;
+
+            public:
+                /**
+                 * @~Japanese
+                 * @brief URCハンドラ
+                 *
+                 * URCハンドラのクラスです。
+                 * URC処理ハンドラの登録/解除を自動的（RAII）に行います。
+                 */
+                class UrcHandler
+                {
+                private:
+                    AtClient &AtClient_;
+                    std::list<UrcHandlerFunctionType>::const_iterator It_;
+
+                public:
+                    /**
+                     * @~Japanese
+                     * @brief コンストラクタ
+                     *
+                     * @param [in] atClient ATコマンドクライアントのインスタンス。
+                     * @param [in] handler URC処理ハンドラ。
+                     *
+                     * コンストラクタ。
+                     */
+                    UrcHandler(AtClient &atClient, const UrcHandlerFunctionType &handler)
+                        : AtClient_{atClient}
+                    {
+                        It_ = AtClient_.registerUrcHandler(handler);
+                    }
+
+                    /**
+                     * @~Japanese
+                     * @brief デストラクタ
+                     *
+                     * デストラクタ。
+                     */
+                    ~UrcHandler()
+                    {
+                        AtClient_.unregisterUrcHandler(It_);
+                    }
+
+                    UrcHandler(UrcHandler &) = delete;
+                    UrcHandler &operator=(UrcHandler &) = delete;
+                };
 
             private:
                 void writeCommand(const std::string &command)
@@ -88,7 +135,7 @@ namespace wiocellular
                  * URC(unsolicited result code)を処理するハンドラを登録します。
                  * 戻り値のイテレータを使って、後でハンドラを解除することができます。
                  */
-                std::list<UrcHandlerFunctionType>::iterator registerUrcHandler(const UrcHandlerFunctionType &handler)
+                std::list<UrcHandlerFunctionType>::const_iterator registerUrcHandler(const UrcHandlerFunctionType &handler)
                 {
                     return UrcHandlers_.insert(UrcHandlers_.end(), handler);
                 }
@@ -101,9 +148,24 @@ namespace wiocellular
                  *
                  * URC(unsolicited result code)を処理するハンドラを解除します。
                  */
-                void unregisterUrcHandler(const std::list<UrcHandlerFunctionType>::iterator &it)
+                void unregisterUrcHandler(std::list<UrcHandlerFunctionType>::const_iterator it)
                 {
                     UrcHandlers_.erase(it);
+                }
+
+                /**
+                 * @~Japanese
+                 * @brief URC処理ハンドラを登録
+                 *
+                 * @param [in] handler URC処理ハンドラ。
+                 * @return URCハンドラのユニークポインタ。
+                 *
+                 * URC(unsolicited result code)を処理するハンドラを登録します。
+                 * 戻り値を開放すると自動的にハンドラを解除します。
+                 */
+                std::unique_ptr<UrcHandler> registerUrcHandler2(const UrcHandlerFunctionType &handler)
+                {
+                    return std::make_unique<UrcHandler>(*this, handler);
                 }
 
                 /**
@@ -127,6 +189,36 @@ namespace wiocellular
 
                 /**
                  * @~Japanese
+                 * @brief URC処理を実行
+                 *
+                 * @param [in] timeout タイムアウト時間[ミリ秒]。
+                 * @param [in] completion 完了確認のハンドラ。
+                 * @retval true 完了確認のハンドラがtrueを返した
+                 * @retval false タイムアウト
+                 *
+                 * レスポンスを確認して、URC(unsolicited result code)の処理を実行します。
+                 * 永久にURC待ちしたいときはtimeoutに-1を指定します。
+                 * URCを受信したときにcompletionを実行します。completionがtrueを返すと関数から返ります。
+                 */
+                bool doWork(int timeout, const std::function<bool(void)> &completion)
+                {
+                    assert(completion);
+
+                    wiocellular::internal::CountdownTimer timer{timeout};
+                    while (!completion())
+                    {
+                        if (timer.isTimeout())
+                        {
+                            return false;
+                        }
+                        doWork(timer.remaining());
+                    }
+
+                    return true;
+                }
+
+                /**
+                 * @~Japanese
                  * @brief URC処理を実行（タイムアウトまで）
                  *
                  * @param [in] timeout タイムアウト時間[ミリ秒]。
@@ -137,15 +229,14 @@ namespace wiocellular
                  */
                 void doWorkUntil(int timeout)
                 {
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     while (true)
                     {
-                        const auto elapsed = millis() - start;
-                        if (elapsed >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
-                            break;
+                            return;
                         }
-                        doWork(timeout - elapsed);
+                        doWork(timer.remaining());
                     }
                 }
 
@@ -198,10 +289,10 @@ namespace wiocellular
                  */
                 std::string readResponse(int timeout, const PredFunctionType &pred = nullptr)
                 {
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     while (true)
                     {
-                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timeout - (millis() - start));
+                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timer.remaining());
 
                         while (true)
                         {
@@ -239,7 +330,7 @@ namespace wiocellular
                             }
                         }
 
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return {};
                         }
@@ -283,11 +374,11 @@ namespace wiocellular
                 {
                     assert(dataSize >= 1);
 
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     size_t i = 0;
                     while (true)
                     {
-                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timeout - (millis() - start));
+                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timer.remaining());
 
                         while (true)
                         {
@@ -305,7 +396,7 @@ namespace wiocellular
                             }
                         }
 
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return false;
                         }
@@ -328,11 +419,11 @@ namespace wiocellular
                 {
                     assert(dataSize >= 1);
 
-                    const auto start = millis();
+                    wiocellular::internal::CountdownTimer timer{timeout};
                     size_t i = 0;
                     while (true)
                     {
-                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timeout - (millis() - start));
+                        static_cast<MODULE &>(*this).getInterface().waitReadAvailable(timer.remaining());
 
                         while (true)
                         {
@@ -348,7 +439,7 @@ namespace wiocellular
                             }
                         }
 
-                        if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
+                        if (timer.isTimeout())
                         {
                             return false;
                         }

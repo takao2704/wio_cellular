@@ -475,8 +475,24 @@ namespace wiocellular
 
                 return pdpContext->pdpAddr != "0.0.0.0";
             }
-        };
 
+            /**
+             * @~Japanese
+             * @brief 通信可能を待機
+             *
+             * @param [in] timeout タイムアウト時間[ミリ秒]。
+             * @retval true 接続完了
+             * @retval false タイムアウト
+             *
+             * 通信可能になるまで待機します。
+             * 永久に待機したいときはtimeoutに-1を指定します。
+             */
+            bool waitUntilCommunicationAvailable(int timeout)
+            {
+                return WioCellular.doWork(timeout, [this]
+                                          { return canCommunicate(); });
+            }
+        };
     }
 }
 

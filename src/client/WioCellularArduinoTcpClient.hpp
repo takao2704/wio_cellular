@@ -1,37 +1,50 @@
 /*
- * WioCellularTcpClient.hpp
+ * WioCellularArduinoTcpClient.hpp
  * Copyright (C) Seeed K.K.
  * MIT License
  */
 
-#ifndef WIOCELLULARTCPCLIENT_HPP
-#define WIOCELLULARTCPCLIENT_HPP
+#ifndef WIOCELLULARARDUINOTCPCLIENT_HPP
+#define WIOCELLULARARDUINOTCPCLIENT_HPP
 
 #include "../WioCellular.hpp"
 #include <Client.h>
 #include <array>
 #include <queue>
+#include "WioCellularTcpClient2.hpp"
 
 /**
  * @~Japanese
- * @brief TCPクライアント
+ * @brief Arduino用TCPクライアント
  *
  * @tparam MODULE モジュールのクラス
  *
- * TCPクライアントのクラスです。
+ * Arduino用TCPクライアントのクラスです。
  */
 template <typename MODULE>
-class WioCellularTcpClient : public Client
+class WioCellularArduinoTcpClient : public Client
 {
-protected:
-    static constexpr size_t RECEIVE_MAX_LENGTH = 1500;
-
+private:
     MODULE &Module_;
+    wiocellular::client::WioCellularTcpClient2<WioCellularModule> TcpClient_;
     int PdpContextId_;
-    int ConnectId_;
-    bool Connected_;
     std::queue<uint8_t> ReceiveQueue_;
-    std::array<uint8_t, RECEIVE_MAX_LENGTH> ReceiveBuffer_;
+    std::array<uint8_t, MODULE::RECEIVE_SOCKET_SIZE_MAX> ReceiveBuffer_;
+    int ConnectionTimeout_;
+
+public:
+    /**
+     * @~Japanese
+     * @brief 接続タイムアウトを設定
+     *
+     * @param [in] timeout タイムアウト時間[ミリ秒]。
+     *
+     * 接続タイムアウトを設定します。
+     */
+    void setConnectionTimeout(int timeout)
+    {
+        ConnectionTimeout_ = timeout;
+    }
 
 public:
     /**
@@ -40,14 +53,13 @@ public:
      *
      * @param [in] module モジュールのインスタンス。
      * @param [in] pdpContextId PDPコンテキスト。
-     * @param [in] connectId 接続ID。
      *
      * コンストラクタ。
      */
-    WioCellularTcpClient(MODULE &module, int pdpContextId, int connectId) : Module_{module},
-                                                                            PdpContextId_{pdpContextId},
-                                                                            ConnectId_{connectId},
-                                                                            Connected_{false}
+    WioCellularArduinoTcpClient(MODULE &module, int pdpContextId) : Module_{module},
+                                                                    TcpClient_{module},
+                                                                    PdpContextId_{pdpContextId},
+                                                                    ConnectionTimeout_{150000}
     {
     }
 
@@ -57,10 +69,8 @@ public:
      *
      * デストラクタ。
      */
-    virtual ~WioCellularTcpClient(void)
+    virtual ~WioCellularArduinoTcpClient(void)
     {
-        if (Connected_)
-            stop();
     }
 
     /**
@@ -76,9 +86,6 @@ public:
      */
     virtual int connect(IPAddress ip, uint16_t port)
     {
-        if (Connected_)
-            return 0;
-
         String ipStr = String(ip[0]);
         ipStr += ".";
         ipStr += String(ip[1]);
@@ -103,13 +110,14 @@ public:
      */
     virtual int connect(const char *host, uint16_t port)
     {
-        if (Connected_)
+        if (!TcpClient_.open(PdpContextId_, host, port))
             return 0;
 
-        if (Module_.openSocket(PdpContextId_, ConnectId_, "TCP", host, port, 0) != WioCellularResult::Ok)
+        if (!TcpClient_.waitforConnect(ConnectionTimeout_))
+        {
+            TcpClient_.close();
             return 0;
-
-        Connected_ = true;
+        }
 
         return 1;
     }
@@ -125,7 +133,10 @@ public:
      */
     virtual size_t write(uint8_t data)
     {
-        return write(&data, 1);
+        if (!TcpClient_.send(&data, 1))
+            return 0;
+
+        return 1;
     }
 
     /**
@@ -140,10 +151,7 @@ public:
      */
     virtual size_t write(const uint8_t *buf, size_t size)
     {
-        if (!Connected_)
-            return 0;
-
-        if (Module_.sendSocket(ConnectId_, buf, size) != WioCellularResult::Ok)
+        if (!TcpClient_.send(buf, size))
             return 0;
 
         return size;
@@ -161,17 +169,20 @@ public:
      */
     virtual int available(void)
     {
-        if (!Connected_)
-            return -1;
-
         size_t size;
-        if (Module_.receiveSocket(ConnectId_, ReceiveBuffer_.data(), ReceiveBuffer_.size(), &size) != WioCellularResult::Ok)
-            return -1;
+        const auto result = TcpClient_.receive(ReceiveBuffer_.data(), ReceiveBuffer_.size(), &size);
+        if (result)
+        {
+            for (size_t i = 0; i < size; ++i)
+                ReceiveQueue_.push(ReceiveBuffer_[i]);
+        }
 
-        for (size_t i = 0; i < size; ++i)
-            ReceiveQueue_.push(ReceiveBuffer_[i]);
+        if (!ReceiveQueue_.empty())
+        {
+            return ReceiveQueue_.size();
+        }
 
-        return ReceiveQueue_.size();
+        return result ? 0 : -1;
     }
 
     /**
@@ -186,9 +197,6 @@ public:
      */
     virtual int read(void)
     {
-        if (!Connected_)
-            return -1;
-
         const int actualSize = available();
         if (actualSize <= 0)
             return -1;
@@ -213,9 +221,6 @@ public:
      */
     virtual int read(uint8_t *buf, size_t size)
     {
-        if (!Connected_)
-            return -1;
-
         const int actualSize = available();
         if (actualSize < 0)
             return -1;
@@ -242,9 +247,6 @@ public:
      */
     virtual int peek(void)
     {
-        if (!Connected_)
-            return -1;
-
         const int actualSize = available();
         if (actualSize <= 0)
             return -1;
@@ -260,9 +262,6 @@ public:
      */
     virtual void flush(void)
     {
-        if (!Connected_)
-            return;
-
         available();
 
         while (!ReceiveQueue_.empty())
@@ -277,15 +276,10 @@ public:
      */
     virtual void stop(void)
     {
-        if (!Connected_)
-            return;
-
-        Module_.closeSocket(ConnectId_);
+        TcpClient_.close();
 
         while (!ReceiveQueue_.empty())
             ReceiveQueue_.pop();
-
-        Connected_ = false;
     }
 
     /**
@@ -299,7 +293,8 @@ public:
      */
     virtual uint8_t connected(void)
     {
-        return Connected_ ? 1 : 0;
+        Module_.doWork(0);
+        return TcpClient_.getState() == decltype(TcpClient_)::State::Connected ? 1 : 0;
     }
 
     /**
@@ -317,4 +312,15 @@ public:
     }
 };
 
-#endif // WIOCELLULARTCPCLIENT_HPP
+/**
+ * @~Japanese
+ * @brief Arduino用TCPクライアント
+ *
+ * @tparam MODULE モジュールのクラス
+ *
+ * Arduino用TCPクライアントのクラスです。
+ */
+template <typename MODULE>
+using WioCellularTcpClient [[deprecated("Use WioCellularArduinoTcpClient instead.")]] = WioCellularArduinoTcpClient<MODULE>;
+
+#endif // WIOCELLULARARDUINOTCPCLIENT_HPP

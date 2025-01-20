@@ -66,6 +66,7 @@ namespace wiocellular
                      * @return 実行結果。
                      *
                      * 全ての設定を工場出荷時のデフォルトにします。
+                     * 永久に待機したいときはtimeoutに-1を指定します。
                      * 処理完了までに20秒程度かかります．
                      *
                      * > BG77xA-GL&BG95xA-GL AT Commands Manual @n
@@ -73,35 +74,29 @@ namespace wiocellular
                      */
                     WioCellularResult factoryDefault(int timeout)
                     {
-                        WioCellularResult result = WioCellularResult::Ok;
+                        WioCellularResult result;
 
                         bool appRdy = false;
-                        const auto handler = static_cast<MODULE &>(*this).registerUrcHandler([&appRdy](const std::string &response) -> bool
-                                                                                             {
-                                                                                                if (response == "APP RDY")
-                                                                                                {
-                                                                                                    appRdy = true;
-                                                                                                    return true;
-                                                                                                }
-                                                                                                return false; });
+                        {
+                            const auto handler = static_cast<MODULE &>(*this).registerUrcHandler2([&appRdy](const std::string &response) -> bool
+                                                                                                  {
+                                                                                                    if (response == "APP RDY")
+                                                                                                    {
+                                                                                                        appRdy = true;
+                                                                                                        return true;
+                                                                                                    }
+                                                                                                    return false; });
 
-                        if ((result = static_cast<MODULE &>(*this).executeCommand("AT&F1", 300)) == WioCellularResult::Ok)
-                        {
-                            const auto start = millis();
-                            while (!appRdy)
+                            if ((result = static_cast<MODULE &>(*this).executeCommand("AT&F1", 300)) != WioCellularResult::Ok)
                             {
-                                static_cast<MODULE &>(*this).doWork(timeout - (millis() - start));
-                                if (timeout >= 0 && millis() - start >= static_cast<uint32_t>(timeout))
-                                {
-                                    result = WioCellularResult::RdyTimeout;
-                                    break;
-                                }
+                                return result;
                             }
-                        }
-                        static_cast<MODULE &>(*this).unregisterUrcHandler(handler);
-                        if (result != WioCellularResult::Ok)
-                        {
-                            return result;
+
+                            if (!static_cast<MODULE &>(*this).doWork(timeout, [&appRdy]
+                                                                     { return appRdy; }))
+                            {
+                                return WioCellularResult::RdyTimeout;
+                            }
                         }
 
                         // Enable Hardware Flow Control
@@ -110,7 +105,7 @@ namespace wiocellular
                             return result;
                         }
 
-                        return result;
+                        return WioCellularResult::Ok;
                     }
 
                     /**
