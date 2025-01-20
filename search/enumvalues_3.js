@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ltem_0',['LTEM',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a1b095adeb708a4c686d2992307efaefa',1,'wiocellular::network::Bg770aNetwork']]],
-  ['ltem_5fnbiot_1',['LTEM_NBIOT',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493a911c31c20f4a149af4646aadda00cb97',1,'wiocellular::network::Bg770aNetwork']]]
+  ['insufficientresources_0',['InsufficientResources',['../WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4a0d4df07c6e41de1bbb4a3779608e443b',1,'WioCellularResult.hpp']]],
+  ['invalidoperation_1',['InvalidOperation',['../WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4a1cd5ecce6fe138df5c3f7e8854a1a66d',1,'WioCellularResult.hpp']]]
 ];

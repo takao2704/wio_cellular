@@ -5,5 +5,6 @@ var searchData=
   ['bg770ainterface_2',['Bg770aInterface',['../classwiocellular_1_1module_1_1bg770a_1_1Bg770aInterface.html#a0df40d36599131d7c74fd06e40034443',1,'wiocellular::module::bg770a::Bg770aInterface']]],
   ['bg770ainterface_5fvdd_5fext_5firqhandler_3',['BG770AINTERFACE_VDD_EXT_IRQHANDLER',['../Bg770aInterface_8hpp.html#aee7543090f9d9d6d713d32d0ed3172b8',1,'Bg770aInterface.hpp']]],
   ['bg770anetwork_4',['Bg770aNetwork',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#aa50b472fe536673ec620d0aebd87bcfc',1,'wiocellular::network::Bg770aNetwork']]],
-  ['bg770atcpipcommands_5',['Bg770aTcpipCommands',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#a6f06f6aed37817769ce7bd8d9e72f5d4',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands']]]
+  ['bg770atcpipcommands_5',['Bg770aTcpipCommands',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#a6f06f6aed37817769ce7bd8d9e72f5d4',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands']]],
+  ['bg770atcpipcommands2_6',['Bg770aTcpipCommands2',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a26efce6f93c1337b18f09ad447ef3b9b',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2']]]
 ];

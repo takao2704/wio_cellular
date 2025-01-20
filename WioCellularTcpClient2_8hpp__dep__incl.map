@@ -1,0 +1,11 @@
+<map id="WioCellularTcpClient2.hpp" name="WioCellularTcpClient2.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="158,5,350,31"/>
+<area shape="rect" id="Node000002" href="$WioCellular_8hpp.html" title=" " alt="" coords="143,79,267,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,44,215,80,210,77,236,41"/>
+<area shape="rect" id="Node000004" href="$WioCellularArduinoTcpClient_8hpp.html" title=" " alt="" coords="138,152,373,177"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="269,42,282,78,283,99,279,120,265,153,260,151,274,118,278,99,277,79,264,44"/>
+<area shape="rect" id="Node000003" href="$WioCellular_8h.html" title=" " alt="" coords="5,152,113,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,112,84,154,82,149,168,108"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="215,115,242,150,238,154,211,118"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="245,142,218,106,222,103,249,138"/>
+</map>

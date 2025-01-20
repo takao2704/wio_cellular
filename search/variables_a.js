@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['receive_5fmax_5flength_0',['RECEIVE_MAX_LENGTH',['../classWioCellularTcpClient.html#ae6650ca701c4e0724e200653449d8ef4',1,'WioCellularTcpClient']]],
-  ['receive_5fsocket_5fsize_5fmax_1',['RECEIVE_SOCKET_SIZE_MAX',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#addef7b69001b77b5b965cf18a0ce80a5',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands']]],
-  ['receivebuffer_5f_2',['ReceiveBuffer_',['../classWioCellularTcpClient.html#a4df6af619e3d81e73d9fa4f9903f650c',1,'WioCellularTcpClient']]],
-  ['receivequeue_5f_3',['ReceiveQueue_',['../classWioCellularTcpClient.html#a85214278d5fe08b230d05a4dfc3a46da',1,'WioCellularTcpClient']]],
-  ['remoteport_4',['remotePort',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands_1_1SocketStatus.html#a30f1ff096e4fdd861c388b20116734d4',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands::SocketStatus']]]
+  ['searchaccesstechnology_0',['searchAccessTechnology',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a1f29aaa3fc9cc5d652ca83ad047187ca',1,'wiocellular::network::Bg770aNetwork']]],
+  ['serverid_1',['serverId',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2_1_1SocketStatus.html#a10a6c2d87324f067f5f29548d6c064e9',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2::SocketStatus']]],
+  ['servicetype_2',['serviceType',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2_1_1SocketStatus.html#abadd6a462d4fa02a6874333cce2dd78e',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2::SocketStatus']]],
+  ['socketstate_3',['socketState',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2_1_1SocketStatus.html#a891bbf5eff67c24c91e48ab712df5a8f',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2::SocketStatus']]],
+  ['state_4',['state',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aPacketDomainCommands_1_1PdpContextStatus.html#af9f3d1b9dba9600c7ac0d577bc931f46',1,'wiocellular::module::bg770a::commands::Bg770aPacketDomainCommands::PdpContextStatus']]]
 ];

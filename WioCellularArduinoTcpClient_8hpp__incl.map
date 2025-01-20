@@ -1,0 +1,31 @@
+<map id="WioCellularArduinoTcpClient.hpp" name="WioCellularArduinoTcpClient.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="269,5,504,31"/>
+<area shape="rect" id="Node000002" href="$WioCellular_8hpp.html" title=" " alt="" coords="177,79,313,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="358,33,275,74,273,69,356,28"/>
+<area shape="rect" id="Node000003" href="$WioCellularTcpClient2_8hpp.html" title=" " alt="" coords="181,152,413,177"/>
+<area shape="poly" id="edge15_Node000001_Node000003" title=" " alt="" coords="382,33,314,142,309,139,377,30"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="388,79,460,104"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="395,30,414,65,409,68,390,32"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="484,79,540,104"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="408,28,481,69,478,74,405,33"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="565,79,627,104"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="421,28,552,72,551,77,419,33"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="274,76,357,35,360,40,276,81"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="256,103,283,139,279,142,252,106"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,64,251"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="255,180,78,228,76,223,254,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="88,225,165,251"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="271,180,168,222,166,218,269,175"/>
+<area shape="rect" id="Node000006" href="$CountdownTimer_8hpp.html" title=" " alt="" coords="190,225,405,251"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="300,178,300,212,295,212,295,178"/>
+<area shape="rect" id="Node000008" href="$Misc_8hpp.html" title=" " alt="" coords="429,225,563,251"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="330,175,451,218,450,223,328,180"/>
+<area shape="rect" id="Node000011" href="$WioCellularResult_8hpp.html" title=" " alt="" coords="587,225,754,251"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="358,175,598,220,597,225,357,180"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="255,299,339,324"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="300,251,300,285,295,285,295,251"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="423,299,484,324"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="491,252,469,288,465,286,487,250"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="508,299,567,324"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="505,250,526,285,521,288,501,252"/>
+</map>

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['nbiotband_0',['nbiotBand',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#afab898ff42c65fc93ac50f37861a0fa8',1,'wiocellular::network::Bg770aNetwork']]],
-  ['nttdocomo_5fltem_5fband_1',['NTTDOCOMO_LTEM_BAND',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a037161df1d04403d7170a7d0d3ebcd11',1,'wiocellular::network::Bg770aNetwork']]]
+  ['pdpaddr_0',['pdpAddr',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aPacketDomainCommands_1_1PdpContext.html#ab5761a36ff6f632ddaa07590f1123454',1,'wiocellular::module::bg770a::commands::Bg770aPacketDomainCommands::PdpContext']]],
+  ['pdpcontextid_1',['pdpContextId',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#acefbaff726a1f7e669fb64e3a0796a91',1,'wiocellular::network::Bg770aNetwork']]],
+  ['pdptype_2',['pdpType',['../structwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aPacketDomainCommands_1_1PdpContext.html#ab38b3144be428d9b52ddc0e6a60194d8',1,'wiocellular::module::bg770a::commands::Bg770aPacketDomainCommands::PdpContext']]]
 ];

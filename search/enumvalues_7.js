@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['searching_0',['Searching',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a409c7326f808aa0d5a675fff75e77cf2a843627586c62e389041a4d8800143974',1,'wiocellular::network::Bg770aNetwork']]]
+  ['rdytimeout_0',['RdyTimeout',['../WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4ad34bcc4677e45e4d79b33963a71e24bf',1,'WioCellularResult.hpp']]],
+  ['readresponsetimeout_1',['ReadResponseTimeout',['../WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4a1479a2ae15dd68d3d4504176e2a82651',1,'WioCellularResult.hpp']]],
+  ['receivetimeout_2',['ReceiveTimeout',['../WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4aa4866b9c40370f853b1434ff872be87c',1,'WioCellularResult.hpp']]]
 ];
