@@ -120,7 +120,7 @@ static bool send(const JsonDocument& doc) {
     int availableSize;
     const auto start = millis();
     while ((availableSize = client.available()) == 0 && millis() - start < RECEIVE_TIMEOUT) {
-      WioCellular.doWork(2);
+      WioCellular.doWork(2);  // Spin
     }
     if (availableSize <= 0) {
       Serial.println("ERROR: Failed to available socket");
