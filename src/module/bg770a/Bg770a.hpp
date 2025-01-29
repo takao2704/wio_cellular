@@ -215,9 +215,7 @@ namespace wiocellular
                     std::string response;
                     while (true)
                     {
-                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout, [](const std::string &response) -> bool
-                                                                                             { return response == "> "; }))
-                                .empty())
+                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout)).empty())
                         {
                             return WioCellularResult::ReadResponseTimeout;
                         }
