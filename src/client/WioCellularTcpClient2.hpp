@@ -319,16 +319,19 @@ namespace wiocellular::client
          */
         bool send(const void *data, size_t dataSize)
         {
-            if (getState() != State::Connected)
+            for (size_t offset = 0; offset < dataSize; offset += Module_.SEND_SOCKET_SIZE_MAX)
             {
-                LastResult_ = WioCellularResult::InvalidOperation;
-                return false;
-            }
+                if (getState() != State::Connected)
+                {
+                    LastResult_ = WioCellularResult::InvalidOperation;
+                    return false;
+                }
 
-            if (const auto result = Module_.sendSocket2(ConnectId_, data, dataSize); result != WioCellularResult::Ok)
-            {
-                LastResult_ = result;
-                return false;
+                if (const auto result = Module_.sendSocket2(ConnectId_, static_cast<const uint8_t *>(data) + offset, std::min(dataSize - offset, Module_.SEND_SOCKET_SIZE_MAX)); result != WioCellularResult::Ok)
+                {
+                    LastResult_ = result;
+                    return false;
+                }
             }
 
             LastResult_ = WioCellularResult::Ok;

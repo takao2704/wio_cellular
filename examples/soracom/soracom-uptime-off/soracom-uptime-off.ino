@@ -1,5 +1,5 @@
 /*
- * soracom-uptime-tcpclient.ino
+ * soracom-uptime-off.ino
  * Copyright (C) Seeed K.K.
  * MIT License
  */
@@ -20,15 +20,11 @@ static const char APN[] = "soracom.io";
 static const char HOST[] = "uni.soracom.io";
 static constexpr int PORT = 23080;
 
-static constexpr int INTERVAL = 1000 * 60 * 5;         // [ms]
+static constexpr int INTERVAL = 1000 * 60 * 15;        // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
 static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
-
-#define ABORT_IF_FAILED(result) \
-  do { \
-    if ((result) != WioCellularResult::Ok) abort(); \
-  } while (0)
+static constexpr int POWER_OFF_DELAY_TIME = 1000 * 3;  // [ms]
 
 static void abortHandler(int sig) {
   while (true) {
@@ -56,14 +52,13 @@ void setup(void) {
   Serial.println("Startup");
   digitalWrite(LED_BUILTIN, HIGH);
 
-  WioCellular.begin();
-  ABORT_IF_FAILED(WioCellular.powerOn(POWER_ON_TIMEOUT));
-
+  // Network configuration
   WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
   WioNetwork.config.ltemBand = LTEM_BAND;
   WioNetwork.config.apn = APN;
-  WioNetwork.begin();
-  if (!WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) abort();
+
+  // Start WioCellular
+  WioCellular.begin();
 
   digitalWrite(LED_BUILTIN, LOW);
 }
@@ -71,17 +66,29 @@ void setup(void) {
 void loop(void) {
   digitalWrite(LED_BUILTIN, HIGH);
 
-  JsonDoc.clear();
-  if (measure(JsonDoc)) {
-    send(JsonDoc);
+  // Power on the cellular module
+  if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
+  WioNetwork.begin();
+
+  // Measure and send
+  if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
+    JsonDoc.clear();
+    if (measure(JsonDoc)) {
+      send(JsonDoc);
+    }
   }
+
+  // Power off the cellular module
+  WioCellular.doWorkUntil(POWER_OFF_DELAY_TIME);
+  WioNetwork.end();
+  if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
 
   digitalWrite(LED_BUILTIN, LOW);
 
   WioCellular.doWorkUntil(INTERVAL);
 }
 
-static bool measure(JsonDocument& doc) {
+static bool measure(JsonDocument &doc) {
   Serial.println("### Measuring");
 
   doc["uptime"] = millis() / 1000;
@@ -91,7 +98,7 @@ static bool measure(JsonDocument& doc) {
   return true;
 }
 
-static bool send(const JsonDocument& doc) {
+static bool send(const JsonDocument &doc) {
   Serial.println("### Sending");
 
   Serial.print("Connecting ");
@@ -100,9 +107,14 @@ static bool send(const JsonDocument& doc) {
   Serial.println(PORT);
 
   {
-    WioCellularArduinoTcpClient<WioCellularModule> client{ WioCellular, WioNetwork.config.pdpContextId };
-    if (!client.connect(HOST, PORT)) {
-      Serial.println("ERROR: Failed to open socket");
+    WioCellularTcpClient2<WioCellularModule> client{ WioCellular };
+    if (!client.open(WioNetwork.config.pdpContextId, HOST, PORT)) {
+      Serial.printf("ERROR: Failed to open %s\n", WioCellularResultToString(client.getLastResult()));
+      return false;
+    }
+
+    if (!client.waitforConnect()) {
+      Serial.printf("ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
 
@@ -111,33 +123,21 @@ static bool send(const JsonDocument& doc) {
     serializeJson(doc, str);
     printData(Serial, str.data(), str.size());
     Serial.println();
-    if (client.write(reinterpret_cast<const uint8_t*>(str.data()), str.size()) != str.size()) {
-      Serial.println("ERROR: Failed to send socket");
+    if (!client.send(str.data(), str.size())) {
+      Serial.printf("ERROR: Failed to send socket %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
 
     Serial.println("Receiving");
-    int availableSize;
-    const auto start = millis();
-    while ((availableSize = client.available()) == 0 && millis() - start < RECEIVE_TIMEOUT) {
-      WioCellular.doWork(2);  // Spin
-    }
-    if (availableSize <= 0) {
-      Serial.println("ERROR: Failed to available socket");
-      return false;
-    }
-
     static uint8_t recvData[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
-    const int recvSize = client.read(recvData, sizeof(recvData));
-    if (recvSize <= 0) {
-      Serial.println("ERROR: Failed to receive socket");
+    size_t recvSize;
+    if (!client.receive(recvData, sizeof(recvData), &recvSize, RECEIVE_TIMEOUT)) {
+      Serial.printf("ERROR: Failed to receive socket %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
 
     printData(Serial, recvData, recvSize);
     Serial.println();
-
-    client.stop();
   }
 
   Serial.println("### Completed");
@@ -146,8 +146,8 @@ static bool send(const JsonDocument& doc) {
 }
 
 template<typename T>
-void printData(T& stream, const void* data, size_t size) {
-  auto p = static_cast<const char*>(data);
+void printData(T &stream, const void *data, size_t size) {
+  auto p = static_cast<const char *>(data);
 
   for (; size > 0; --size, ++p)
     stream.write(0x20 <= *p && *p <= 0x7f ? *p : '.');

@@ -180,7 +180,8 @@ namespace wiocellular
             } config;
 
         private:
-            int epsRegistrationStatus;
+            int EpsRegistrationStatus_;
+            std::unique_ptr<WioCellularModule::UrcHandler> UrcHandler_;
 
         private:
             void defaultAbortHandler(const char *file, int line)
@@ -204,15 +205,16 @@ namespace wiocellular
             Bg770aNetwork(void)
                 : abortHandler{nullptr},
                   config{SearchAccessTechnology::NOSET, "", "", 1, ""},
-                  epsRegistrationStatus{-1}
+                  EpsRegistrationStatus_{-1},
+                  UrcHandler_{nullptr}
             {
             }
 
             /**
              * @~Japanese
-             * @brief ネットワークを開始
+             * @brief ネットワーク支援を開始
              *
-             * ネットワークを初期化します。
+             * ネットワーク支援を開始します。
              */
             void begin(void)
             {
@@ -298,20 +300,20 @@ namespace wiocellular
                 }
 
                 // Register EPS network registration state notification
-                WioCellular.registerUrcHandler([this](const std::string &response) -> bool
-                                               {
-                                                    if (response.compare(0, 8, "+CEREG: ") == 0) {
-                                                        wiocellular::module::at_client::AtParameterParser parser{response.substr(8)};
-                                                        if (parser.size() < 1) return false;
-                                                        epsRegistrationStatus = std::stoi(parser[0]);
-                                                        return true;
-                                                    }
-                                                    return false; });
+                UrcHandler_ = WioCellular.registerUrcHandler2([this](const std::string &response) -> bool
+                                                              {
+                                                                if (response.compare(0, 8, "+CEREG: ") == 0) {
+                                                                    wiocellular::module::at_client::AtParameterParser parser{response.substr(8)};
+                                                                    if (parser.size() < 1) return false;
+                                                                    EpsRegistrationStatus_ = std::stoi(parser[0]);
+                                                                    return true;
+                                                                }
+                                                                return false; });
                 if ((result = WioCellular.setEpsNetworkRegistrationStatusUrc(1)) != WioCellularResult::Ok)
                 {
                     abortHandler(__FILE__, __LINE__);
                 }
-                if ((result = WioCellular.getEpsNetworkRegistrationState(&epsRegistrationStatus)) != WioCellularResult::Ok)
+                if ((result = WioCellular.getEpsNetworkRegistrationState(&EpsRegistrationStatus_)) != WioCellularResult::Ok)
                 {
                     abortHandler(__FILE__, __LINE__);
                 }
@@ -403,6 +405,28 @@ namespace wiocellular
 
             /**
              * @~Japanese
+             * @brief ネットワーク支援を終了
+             *
+             * @param [in] disconnect ネットワークを切断する。
+             *
+             * ネットワーク支援を終了します。
+             */
+            void end(bool disconnect = true)
+            {
+                if (disconnect)
+                {
+                    if (WioCellular.setPhoneFunctionality(0) != WioCellularResult::Ok)
+                    {
+                        abortHandler(__FILE__, __LINE__);
+                    }
+                }
+
+                UrcHandler_ = nullptr;
+                EpsRegistrationStatus_ = -1;
+            }
+
+            /**
+             * @~Japanese
              * @brief ネットワーク状態を取得
              *
              * @return ネットワーク状態。
@@ -411,7 +435,7 @@ namespace wiocellular
              */
             NetworkState getNetworkState(void)
             {
-                switch (epsRegistrationStatus)
+                switch (EpsRegistrationStatus_)
                 {
                 case 1:
                 case 5:
