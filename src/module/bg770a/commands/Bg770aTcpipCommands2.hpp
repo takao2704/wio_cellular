@@ -33,9 +33,6 @@ namespace wiocellular
                 template <typename MODULE>
                 class Bg770aTcpipCommands2
                 {
-                private:
-                    static constexpr int COMMAND_ECHO_TIMEOUT = 10000;
-
                 public:
                     /**
                      * @~Japanese
@@ -302,7 +299,7 @@ namespace wiocellular
                                     assert(actualDataSize <= dataSize);
                                     if (actualDataSize >= 1)
                                     {
-                                        if (!static_cast<MODULE &>(*this).readBinary(data, actualDataSize, 120000))
+                                        if (!static_cast<MODULE &>(*this).readBinary(data, actualDataSize, 120000)) // TODO WIP
                                         {
                                             return false;
                                         }

@@ -47,12 +47,21 @@ namespace wiocellular
                 friend class at_client::AtClient<Bg770a<INTERFACE>>;
 
             private:
-                static constexpr int COMMAND_ECHO_TIMEOUT = 60000;
-
-            private:
                 INTERFACE &Interface_;
 
             public:
+                /**
+                 * @~Japanese
+                 * @brief ATコマンドのタイムアウト時間下限[ミリ秒]
+                 */
+                int commandTimeoutMin;
+
+                /**
+                 * @~Japanese
+                 * @brief ATコマンドのエコー待ちタイムアウト時間[ミリ秒]
+                 */
+                int commandEchoTimeout;
+
                 /**
                  * @~Japanese
                  * @brief コンストラクタ
@@ -63,7 +72,9 @@ namespace wiocellular
                  * interfaceにインターフェースのインスタンスを指定します。
                  */
                 explicit Bg770a(INTERFACE &interface) : at_client::AtClient<Bg770a<INTERFACE>>{},
-                                                        Interface_{interface}
+                                                        Interface_{interface},
+                                                        commandTimeoutMin{10000},
+                                                        commandEchoTimeout{60000}
                 {
                     at_client::AtClient<Bg770a<INTERFACE>>::registerUrcHandler([](const std::string &response) -> bool
                                                                                {
@@ -99,7 +110,7 @@ namespace wiocellular
                 {
                     printf("CMD> %s\n", command.c_str());
                     const auto start = millis();
-                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, COMMAND_ECHO_TIMEOUT))
+                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
@@ -108,7 +119,7 @@ namespace wiocellular
                     std::string response;
                     while (true)
                     {
-                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout)).empty())
+                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(std::max(timeout, commandTimeoutMin))).empty())
                         {
                             return WioCellularResult::ReadResponseTimeout;
                         }
@@ -149,7 +160,7 @@ namespace wiocellular
                 {
                     printf("CMD> %s\n", command.c_str());
                     const auto start = millis();
-                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, COMMAND_ECHO_TIMEOUT))
+                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
@@ -158,7 +169,7 @@ namespace wiocellular
                     std::string response;
                     while (true)
                     {
-                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout)).empty())
+                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(std::max(timeout, commandTimeoutMin))).empty())
                         {
                             return WioCellularResult::ReadResponseTimeout;
                         }
@@ -206,7 +217,7 @@ namespace wiocellular
                 {
                     printf("CMD> %s\n", command.c_str());
                     const auto start = millis();
-                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, COMMAND_ECHO_TIMEOUT))
+                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
@@ -215,7 +226,7 @@ namespace wiocellular
                     std::string response;
                     while (true)
                     {
-                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout)).empty())
+                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(std::max(timeout, commandTimeoutMin))).empty())
                         {
                             return WioCellularResult::ReadResponseTimeout;
                         }

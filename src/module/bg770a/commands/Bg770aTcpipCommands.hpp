@@ -36,9 +36,6 @@ namespace wiocellular
                 class Bg770aTcpipCommands
                 {
                 private:
-                    static constexpr int COMMAND_ECHO_TIMEOUT = 10000;
-
-                private:
                     bool UrcSocketReceiveAttached_;
                     std::map<int, bool> UrcSocketReceiveNofity_;
 
@@ -257,7 +254,7 @@ namespace wiocellular
                                 if (response == "> ")
                                 {
                                     static_cast<MODULE &>(*this).writeBinary(data, dataSize);
-                                    static_cast<MODULE &>(*this).readBinaryDiscard(dataSize, COMMAND_ECHO_TIMEOUT);
+                                    static_cast<MODULE &>(*this).readBinaryDiscard(dataSize, static_cast<MODULE &>(*this).commandEchoTimeout);
                                     return true;
                                 }
                                 return false; },
@@ -359,7 +356,7 @@ namespace wiocellular
                                     assert(actualDataSize <= dataSize);
                                     if (actualDataSize >= 1)
                                     {
-                                        if (!static_cast<MODULE &>(*this).readBinary(data, actualDataSize, 120000))
+                                        if (!static_cast<MODULE &>(*this).readBinary(data, actualDataSize, 120000)) // TODO WIP
                                         {
                                             return false;
                                         }
