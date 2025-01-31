@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['searchaccesstechnology_0',['searchaccesstechnology',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493',1,'wiocellular::network::Bg770aNetwork::SearchAccessTechnology'],['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a1f29aaa3fc9cc5d652ca83ad047187ca',1,'wiocellular::network::Bg770aNetwork::searchAccessTechnology']]],
+  ['searchaccesstechnology_0',['searchaccesstechnology',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a1f29aaa3fc9cc5d652ca83ad047187ca',1,'wiocellular::network::Bg770aNetwork::searchAccessTechnology'],['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a96d9ff055576415f1b70cf59725cc493',1,'wiocellular::network::Bg770aNetwork::SearchAccessTechnology']]],
   ['searching_1',['Searching',['../classwiocellular_1_1network_1_1Bg770aNetwork.html#a409c7326f808aa0d5a675fff75e77cf2a843627586c62e389041a4d8800143974',1,'wiocellular::network::Bg770aNetwork']]],
   ['send_2',['send',['../classwiocellular_1_1client_1_1WioCellularTcpClient2.html#a3630868ad842998d644a4ec0fb5c2972',1,'wiocellular::client::WioCellularTcpClient2']]],
   ['send_5fsocket_5fsize_5fmax_3',['SEND_SOCKET_SIZE_MAX',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a0020fd8e2163c93c0202d3d4acf9d4ed',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2']]],

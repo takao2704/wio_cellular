@@ -75,6 +75,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">公開メンバ関数</a> &#124;
+<a href="#pub-attribs">公開変数類</a> &#124;
 <a href="#friends">フレンド</a> &#124;
 <a href="classwiocellular_1_1module_1_1bg770a_1_1Bg770a-members.html">全メンバ一覧</a>  </div>
   <div class="headertitle"><div class="title">wiocellular::module::bg770a::Bg770a&lt; INTERFACE &gt; クラステンプレート</div></div>
@@ -330,6 +331,15 @@ wiocellular::module::bg770a::Bg770a&lt; INTERFACE &gt; 連携図</div>
 <tr class="memitem:a1141bba7e71dc5f8be067b2f7a675e57 inherit pub_methods_classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2" id="r_a1141bba7e71dc5f8be067b2f7a675e57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a1141bba7e71dc5f8be067b2f7a675e57">receiveSocket2</a> (int connectId, void *data, size_t dataSize, size_t *readDataSize)</td></tr>
 <tr class="memdesc:a1141bba7e71dc5f8be067b2f7a675e57 inherit pub_methods_classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ソケットから受信  <br /></td></tr>
 <tr class="separator:a1141bba7e71dc5f8be067b2f7a675e57 inherit pub_methods_classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+公開変数類</h2></td></tr>
+<tr class="memitem:ae81cc7edda58704b0d50030d32d5c19a" id="r_ae81cc7edda58704b0d50030d32d5c19a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1Bg770a.html#ae81cc7edda58704b0d50030d32d5c19a">commandTimeoutMin</a></td></tr>
+<tr class="memdesc:ae81cc7edda58704b0d50030d32d5c19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">ATコマンドのタイムアウト時間下限[ミリ秒]  <br /></td></tr>
+<tr class="separator:ae81cc7edda58704b0d50030d32d5c19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88342bc5a0514717508de136c29a6c2" id="r_ae88342bc5a0514717508de136c29a6c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1Bg770a.html#ae88342bc5a0514717508de136c29a6c2">commandEchoTimeout</a></td></tr>
+<tr class="memdesc:ae88342bc5a0514717508de136c29a6c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ATコマンドのエコー待ちタイムアウト時間[ミリ秒]  <br /></td></tr>
+<tr class="separator:ae88342bc5a0514717508de136c29a6c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 フレンド</h2></td></tr>
@@ -689,6 +699,43 @@ template&lt;typename INTERFACE &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">メンバ詳解</h2>
+<a id="ae88342bc5a0514717508de136c29a6c2" name="ae88342bc5a0514717508de136c29a6c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae88342bc5a0514717508de136c29a6c2">&#9670;&#160;</a></span>commandEchoTimeout</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename INTERFACE &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1Bg770a.html">wiocellular::module::bg770a::Bg770a</a>&lt; INTERFACE &gt;::commandEchoTimeout</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ATコマンドのエコー待ちタイムアウト時間[ミリ秒] </p>
+
+</div>
+</div>
+<a id="ae81cc7edda58704b0d50030d32d5c19a" name="ae81cc7edda58704b0d50030d32d5c19a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae81cc7edda58704b0d50030d32d5c19a">&#9670;&#160;</a></span>commandTimeoutMin</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename INTERFACE &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1Bg770a.html">wiocellular::module::bg770a::Bg770a</a>&lt; INTERFACE &gt;::commandTimeoutMin</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ATコマンドのタイムアウト時間下限[ミリ秒] </p>
 
 </div>
 </div>
