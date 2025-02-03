@@ -35,11 +35,6 @@ struct HttpResponse {
   std::string body;
 };
 
-#define ABORT_IF_FAILED(result) \
-  do { \
-    if ((result) != WioCellularResult::Ok) abort(); \
-  } while (0)
-
 static void abortHandler(int sig) {
   while (true) {
     ledOn(LED_BUILTIN);
@@ -67,7 +62,7 @@ void setup(void) {
   digitalWrite(LED_BUILTIN, HIGH);
 
   WioCellular.begin();
-  ABORT_IF_FAILED(WioCellular.powerOn(POWER_ON_TIMEOUT));
+  if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
 
   WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
   WioNetwork.config.ltemBand = LTEM_BAND;

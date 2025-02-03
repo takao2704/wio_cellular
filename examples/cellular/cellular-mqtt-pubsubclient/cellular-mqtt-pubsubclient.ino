@@ -27,11 +27,6 @@ static constexpr int INTERVAL = 1000 * 60 * 5;      // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
 static constexpr int RECONNECT_WAIT_TIME = 1000;    // [ms]
 
-#define ABORT_IF_FAILED(result) \
-  do { \
-    if ((result) != WioCellularResult::Ok) abort(); \
-  } while (0)
-
 static void abortHandler(int sig) {
   while (true) {
     ledOn(LED_BUILTIN);
@@ -67,7 +62,7 @@ void setup(void) {
   digitalWrite(LED_BUILTIN, HIGH);
 
   WioCellular.begin();
-  ABORT_IF_FAILED(WioCellular.powerOn(POWER_ON_TIMEOUT));
+  if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
 
   WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
   WioNetwork.config.ltemBand = LTEM_BAND;
@@ -76,7 +71,7 @@ void setup(void) {
   WioNetwork.begin();
 
   std::string imsi;
-  ABORT_IF_FAILED(WioCellular.getIMSI(&imsi));
+  if (WioCellular.getIMSI(&imsi) != WioCellularResult::Ok) abort();
   ClientId = imsi;
   SubscribeTopic = std::string{ "WioCellular/" } + ClientId + "/downstream";
   PublishTopic = std::string{ "WioCellular/" } + ClientId + "/upstream";
