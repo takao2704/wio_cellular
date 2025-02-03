@@ -96,6 +96,11 @@ void setup(void) {
   ntshell_init(&Shell, shellRead, shellWrite, shellCallback, nullptr);
   ntshell_set_prompt(&Shell, "\nWIO>");
 
+  // Network configuration
+  WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
+  WioNetwork.config.ltemBand = LTEM_BAND;
+  WioNetwork.config.apn = APN;
+
   Serial.printf("Initialize\n");
   WioCellular.begin();
 
@@ -108,10 +113,6 @@ void setup(void) {
     }
     Serial.printf("... %lu[ms]\n", millis() - start);
   }
-
-  WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
-  WioNetwork.config.ltemBand = LTEM_BAND;
-  WioNetwork.config.apn = APN;
   WioNetwork.begin();
 }
 

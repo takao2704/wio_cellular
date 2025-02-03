@@ -53,12 +53,16 @@ void setup(void) {
   Serial.println("Startup");
   digitalWrite(LED_BUILTIN, HIGH);
 
-  WioCellular.begin();
-  if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
-
+  // Network configuration
   WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
   WioNetwork.config.ltemBand = LTEM_BAND;
   WioNetwork.config.apn = APN;
+
+  // Start WioCellular
+  WioCellular.begin();
+
+  // Power on the cellular module
+  if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
   WioNetwork.begin();
 
   WioCellular.enableGrovePower();
