@@ -7,22 +7,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries:
 //   http://librarymanager#ArduinoJson 7.0.4
+//   http://librarymanager#Adafruit%20SPIFlash 4.3.4
+//   http://librarymanager#SdFat%20-%20Adafruit%20Fork 2.2.3
 
 #include <Adafruit_TinyUSB.h>
+#include <cassert>
 #include <csignal>
-#include <WioCellular.h>
-#include <ArduinoJson.h>
+#include <malloc.h>
+#include "Storage.hpp"
+#include "CellularTask.hpp"
+#include "MeasureTask.hpp"
 
-#define SEARCH_ACCESS_TECHNOLOGY (WioCellularNetwork::SearchAccessTechnology::LTEM)
-#define LTEM_BAND (WioCellularNetwork::NTTDOCOMO_LTEM_BAND)
-static const char APN[] = "soracom.io";
+#define TASK_NAME "[main]"
 
-static const char HOST[] = "uni.soracom.io";
-static constexpr int PORT = 23080;
-
-static constexpr int INTERVAL = 1000 * 60 * 5;      // [ms]
-static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
-static constexpr int RECEIVE_TIMEOUT = 1000 * 10;   // [ms]
+static constexpr int INTERVAL = 1000 * 60 * 60;  // [ms]
 
 static void abortHandler(int sig) {
   while (true) {
@@ -33,10 +31,8 @@ static void abortHandler(int sig) {
   }
 }
 
-static uint32_t MeasureTime = -INTERVAL;
-static String LatestGpsData;
-
-static JsonDocument JsonDoc;
+static TaskHandle_t CellularTaskHandle;  // FreeRTOS
+static TaskHandle_t MeasureTaskHandle;   // FreeRTOS
 
 void setup(void) {
   signal(SIGABRT, abortHandler);
@@ -50,166 +46,49 @@ void setup(void) {
   Serial.println();
   Serial.println();
 
-  Serial.println("Startup");
+  Serial.println(TASK_NAME "Startup");
   digitalWrite(LED_BUILTIN, HIGH);
 
-  // Network configuration
-  WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
-  WioNetwork.config.ltemBand = LTEM_BAND;
-  WioNetwork.config.apn = APN;
+  // Check and clear storage
+  if (!Storage::begin()) abort();
+  uint32_t marker;
+  if (!Storage::readMarker(&marker)) abort();
+  if (marker != 0x12345678) {
+    if (!Storage::clear()) abort();
+    if (!Storage::writeMarker(0x12345678)) abort();
+  }
 
-  // Start WioCellular
-  WioCellular.begin();
+  // Begin tasks
+  CellularTaskBegin();
+  MeasureTaskBegin();
 
-  // Power on the cellular module
-  if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
-  WioNetwork.begin();
-
-  WioCellular.enableGrovePower();
-  GpsBegin();
+  // Start tasks
+  if (xTaskCreate(CellularTaskFunction, "Cellular", 600, nullptr, 1, &CellularTaskHandle) != pdPASS) abort();  // FreeRTOS
+  if (xTaskCreate(MeasureTaskFunction, "Measure", 600, nullptr, 2, &MeasureTaskHandle) != pdPASS) abort();     // FreeRTOS
 
   digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop(void) {
-  const auto data = GpsRead();
-  if (data != NULL && strncmp(data, "$GPGGA,", 7) == 0) {
-    LatestGpsData = data;
-  }
-
-  if (millis() - MeasureTime >= INTERVAL) {
-    if (WioNetwork.canCommunicate()) {
-      digitalWrite(LED_BUILTIN, HIGH);
-
-      JsonDoc.clear();
-      if (measure(JsonDoc)) {
-        send(JsonDoc);
-      }
-
-      digitalWrite(LED_BUILTIN, LOW);
-    }
-
-    MeasureTime = millis();
-  }
-
-  WioCellular.doWork(10);  // Spin
+  diagnostics();
+  delay(INTERVAL);
 }
 
-static bool measure(JsonDocument& doc) {
-  Serial.println("### Measuring");
+void diagnostics(void) {
+  Serial.println(TASK_NAME "Diagnostics start");
 
-  doc["uptime"] = millis() / 1000;
-
-  int index[5];
-  index[0] = LatestGpsData.indexOf(',');
-  index[1] = index[0] >= 0 ? LatestGpsData.indexOf(',', index[0] + 1) : -1;
-  index[2] = index[1] >= 0 ? LatestGpsData.indexOf(',', index[1] + 1) : -1;
-  index[3] = index[2] >= 0 ? LatestGpsData.indexOf(',', index[2] + 1) : -1;
-  index[4] = index[3] >= 0 ? LatestGpsData.indexOf(',', index[3] + 1) : -1;
-
-  if (index[4] >= 0) {
-    String latDmm = LatestGpsData.substring(index[1] + 1, index[2]);
-    String lonDmm = LatestGpsData.substring(index[3] + 1, index[4]);
-
-    if (latDmm.length() >= 1 && lonDmm.length() >= 1) {
-      auto DMMtoDD = [](const String& dmm) -> double {
-        const double dmmDouble = atof(dmm.c_str());
-        const int d = (int)dmmDouble / 100;
-        return (double)d + (dmmDouble - d * 100) / 60.0;
-      };
-
-      doc["lat"] = DMMtoDD(latDmm);
-      doc["lon"] = DMMtoDD(lonDmm);
-    }
+  // Stack
+  const auto taskNumber = uxTaskGetNumberOfTasks();
+  TaskStatus_t* taskStatuses = reinterpret_cast<TaskStatus_t*>(pvPortMalloc(sizeof(TaskStatus_t) * taskNumber));
+  assert(uxTaskGetSystemState(taskStatuses, taskNumber, nullptr) == taskNumber);
+  for (size_t i = 0; i < taskNumber; ++i) {
+    Serial.printf(TASK_NAME "stack_hwm %-7s %u\n", taskStatuses[i].pcTaskName, static_cast<unsigned>(taskStatuses[i].usStackHighWaterMark));
   }
+  vPortFree(taskStatuses);
 
-  Serial.println("### Completed");
+  // Heap
+  struct mallinfo info = mallinfo();
+  Serial.printf(TASK_NAME "heap_used %u\n", info.uordblks);
 
-  return true;
-}
-
-static bool send(const JsonDocument& doc) {
-  Serial.println("### Sending");
-
-  Serial.print("Connecting ");
-  Serial.print(HOST);
-  Serial.print(":");
-  Serial.println(PORT);
-
-  {
-    WioCellularTcpClient2<WioCellularModule> client{ WioCellular };
-    if (!client.open(WioNetwork.config.pdpContextId, HOST, PORT)) {
-      Serial.printf("ERROR: Failed to open %s\n", WioCellularResultToString(client.getLastResult()));
-      return false;
-    }
-
-    if (!client.waitforConnect()) {
-      Serial.printf("ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
-      return false;
-    }
-
-    Serial.print("Sending ");
-    std::string str;
-    serializeJson(doc, str);
-    printData(Serial, str.data(), str.size());
-    Serial.println();
-    if (!client.send(str.data(), str.size())) {
-      Serial.printf("ERROR: Failed to send socket %s\n", WioCellularResultToString(client.getLastResult()));
-      return false;
-    }
-
-    Serial.println("Receiving");
-    static uint8_t recvData[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
-    size_t recvSize;
-    if (!client.receive(recvData, sizeof(recvData), &recvSize, RECEIVE_TIMEOUT)) {
-      Serial.printf("ERROR: Failed to receive socket %s\n", WioCellularResultToString(client.getLastResult()));
-      return false;
-    }
-
-    printData(Serial, recvData, recvSize);
-    Serial.println();
-  }
-
-  Serial.println("### Completed");
-
-  return true;
-}
-
-template<typename T>
-void printData(T& stream, const void* data, size_t size) {
-  auto p = static_cast<const char*>(data);
-
-  for (; size > 0; --size, ++p)
-    stream.write(0x20 <= *p && *p <= 0x7f ? *p : '.');
-}
-
-#define GPS_OVERFLOW_STRING "OVERFLOW"
-
-static char GpsData[100];
-static int GpsDataLength;
-
-void GpsBegin(void) {
-  Serial1.begin(9600);
-  GpsDataLength = 0;
-}
-
-const char* GpsRead(void) {
-  while (true) {
-    const auto data = Serial1.read();
-    if (data < 0) return NULL;
-    if (data == '\r') continue;
-    if (data == '\n') {
-      GpsData[GpsDataLength] = '\0';
-      GpsDataLength = 0;
-      return GpsData;
-    }
-
-    if (GpsDataLength > (int)sizeof(GpsData) - 1) {  // Overflow
-      GpsDataLength = 0;
-      return GPS_OVERFLOW_STRING;
-    }
-    GpsData[GpsDataLength++] = data;
-  }
-
-  return NULL;
+  Serial.println(TASK_NAME "Diagnostics end");
 }
