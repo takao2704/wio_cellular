@@ -336,7 +336,13 @@ namespace wiocellular
                         if (!at_client::AtClient<Bg770a<INTERFACE>>::doWork(timeout, [&appRdy]
                                                                             { return appRdy; }))
                         {
-                            return WioCellularResult::RdyTimeout;
+                            getInterface().reset();
+
+                            if (!at_client::AtClient<Bg770a<INTERFACE>>::doWork(timeout, [&appRdy]
+                                                                                { return appRdy; }))
+                            {
+                                return WioCellularResult::RdyTimeout;
+                            }
                         }
                     }
 
