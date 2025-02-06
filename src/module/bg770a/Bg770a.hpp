@@ -284,6 +284,12 @@ namespace wiocellular
                         if (!getInterface().isActive())
                         {
                             getInterface().powerOn();
+
+                            wiocellular::internal::CountdownTimer timer{1000};
+                            while (!getInterface().isActive() && !timer.isTimeout())
+                            {
+                                at_client::AtClient<Bg770a<INTERFACE>>::doWork(10); // Spin
+                            }
                             if (!getInterface().isActive())
                             {
 #if defined(BOARD_VERSION_ES2)
