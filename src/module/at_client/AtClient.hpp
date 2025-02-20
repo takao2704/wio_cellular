@@ -255,15 +255,18 @@ namespace wiocellular
                 {
                     writeCommand(command);
 
+                    std::string commandWithS3{command};
+                    commandWithS3.push_back(S3);
                     while (true)
                     {
-                        const std::string response = readResponse(timeout);
+                        const std::string response = readResponse(timeout, [&commandWithS3](const std::string &response) -> bool
+                                                                  { return response == commandWithS3; });
                         if (response.empty())
                         {
                             return false;
                         }
 
-                        if (response == command)
+                        if (response == commandWithS3)
                         {
                             return true;
                         }
@@ -307,6 +310,10 @@ namespace wiocellular
                                 switch (c)
                                 {
                                 case S4:
+                                    if (!Response_.empty() && Response_.back() == S3)
+                                    {
+                                        Response_.pop_back();
+                                    }
                                     if (!Response_.empty())
                                     {
                                         const auto value = Response_;
@@ -315,7 +322,7 @@ namespace wiocellular
                                     }
                                     break;
                                 default:
-                                    if (c >= 32)
+                                    if (c >= 32 || c == S3)
                                     {
                                         Response_.push_back(c);
                                         if (pred && pred(Response_))
