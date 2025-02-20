@@ -306,9 +306,7 @@ namespace wiocellular
                             {
                                 switch (c)
                                 {
-                                case S3:
-                                    // Should be S4, but to address issue 34, it should be S3.
-                                    // https://github.com/SeeedJP/wio_cellular/issues/34
+                                case S4:
                                     if (!Response_.empty())
                                     {
                                         const auto value = Response_;
