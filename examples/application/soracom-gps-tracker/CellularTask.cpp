@@ -10,6 +10,7 @@
 #include "Storage.hpp"
 
 #define TASK_NAME "[cell]"
+#define USE_PSM
 
 #define SEARCH_ACCESS_TECHNOLOGY (WioCellularNetwork::SearchAccessTechnology::LTEM)
 #define LTEM_BAND (WioCellularNetwork::NTTDOCOMO_LTEM_BAND)
@@ -18,11 +19,14 @@ static const char APN[] = "soracom.io";
 static const char HOST[] = "uni.soracom.io";
 static constexpr int PORT = 23080;
 
-static constexpr int INTERVAL = 1000 * 60 * 15;        // [ms]
-static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
-static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
-static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
-static constexpr int POWER_OFF_DELAY_TIME = 1000 * 3;  // [ms]
+static constexpr int INTERVAL = 1000 * 60 * 15;           // [ms]
+static constexpr int POWER_ON_TIMEOUT = 1000 * 20;        // [ms]
+static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;     // [ms]
+static constexpr int RECEIVE_TIMEOUT = 1000 * 10;         // [ms]
+static constexpr int PSM_PERIOD = 60 * 17;                // [s]
+static constexpr int PSM_ACTIVE = 2;                      // [s]
+static constexpr int PSM_POWER_DOWN_TIMEOUT = 1000 * 60;  // [ms]
+static constexpr int POWER_OFF_DELAY_TIME = 1000 * 3;     // [ms]
 
 static bool send(const void* data, size_t dataSize);
 
@@ -48,6 +52,12 @@ void CellularTaskFunction(void* param) {
       if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
       WioNetwork.begin();
 
+#ifdef USE_PSM
+      // Reset PSM
+      if (WioCellular.setPsmEnteringIndicationUrc(true) != WioCellularResult::Ok) abort();
+      if (WioCellular.setPsm(0, PSM_PERIOD, PSM_ACTIVE) != WioCellularResult::Ok) abort();
+#endif  // USE_PSM
+
       // Send
       if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
         while (true) {
@@ -72,9 +82,29 @@ void CellularTaskFunction(void* param) {
 
       // Power off the cellular module
       Serial.println(TASK_NAME "Power off the cellular module");
+#ifdef USE_PSM
+      bool powerDown = false;
+      if (WioNetwork.canCommunicate()) {
+        // Set PSM
+        if (WioCellular.setPsm(1, PSM_PERIOD, PSM_ACTIVE) != WioCellularResult::Ok) abort();
+        const auto start = millis();
+        while (millis() - start < PSM_POWER_DOWN_TIMEOUT) {
+          WioCellular.doWork(10);  // Spin
+          if (!WioCellular.getInterface().isActive()) {
+            powerDown = true;
+            break;
+          }
+        }
+      }
+      if (!powerDown) {
+        WioNetwork.end();
+        if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
+      }
+#else
       WioCellular.doWorkUntil(POWER_OFF_DELAY_TIME);
       WioNetwork.end();
       if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
+#endif  // USE_PSM
     }
 
     WioCellular.doWorkUntil(INTERVAL);
