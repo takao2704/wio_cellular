@@ -56,7 +56,7 @@ void setup(void) {
   Serial.println();
 
   Serial.print("Enable Grove ... ");
-  WioCellular.enableGrovePower();
+  digitalWrite(PIN_VGROVE_ENABLE, LOW);
   Serial.println("OK");
 
   Serial.println("Wait for USER button");
@@ -68,7 +68,7 @@ void setup(void) {
   }
 
   Serial.print("Disable Grove ... ");
-  WioCellular.disableGrovePower();
+  digitalWrite(PIN_VGROVE_ENABLE, HIGH);
   Serial.println("OK");
 
   Serial.println("Wait for USER button");

@@ -22,7 +22,7 @@ void setup(void) {
   Serial.println();
 
   WioCellular.begin();
-  WioCellular.enableGrovePower();
+  digitalWrite(PIN_VGROVE_ENABLE, LOW);
 
   pinMode(BUTTON_PIN, INPUT);
 }

@@ -6,7 +6,6 @@
 
 #include <Arduino.h>
 #include "MeasureTask.hpp"
-#include <WioCellular.h>
 #include <ArduinoJson.h>
 #include "Storage.hpp"
 
@@ -29,7 +28,7 @@ void MeasureTaskFunction(void* param) {
   while (true) {
     // Power on the grove module
     Serial.println(TASK_NAME "Power on the grove module");
-    WioCellular.enableGrovePower();
+    digitalWrite(PIN_VGROVE_ENABLE, LOW);
     GpsBegin();
 
     // Polling GPS data
@@ -52,7 +51,7 @@ void MeasureTaskFunction(void* param) {
     // Power off the grove module
     Serial.println(TASK_NAME "Power off the grove module");
     GpsEnd();
-    WioCellular.disableGrovePower();
+    digitalWrite(PIN_VGROVE_ENABLE, HIGH);
 
     // Print free size of storage
     uint16_t freeSize;

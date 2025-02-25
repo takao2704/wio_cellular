@@ -64,6 +64,7 @@ namespace wiocellular
              *
              * セルラーモジュールの電源を投入します。
              */
+            [[deprecated]]
             void enableCellularPower(void)
             {
             }
@@ -74,16 +75,18 @@ namespace wiocellular
              *
              * セルラーモジュールの電源を開放します。
              */
+            [[deprecated]]
             void disableCellularPower(void)
             {
             }
 
             /**
              * @~Japanese
-             * @brief Groveの電源を投入
+             * @brief [DEPRECATED]Groveの電源を投入
              *
              * Groveの電源を投入します。
              */
+            [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, LOW) instead.")]]
             void enableGrovePower(void)
             {
                 VgroveEnable_.write(0);
@@ -92,10 +95,11 @@ namespace wiocellular
 
             /**
              * @~Japanese
-             * @brief Groveの電源を開放
+             * @brief [DEPRECATED]Groveの電源を開放
              *
              * Groveの電源を開放します。
              */
+            [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, HIGH) instead.")]]
             void disableGrovePower(void)
             {
                 VgroveEnable_.write(1);
