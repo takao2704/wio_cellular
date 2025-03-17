@@ -162,10 +162,8 @@ public:
      * @brief 未読のデータサイズを取得
      *
      * @retval >=0 未読のデータサイズ
-     * @retval <0 エラー
      *
      * TCPサーバーから受信した、未読のデータサイズを取得します。
-     * エラーのときは負の値を返します。
      */
     virtual int available(void)
     {
@@ -177,12 +175,7 @@ public:
                 ReceiveQueue_.push(ReceiveBuffer_[i]);
         }
 
-        if (!ReceiveQueue_.empty())
-        {
-            return ReceiveQueue_.size();
-        }
-
-        return result ? 0 : -1;
+        return ReceiveQueue_.size();
     }
 
     /**
@@ -214,16 +207,14 @@ public:
      * @param [in,out] buf データ。
      * @param [in] size データサイズ。
      * @retval >=0 受信したデータサイズ
-     * @retval <0 エラー
      *
      * TCPサーバーから受信します。
-     * エラーのときは負の値を返します。
      */
     virtual int read(uint8_t *buf, size_t size)
     {
         const int actualSize = available();
-        if (actualSize < 0)
-            return -1;
+        if (actualSize <= 0)
+            return 0;
 
         const int popSize = static_cast<size_t>(actualSize) <= size ? actualSize : size;
         for (int i = 0; i < popSize; ++i)
