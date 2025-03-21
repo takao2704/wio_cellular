@@ -13,8 +13,8 @@
 #include <WioCellular.h>
 #include <ArduinoJson.h>
 
-#define SEARCH_ACCESS_TECHNOLOGY (WioCellularNetwork::SearchAccessTechnology::LTEM)
-#define LTEM_BAND (WioCellularNetwork::NTTDOCOMO_LTEM_BAND)
+#define SEARCH_ACCESS_TECHNOLOGY (WioCellularNetwork::SearchAccessTechnology::LTEM)  // https://seeedjp.github.io/Wiki/Wio_BG770A/kb/kb4.html
+#define LTEM_BAND (WioCellularNetwork::NTTDOCOMO_LTEM_BAND)                          // https://seeedjp.github.io/Wiki/Wio_BG770A/kb/kb4.html
 static const char APN[] = "soracom.io";
 
 static const char HOST[] = "uni.soracom.io";
