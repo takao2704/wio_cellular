@@ -46,29 +46,35 @@ void MeasureTaskFunction(void* param) {
     // Measure
     Serial.println(TASK_NAME "Measuring");
     JsonDocument JsonDoc;
-    if (!measure(JsonDoc)) continue;
+    const bool measureResult = measure(JsonDoc);
 
     // Power off the grove module
     Serial.println(TASK_NAME "Power off the grove module");
     GpsEnd();
     digitalWrite(PIN_VGROVE_ENABLE, HIGH);
 
-    // Print free size of storage
-    uint16_t freeSize;
-    if (!Storage::freeSize(&freeSize)) abort();
-    Serial.printf(TASK_NAME "Free size of storage: %d\n", freeSize);
+    if (measureResult) {
+      // Print free size of storage
+      uint16_t freeSize;
+      if (!Storage::freeSize(&freeSize)) abort();
+      Serial.printf(TASK_NAME "Free size of storage: %d\n", freeSize);
 
-    // Append data to storage
-    std::string str;
-    serializeJson(JsonDoc, str);
-    Serial.printf(TASK_NAME "Append %d bytes to storage %s\n", str.size(), str.c_str());
-    if (!Storage::write(str.data(), str.size())) Serial.println(TASK_NAME "ERROR: Failed to write to storage");
+      // Append data to storage
+      std::string str;
+      serializeJson(JsonDoc, str);
+      Serial.printf(TASK_NAME "Append %d bytes to storage %s\n", str.size(), str.c_str());
+      if (!Storage::write(str.data(), str.size())) Serial.println(TASK_NAME "ERROR: Failed to write to storage");
+    }
 
     delay(INTERVAL - POLLING_GPS);
   }
 }
 
 static bool measure(JsonDocument& doc) {
+  const auto now = time(nullptr);
+  if (now < 0) return false;
+
+  doc["time"] = time(nullptr);
   doc["uptime"] = millis() / 1000;
 
   int index[5];

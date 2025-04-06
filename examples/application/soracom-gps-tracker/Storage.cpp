@@ -190,11 +190,6 @@ bool Storage::clear(void) {
   if (!SetWriteIndex(0)) return false;
   if (!SetReadIndex(0)) return false;
 
-  uint8_t data = 0;
-  for (uint16_t i = 0; i < DataMaxSize(); ++i) {
-    if (!SetData(i, &data, 1)) return false;
-  }
-
   return true;
 }
 
@@ -212,6 +207,7 @@ bool Storage::readMarker(uint32_t *marker) {
 }
 
 bool Storage::freeSize(uint16_t *size) {
+  assert(size);
   std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
 
   uint16_t writeIndex;
@@ -257,7 +253,7 @@ bool Storage::peek(void *data, uint16_t dataSize, uint16_t *readDataSize) {
 
   if (!GetData(readIndex, readDataSize, sizeof(*readDataSize))) return false;
   if (*readDataSize <= 0) return false;
-  if (data && dataSize >= 1 && *readDataSize >= 1) {
+  if (data && dataSize >= 1) {
     if (*readDataSize > dataSize) return false;
     if (!GetData((readIndex + 2) % DataMaxSize(), data, *readDataSize)) return false;
   }
@@ -267,25 +263,63 @@ bool Storage::peek(void *data, uint16_t dataSize, uint16_t *readDataSize) {
 
 bool Storage::read(void *data, uint16_t dataSize, uint16_t *readDataSize) {
   assert((data && dataSize >= 1) || (!data && dataSize == 0));
-  assert(readDataSize);
   std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
 
   uint16_t writeIndex;
   uint16_t readIndex;
   if (!GetIndex(&writeIndex, &readIndex)) return false;
   if (readIndex == writeIndex) {
-    *readDataSize = 0;
+    if (readDataSize) *readDataSize = 0;
     return true;
   }
 
-  if (!GetData(readIndex, readDataSize, sizeof(*readDataSize))) return false;
-  if (*readDataSize <= 0) return false;
-  if (data && dataSize >= 1 && *readDataSize >= 1) {
-    if (*readDataSize > dataSize) return false;
-    if (!GetData((readIndex + 2) % DataMaxSize(), data, *readDataSize)) return false;
+  uint16_t readDataSizeInternal;
+  if (!GetData(readIndex, &readDataSizeInternal, sizeof(readDataSizeInternal))) return false;
+  if (readDataSizeInternal <= 0) return false;
+  if (data && dataSize >= 1) {
+    if (readDataSizeInternal > dataSize) return false;
+    if (!GetData((readIndex + 2) % DataMaxSize(), data, readDataSizeInternal)) return false;
   }
 
-  if (!SetReadIndex((readIndex + 2 + *readDataSize) % DataMaxSize())) return false;
+  if (!SetReadIndex((readIndex + 2 + readDataSizeInternal) % DataMaxSize())) return false;
+
+  if (readDataSize) *readDataSize = readDataSizeInternal;
+  return true;
+}
+
+bool Storage::readBlockInfo(std::vector<Storage::BlockInfo> *BlockInfoList, size_t maxSize) {
+  assert(BlockInfoList);
+  std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
+
+  uint16_t writeIndex;
+  uint16_t readIndex;
+  if (!GetIndex(&writeIndex, &readIndex)) return false;
+
+  BlockInfoList->clear();
+  while (maxSize-- && readIndex != writeIndex) {
+    uint16_t readDataSize;
+    if (!GetData(readIndex, &readDataSize, sizeof(readDataSize))) return false;
+    if (readDataSize <= 0) return false;
+
+    BlockInfoList->push_back({ readIndex, readDataSize });
+
+    readIndex = (readIndex + 2 + readDataSize) % DataMaxSize();
+  }
+
+  return true;
+}
+
+bool Storage::peek(const Storage::BlockInfo &blockInfo, void *data, uint16_t dataSize, uint16_t *readDataSize) {
+  assert((data && dataSize >= 1) || (!data && dataSize == 0));
+  assert(readDataSize);
+  std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
+
+  *readDataSize = blockInfo.size;
+  if (*readDataSize <= 0) return false;
+  if (data && dataSize >= 1) {
+    if (*readDataSize > dataSize) return false;
+    if (!GetData((blockInfo.index + 2) % DataMaxSize(), data, *readDataSize)) return false;
+  }
 
   return true;
 }

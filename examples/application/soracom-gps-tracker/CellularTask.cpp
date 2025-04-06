@@ -27,6 +27,7 @@ static constexpr int PSM_PERIOD = 60 * 17;                // [s]
 static constexpr int PSM_ACTIVE = 2;                      // [s]
 static constexpr int PSM_POWER_DOWN_TIMEOUT = 1000 * 60;  // [ms]
 static constexpr int POWER_OFF_DELAY_TIME = 1000 * 3;     // [ms]
+static constexpr int BATCH_SIZE = 6;
 
 static bool send(const void* data, size_t dataSize);
 
@@ -42,11 +43,12 @@ void CellularTaskBegin(void) {
 
 void CellularTaskFunction(void* param) {
   while (true) {
-    // Peek data from storage
+    // Check if data is in storage
+    Serial.println(TASK_NAME "Check if data is in storage");
     uint16_t readDataSize;
     if (!Storage::peek(nullptr, 0, &readDataSize)) abort();
-    Serial.printf(TASK_NAME "Peek %d bytes from storage\n", readDataSize);
-    if (readDataSize >= 1) {
+
+    if (time(nullptr) == 0 || readDataSize >= 1) {
       // Power on the cellular module
       Serial.println(TASK_NAME "Power on the cellular module");
       if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
@@ -58,25 +60,47 @@ void CellularTaskFunction(void* param) {
       if (WioCellular.setPsm(0, PSM_PERIOD, PSM_ACTIVE) != WioCellularResult::Ok) abort();
 #endif  // USE_PSM
 
+      // Update clock
+      Serial.println(TASK_NAME "Update clock");
+      time_t t;
+      if (WioCellular.getClock(&t, nullptr) != WioCellularResult::Ok) abort();
+      setTime(&t);
+
       // Send
       if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
         while (true) {
-          // Peek data from storage
-          uint16_t readDataSize;
-          if (!Storage::peek(nullptr, 0, &readDataSize)) abort();
-          Serial.printf(TASK_NAME "Peek %d bytes from storage\n", readDataSize);
-          if (readDataSize == 0) break;
-          std::unique_ptr<uint8_t[]> data = std::make_unique<uint8_t[]>(readDataSize + 1);
-          if (!Storage::peek(data.get(), readDataSize, &readDataSize)) abort();
-          data[readDataSize + 1] = '\0';
-          Serial.printf(TASK_NAME "Peeked %s\n", data.get());
+          // Read block info from storage
+          std::vector<Storage::BlockInfo> blocks;
+          if (!Storage::readBlockInfo(&blocks, BATCH_SIZE)) abort();
+          Serial.printf(TASK_NAME "Read %d block info from storage\n", blocks.size());
+          if (blocks.size() <= 0) break;
+
+          std::string mergedData = "{\"data\":[";
+          std::vector<char> data;
+          for (int i = 0; i < blocks.size(); ++i) {
+            const auto& block = blocks[i];
+
+            // Peek data from storage
+            data.resize(block.size + 1);
+            if (!Storage::peek(block, data.data(), data.size() - 1, &readDataSize)) abort();
+            if (readDataSize != data.size() - 1) abort();
+            data[data.size() - 1] = '\0';
+            Serial.printf(TASK_NAME "Peek %d bytes from storage %s\n", data.size() - 1, data.data());
+
+            if (i >= 1) mergedData += ',';
+            mergedData.append(data.data(), data.size() - 1);
+          }
+          mergedData += "]}";
 
           // Send data
-          if (!send(data.get(), readDataSize)) break;
+          Serial.printf(TASK_NAME "Sending %s\n", mergedData.c_str());
+          if (!send(mergedData.data(), mergedData.size())) break;
 
           // Processed data from storage
-          if (!Storage::read(nullptr, 0, &readDataSize)) abort();
-          Serial.printf(TASK_NAME "Processed %d bytes from storage\n", readDataSize);
+          for (int i = 0; i < blocks.size(); ++i) {
+            if (!Storage::read(nullptr, 0, nullptr)) abort();
+            Serial.println(TASK_NAME "Processed data from storage");
+          }
         }
       }
 
@@ -142,16 +166,15 @@ static bool send(const void* data, size_t dataSize) {
     }
 
     Serial.println(TASK_NAME "Receiving");
-    static uint8_t recvData[WioCellular.RECEIVE_SOCKET_SIZE_MAX];
+    static uint8_t recvData[WioCellular.RECEIVE_SOCKET_SIZE_MAX + 1];
     size_t recvSize;
-    if (!client.receive(recvData, sizeof(recvData), &recvSize, RECEIVE_TIMEOUT)) {
+    if (!client.receive(recvData, sizeof(recvData) - 1, &recvSize, RECEIVE_TIMEOUT)) {
       Serial.printf(TASK_NAME "ERROR: Failed to receive socket %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
+    recvData[recvSize] = '\0';
 
-    Serial.print(TASK_NAME "Received ");
-    printData(Serial, recvData, recvSize);
-    Serial.println();
+    Serial.printf(TASK_NAME "Received %s\n", recvData);
   }
 
   return true;
