@@ -119,7 +119,7 @@ $(function() {
 <tr class="memitem:a93f24485b6b6b400242d6b38fae443fd" id="r_a93f24485b6b6b400242d6b38fae443fd"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a93f24485b6b6b400242d6b38fae443fd">RECEIVE_SOCKET_SIZE_MAX</a> = 1500</td></tr>
 <tr class="memdesc:a93f24485b6b6b400242d6b38fae443fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">ソケットから受信する最大バイト数  <br /></td></tr>
 <tr class="separator:a93f24485b6b6b400242d6b38fae443fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0020fd8e2163c93c0202d3d4acf9d4ed" id="r_a0020fd8e2163c93c0202d3d4acf9d4ed"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a0020fd8e2163c93c0202d3d4acf9d4ed">SEND_SOCKET_SIZE_MAX</a> = 512</td></tr>
+<tr class="memitem:a0020fd8e2163c93c0202d3d4acf9d4ed" id="r_a0020fd8e2163c93c0202d3d4acf9d4ed"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a0020fd8e2163c93c0202d3d4acf9d4ed">SEND_SOCKET_SIZE_MAX</a> = 1460</td></tr>
 <tr class="memdesc:a0020fd8e2163c93c0202d3d4acf9d4ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">ソケットへ送信する最大バイト数  <br /></td></tr>
 <tr class="separator:a0020fd8e2163c93c0202d3d4acf9d4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -456,7 +456,7 @@ template&lt;typename MODULE &gt; </div>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">connectId</td><td>接続ID。 </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>データ。nullptrを指定すると送信しません。 </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ。0を指定すると送信しません。最大サイズは512です。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ。0を指定すると送信しません。最大サイズは1460です。 </td></tr>
   </table>
   </dd>
 </dl>
@@ -464,7 +464,7 @@ template&lt;typename MODULE &gt; </div>
 <p>ソケットへ送信します。</p>
 <blockquote class="doxtable">
 <p>&zwj;BG770A-GL&amp;BG95xA-GL TCP/IP Application Note <br  />
-2.3.12. AT+QISENDEX Send Hex String Data </p>
+2.3.8. AT+QISEND Send Data </p>
 </blockquote>
 
 </div>
@@ -508,7 +508,7 @@ template&lt;typename MODULE &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html">wiocellular::module::bg770a::commands::Bg770aTcpipCommands2</a>&lt; MODULE &gt;::SEND_SOCKET_SIZE_MAX = 512</td>
+          <td class="memname">constexpr size_t <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html">wiocellular::module::bg770a::commands::Bg770aTcpipCommands2</a>&lt; MODULE &gt;::SEND_SOCKET_SIZE_MAX = 1460</td>
         </tr>
       </table>
   </td>
