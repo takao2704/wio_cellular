@@ -44,7 +44,7 @@ namespace wiocellular
                      * @~Japanese
                      * @brief ソケットへ送信する最大バイト数
                      */
-                    static constexpr size_t SEND_SOCKET_SIZE_MAX = 512;
+                    static constexpr size_t SEND_SOCKET_SIZE_MAX = 1460;
 
                 public:
                     /**
@@ -227,13 +227,13 @@ namespace wiocellular
                      *
                      * @param [in] connectId 接続ID。
                      * @param [in] data データ。nullptrを指定すると送信しません。
-                     * @param [in] dataSize データサイズ。0を指定すると送信しません。最大サイズは512です。
+                     * @param [in] dataSize データサイズ。0を指定すると送信しません。最大サイズは1460です。
                      * @return 実行結果。
                      *
                      * ソケットへ送信します。
                      *
                      * > BG770A-GL&BG95xA-GL TCP/IP Application Note @n
-                     * > 2.3.12. AT+QISENDEX Send Hex String Data
+                     * > 2.3.8. AT+QISEND Send Data
                      */
                     WioCellularResult sendSocket2(int connectId, const void *data, size_t dataSize)
                     {
@@ -243,20 +243,34 @@ namespace wiocellular
                         {
                             return WioCellularResult::Ok;
                         }
-                        if (dataSize > SEND_SOCKET_SIZE_MAX)
-                        {
-                            return WioCellularResult::ArgumentOutOfRange;
-                        }
 
-                        std::unique_ptr<char[]> dataHex = std::make_unique<char[]>(dataSize * 2 + 1);
-                        for (size_t i = 0; i < dataSize; ++i)
-                        {
-                            dataHex[i * 2 + 0] = "0123456789ABCDEF"[static_cast<const uint8_t *>(data)[i] >> 4];
-                            dataHex[i * 2 + 1] = "0123456789ABCDEF"[static_cast<const uint8_t *>(data)[i] & 0x0f];
-                        }
-                        dataHex[dataSize * 2] = '\0';
-
-                        return static_cast<MODULE &>(*this).sendCommand(internal::stringFormat("AT+QISENDEX=%d,\"%s\"", connectId, dataHex.get()), nullptr, 120000);
+                        return static_cast<MODULE &>(*this).sendCommand(
+                            internal::stringFormat("AT+QISEND=%d,%d", connectId, dataSize), [this, data, dataSize, connectId](const std::string &response) -> bool
+                            {
+                                if (response == "> ")
+                                {
+                                    static_cast<MODULE &>(*this).writeBinary(data, 1);
+                                    if (!static_cast<MODULE &>(*this).readBinaryDiscard(1, 10))
+                                    {
+                                        printf("---> Binary echo not coming (connectId=%d)\n", connectId);
+                                        delay(100);
+                                        static_cast<MODULE &>(*this).writeBinary(data, 1);
+                                        if (!static_cast<MODULE &>(*this).readBinaryDiscard(1, 10))
+                                        {
+                                            printf("---> Binary echo not coming (connectId=%d)\n", connectId);
+                                            return true;
+                                        }
+                                    }
+                                    
+                                    if (dataSize >= 2)
+                                    {
+                                        static_cast<MODULE &>(*this).writeBinary(reinterpret_cast<const uint8_t*>(data) + 1, dataSize - 1);
+                                        static_cast<MODULE &>(*this).readBinaryDiscard(dataSize - 1, static_cast<MODULE &>(*this).commandEchoTimeout);
+                                    }
+                                    return true;
+                                }
+                                return false; },
+                            120000);
                     }
 
                     /**
