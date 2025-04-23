@@ -181,7 +181,8 @@ namespace wiocellular
                         if (contexts)
                             contexts->clear();
 
-                        return static_cast<MODULE &>(*this).queryCommand(
+                        Serial.printf("---> %lu Execute getPdpContext\n", millis());
+                        const auto result = static_cast<MODULE &>(*this).queryCommand(
                             "AT+CGDCONT?", [contexts](const std::string &response) -> bool
                             {
                                 std::string responseParameter;
@@ -194,6 +195,23 @@ namespace wiocellular
                                 }
                                 return false; },
                             300);
+                        Serial.printf("---> %lu Finish getPdpContext\n", millis());
+
+                        if (result != WioCellularResult::Ok)
+                        {
+                            Serial.printf("---> %lu ERROR on getPdpContext %s\n", millis(), WioCellularResultToString(result));
+                            Serial.printf("---> %lu Enter doWorkUntil(60000)\n", millis());
+                            static_cast<MODULE &>(*this).doWorkUntil(60000);
+                            Serial.printf("---> %lu Leave doWorkUntil(60000)\n", millis());
+                            for (int i = 0; i < 3; i++)
+                            {
+                                Serial.printf("---> %lu Execute 'AT'\n", millis());
+                                static_cast<MODULE &>(*this).executeCommand("AT", 10000);
+                                Serial.printf("---> %lu Done 'AT'\n", millis());
+                            }
+                        }
+
+                        return result;
                     }
 
                     /**
