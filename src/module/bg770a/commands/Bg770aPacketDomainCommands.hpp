@@ -200,6 +200,12 @@ namespace wiocellular
                         if (result != WioCellularResult::Ok)
                         {
                             Serial.printf("---> %lu ERROR on getPdpContext %s\n", millis(), WioCellularResultToString(result));
+                            for (int i = 0; i < 3; i++)
+                            {
+                                Serial.printf("---> %lu Execute 'AT'\n", millis());
+                                static_cast<MODULE &>(*this).executeCommand("AT", 10000);
+                                Serial.printf("---> %lu Done 'AT'\n", millis());
+                            }
                             Serial.printf("---> %lu Enter doWorkUntil(60000)\n", millis());
                             static_cast<MODULE &>(*this).doWorkUntil(60000);
                             Serial.printf("---> %lu Leave doWorkUntil(60000)\n", millis());
