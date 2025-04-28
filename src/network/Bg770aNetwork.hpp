@@ -182,6 +182,7 @@ namespace wiocellular
         private:
             int EpsRegistrationStatus_;
             std::unique_ptr<WioCellularModule::UrcHandler> UrcHandler_;
+            bool BeginFirstCall_;
 
         private:
             void defaultAbortHandler(const char *file, int line)
@@ -206,7 +207,8 @@ namespace wiocellular
                 : abortHandler{nullptr},
                   config{SearchAccessTechnology::NOSET, "", "", 1, ""},
                   EpsRegistrationStatus_{-1},
-                  UrcHandler_{nullptr}
+                  UrcHandler_{nullptr},
+                  BeginFirstCall_{true}
             {
             }
 
@@ -228,20 +230,22 @@ namespace wiocellular
 
                 // Check PDP context
                 bool setPdpContext = false;
-                if (!config.apn.empty())
+                if (BeginFirstCall_)
                 {
-                    std::vector<WioCellularModule::PdpContext> pdpContexts;
-                    if ((result = WioCellular.getPdpContext(&pdpContexts)) != WioCellularResult::Ok)
+                    if (!config.apn.empty())
                     {
-                        abortHandler(__FILE__, __LINE__);
-                    }
-                    if (std::find_if(std::cbegin(pdpContexts), std::cend(pdpContexts), [&apn = config.apn](const WioCellularModule::PdpContext &pdpContext)
-                                     { return pdpContext.apn == apn; }) == std::cend(pdpContexts))
-                    {
-                        setPdpContext = true;
+                        std::vector<WioCellularModule::PdpContext> pdpContexts;
+                        if ((result = WioCellular.getPdpContext(&pdpContexts)) != WioCellularResult::Ok)
+                        {
+                            abortHandler(__FILE__, __LINE__);
+                        }
+                        if (std::find_if(std::cbegin(pdpContexts), std::cend(pdpContexts), [&apn = config.apn](const WioCellularModule::PdpContext &pdpContext)
+                                         { return pdpContext.apn == apn; }) == std::cend(pdpContexts))
+                        {
+                            setPdpContext = true;
+                        }
                     }
                 }
-
                 // Check search access technology
                 bool setSearchAccessTechnology = false;
                 if (config.searchAccessTechnology != SearchAccessTechnology::NOSET)
@@ -401,6 +405,8 @@ namespace wiocellular
                         }
                     }
                 }
+
+                BeginFirstCall_ = false;
             }
 
             /**
