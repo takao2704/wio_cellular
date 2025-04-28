@@ -254,6 +254,51 @@ namespace wiocellular
 
                     /**
                      * @~Japanese
+                     * @brief PDPアドレスを取得
+                     *
+                     * @param [in] cid PDPコンテキストID。
+                     * @param [out] address PDPアドレス。nullptrを指定すると値を代入しません。
+                     * @return 実行結果。
+                     *
+                     * PDPアドレスを取得します。
+                     *
+                     * > BG77xA-GL&BG95xA-GL AT Commands Manual @n
+                     * > 8.4. AT+CGPADDR Show PDP Address(es)
+                     */
+                    WioCellularResult getPdpAddress(int cid, std::string *address)
+                    {
+                        assert(1 <= cid && cid <= 5);
+
+                        if (address)
+                            address->clear();
+
+                        return static_cast<MODULE &>(*this).queryCommand(
+                            internal::stringFormat("AT+CGPADDR=%d", cid), [cid, address](const std::string &response) -> bool
+                            {
+                                std::string responseParameter;
+                                if (internal::stringStartsWith(response, "+CGPADDR: ", &responseParameter))
+                                {
+                                    at_client::AtParameterParser parser{responseParameter};
+                                    switch (parser.size())
+                                    {
+                                    case 1:
+                                        if (std::stoi(parser[0]) != cid) return false;
+                                        if (address) address->clear();
+                                        return true;
+                                    case 2:
+                                        if (std::stoi(parser[0]) != cid) return false;
+                                        if (address) *address = parser[1];
+                                        return true;
+                                    default:
+                                        return false;
+                                    }
+                                }
+                                return false; },
+                            300);
+                    }
+
+                    /**
+                     * @~Japanese
                      * @brief EPSネットワーク登録ステータスのURC通知を設定
                      *
                      * @param [in] n URC通知設定。
