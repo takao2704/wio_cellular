@@ -353,16 +353,34 @@ namespace wiocellular
                     WioCellularResult result;
 
                     // Enable Hardware Flow Control
-                    if ((result = executeCommand("AT+IFC=2,2", 300)) != WioCellularResult::Ok)
+                    bool setIfc = true;
+                    if ((result = queryCommand(
+                             "AT+IFC?", [&setIfc](const std::string &response) -> bool
+                             {
+                                std::string responseParameter;
+                                if (internal::stringStartsWith(response, "+IFC: ", &responseParameter))
+                                {
+                                    at_client::AtParameterParser parser{responseParameter};
+                                    if (parser.size() != 2) return false;
+                                    if (std::stoi(parser[0]) == 2 && std::stoi(parser[1]) == 2)
+                                    {
+                                        setIfc = false;
+                                    }
+                                    return true;
+                                }
+                                return false; },
+                             300)) != WioCellularResult::Ok)
                     {
                         return result;
                     }
-
-                    // // Enable sleep mode
-                    // if ((result = executeCommand("AT+QSCLK=2", 300)) != WioCellularResult::Ok)
-                    // {
-                    //     return result;
-                    // }
+                    if (setIfc)
+                    {
+                        if ((result = executeCommand("AT+IFC=2,2", 300)) != WioCellularResult::Ok)
+                        {
+                            return result;
+                        }
+                        at_client::AtClient<Bg770a<INTERFACE>>::doWorkUntil(2200);
+                    }
 
                     return WioCellularResult::Ok;
                 }
