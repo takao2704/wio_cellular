@@ -358,11 +358,11 @@ namespace wiocellular
                         return result;
                     }
 
-                    // Enable sleep mode
-                    if ((result = executeCommand("AT+QSCLK=2", 300)) != WioCellularResult::Ok)
-                    {
-                        return result;
-                    }
+                    // // Enable sleep mode
+                    // if ((result = executeCommand("AT+QSCLK=2", 300)) != WioCellularResult::Ok)
+                    // {
+                    //     return result;
+                    // }
 
                     return WioCellularResult::Ok;
                 }
