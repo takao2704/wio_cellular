@@ -490,14 +490,20 @@ namespace wiocellular
 
                 WioCellularResult result;
 
-                // Get PDP address
-                std::string address;
-                if (WioCellular.getPdpAddress(config.pdpContextId, &address) != WioCellularResult::Ok)
+                // Get PDP contexts
+                std::vector<WioCellularModule::PdpContext> pdpContexts;
+                if ((result = WioCellular.getPdpContext(&pdpContexts)) != WioCellularResult::Ok)
                 {
                     abortHandler(__FILE__, __LINE__);
                 }
 
-                return !address.empty();
+                // Get specific PDP context
+                const auto pdpContext = std::find_if(pdpContexts.begin(), pdpContexts.end(), [this](const WioCellularModule::PdpContext &pdpContext)
+                                                     { return pdpContext.cid == config.pdpContextId; });
+                if (pdpContext == pdpContexts.end())
+                    return false;
+
+                return pdpContext->pdpAddr != "0.0.0.0";
             }
 
             /**
