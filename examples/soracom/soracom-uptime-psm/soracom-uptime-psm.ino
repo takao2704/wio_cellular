@@ -101,6 +101,8 @@ void loop(void) {
   if (!powerDown) {
     WioNetwork.end();
     if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
+  } else {
+    WioNetwork.end(false);
   }
 
   digitalWrite(LED_BUILTIN, LOW);

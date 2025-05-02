@@ -123,6 +123,8 @@ void CellularTaskFunction(void* param) {
       if (!powerDown) {
         WioNetwork.end();
         if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
+      } else {
+        WioNetwork.end(false);
       }
 #else
       WioCellular.doWorkUntil(POWER_OFF_DELAY_TIME);
