@@ -355,9 +355,19 @@ namespace wiocellular
                     WioCellularResult result;
 
                     // Enable Hardware Flow Control
-                    if ((result = executeCommand("AT+IFC=2,2", 300)) != WioCellularResult::Ok)
+                    int dte;
+                    int dce;
+                    if ((result = commands::Bg770aSerialInterfaceControlCommands<Bg770a<INTERFACE>>::getFlowControl(&dte, &dce)) != WioCellularResult::Ok)
                     {
                         return result;
+                    }
+                    if (dte != 2 || dce != 2)
+                    {
+                        if ((result = commands::Bg770aSerialInterfaceControlCommands<Bg770a<INTERFACE>>::setFlowControl(2, 2)) != WioCellularResult::Ok)
+                        {
+                            return result;
+                        }
+                        at_client::AtClient<Bg770a<INTERFACE>>::doWorkUntil(2200);
                     }
 
                     // Enable sleep mode

@@ -100,10 +100,11 @@ namespace wiocellular
                         }
 
                         // Enable Hardware Flow Control
-                        if ((result = static_cast<MODULE &>(*this).executeCommand("AT+IFC=2,2", 300)) != WioCellularResult::Ok)
+                        if ((result = static_cast<MODULE &>(*this).setFlowControl(2, 2)) != WioCellularResult::Ok)
                         {
                             return result;
                         }
+                        static_cast<MODULE &>(*this).doWorkUntil(2200);
 
                         return WioCellularResult::Ok;
                     }
