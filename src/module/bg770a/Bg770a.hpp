@@ -370,12 +370,6 @@ namespace wiocellular
                         at_client::AtClient<Bg770a<INTERFACE>>::doWorkUntil(2200);
                     }
 
-                    // Enable sleep mode
-                    if ((result = executeCommand("AT+QSCLK=2", 300)) != WioCellularResult::Ok)
-                    {
-                        return result;
-                    }
-
                     return WioCellularResult::Ok;
                 }
 
