@@ -85,6 +85,50 @@ namespace wiocellular
                                 return false; },
                             300);
                     }
+
+                    /**
+                     * @~Japanese
+                     * @brief バッテリー充電状態を取得
+                     *
+                     * @param [out] bcs バッテリー充電状態。
+                     *   @arg -1: 無し
+                     *   @arg 0: 未充電
+                     *   @arg 1: 充電中
+                     *   @arg 2: 充電完了
+                     * @param [out] bcl バッテリー充電量[%]。無い場合は-1を返します。
+                     * @param [out] bv バッテリー電圧[mV]。無い場合は-1を返します。
+                     * @return 実行結果。
+                     *
+                     * バッテリー充電状態を取得します。
+                     *
+                     * > BG77xA-GL&BG95xA-GL AT Commands Manual @n
+                     * > 9.3. AT+CBC Battery Charge
+                     */
+                    WioCellularResult getBatteryChargeState(int *bcs, int *bcl, int *bv)
+                    {
+                        if (bcs)
+                            *bcs = -1;
+                        if (bcl)
+                            *bcl = -1;
+                        if (bv)
+                            *bv = -1;
+
+                        return static_cast<MODULE &>(*this).queryCommand(
+                            "AT+CBC", [bcs, bcl, bv](const std::string &response) -> bool
+                            {
+                                std::string responseParameter;
+                                if (internal::stringStartsWith(response, "+CBC: ", &responseParameter))
+                                {
+                                    at_client::AtParameterParser parser{responseParameter};
+                                    if (parser.size() != 3) return false;
+                                    if (bcs) *bcs = std::stoi(parser[0]);
+                                    if (bcl) *bcl = std::stoi(parser[1]);
+                                    if (bv) *bv = std::stoi(parser[2]);
+                                    return true;
+                                }
+                                return false; },
+                            300);
+                    }
                 };
 
             }

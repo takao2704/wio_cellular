@@ -15,6 +15,7 @@
 #include "commands/Bg770aTcpipCommands.hpp"
 #include "commands/Bg770aTcpipCommands2.hpp"
 #include "commands/Bg770aHardwareRelatedCommands.hpp"
+#include "commands/Bg770aSerialInterfaceControlCommands.hpp"
 
 #include "module/at_client/AtClient.hpp"
 #include "internal/Misc.hpp"
@@ -44,7 +45,8 @@ namespace wiocellular
                            public commands::Bg770aSimRelatedCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aTcpipCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aTcpipCommands2<Bg770a<INTERFACE>>,
-                           public commands::Bg770aHardwareRelatedCommands<Bg770a<INTERFACE>>
+                           public commands::Bg770aHardwareRelatedCommands<Bg770a<INTERFACE>>,
+                           public commands::Bg770aSerialInterfaceControlCommands<Bg770a<INTERFACE>>
             {
                 friend class at_client::AtClient<Bg770a<INTERFACE>>;
 
