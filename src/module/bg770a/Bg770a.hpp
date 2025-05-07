@@ -113,12 +113,13 @@ namespace wiocellular
                 WioCellularResult executeCommand(const std::string &command, int timeout)
                 {
                     printf("CMD> %s\n", command.c_str());
-                    const auto start = millis();
+                    auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
                     printf("ECO> %s ... %lu[ms]\n", command.c_str(), millis() - start);
+                    start = millis();
 
                     std::string response;
                     while (true)
@@ -131,12 +132,12 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "OK")
                         {
-                            printf("FRC> %s\n", response.c_str());
+                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || internal::stringStartsWith(response, "+CME ERROR: ") || internal::stringStartsWith(response, "+CMS ERROR: "))
                         {
-                            printf("FRC> %s\n", response.c_str());
+                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
@@ -163,12 +164,13 @@ namespace wiocellular
                 WioCellularResult queryCommand(const std::string &command, const std::function<bool(const std::string &response)> &informationTextHandler, int timeout)
                 {
                     printf("CMD> %s\n", command.c_str());
-                    const auto start = millis();
+                    auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
                     printf("ECO> %s ... %lu[ms]\n", command.c_str(), millis() - start);
+                    start = millis();
 
                     std::string response;
                     while (true)
@@ -181,12 +183,12 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "OK")
                         {
-                            printf("FRC> %s\n", response.c_str());
+                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || internal::stringStartsWith(response, "+CME ERROR: ") || internal::stringStartsWith(response, "+CMS ERROR: "))
                         {
-                            printf("FRC> %s\n", response.c_str());
+                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
@@ -220,12 +222,13 @@ namespace wiocellular
                 WioCellularResult sendCommand(const std::string &command, std::function<bool(const std::string &response)> informationTextHandler, int timeout)
                 {
                     printf("CMD> %s\n", command.c_str());
-                    const auto start = millis();
+                    auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
                     printf("ECO> %s ... %lu[ms]\n", command.c_str(), millis() - start);
+                    start = millis();
 
                     std::string response;
                     while (true)
@@ -240,12 +243,12 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "SEND OK")
                         {
-                            printf("FRC> %s\n", response.c_str());
+                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || response == "SEND FAIL")
                         {
-                            printf("FRC> %s\n", response.c_str());
+                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
