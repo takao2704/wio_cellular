@@ -24,6 +24,7 @@ void setup(void) {
 
   WioCellular.begin();
   digitalWrite(PIN_VGROVE_ENABLE, LOW);
+  delay(2 + 2);
 
   digitalWrite(BUZZER_PIN, LOW);
   pinMode(BUZZER_PIN, OUTPUT);

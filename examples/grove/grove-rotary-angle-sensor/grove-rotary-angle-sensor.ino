@@ -24,6 +24,7 @@ void setup(void) {
 
   WioCellular.begin();
   digitalWrite(PIN_VGROVE_ENABLE, LOW);
+  delay(2 + 2);
 
   analogReadResolution(14);
 }
