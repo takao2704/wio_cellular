@@ -90,6 +90,9 @@ $(function() {
 <tr class="memitem:ac0b86467d1fbc2aad984effd18064efe" id="r_ac0b86467d1fbc2aad984effd18064efe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aHardwareRelatedCommands.html#ac0b86467d1fbc2aad984effd18064efe">getClock</a> (time_t *t, int *diff)</td></tr>
 <tr class="memdesc:ac0b86467d1fbc2aad984effd18064efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">日時を取得  <br /></td></tr>
 <tr class="separator:ac0b86467d1fbc2aad984effd18064efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe113d3350f7345cf46a2b0ab1daf155" id="r_afe113d3350f7345cf46a2b0ab1daf155"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aHardwareRelatedCommands.html#afe113d3350f7345cf46a2b0ab1daf155">getBatteryChargeState</a> (int *bcs, int *bcl, int *bv)</td></tr>
+<tr class="memdesc:afe113d3350f7345cf46a2b0ab1daf155"><td class="mdescLeft">&#160;</td><td class="mdescRight">バッテリー充電状態を取得  <br /></td></tr>
+<tr class="separator:afe113d3350f7345cf46a2b0ab1daf155"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">詳解</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename MODULE&gt;<br />
@@ -102,6 +105,72 @@ class wiocellular::module::bg770a::commands::Bg770aHardwareRelatedCommands&lt; M
 </dl>
 <p>Quectel BG770Aモジュールのハードウェア関連コマンドです。 </p>
 </div><h2 class="groupheader">関数詳解</h2>
+<a id="afe113d3350f7345cf46a2b0ab1daf155" name="afe113d3350f7345cf46a2b0ab1daf155"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe113d3350f7345cf46a2b0ab1daf155">&#9670;&#160;</a></span>getBatteryChargeState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a> <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aHardwareRelatedCommands.html">wiocellular::module::bg770a::commands::Bg770aHardwareRelatedCommands</a>&lt; MODULE &gt;::getBatteryChargeState </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>bcs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>bcl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>bv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>バッテリー充電状態を取得 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">bcs</td><td>バッテリー充電状態。 <ul>
+<li>-1: 無し </li>
+<li>0: 未充電 </li>
+<li>1: 充電中 </li>
+<li>2: 充電完了 </li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">bcl</td><td>バッテリー充電量[%]。無い場合は-1を返します。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">bv</td><td>バッテリー電圧[mV]。無い場合は-1を返します。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>実行結果。</dd></dl>
+<p>バッテリー充電状態を取得します。</p>
+<blockquote class="doxtable">
+<p>&zwj;BG77xA-GL&amp;BG95xA-GL AT Commands Manual <br  />
+9.3. AT+CBC Battery Charge </p>
+</blockquote>
+
+</div>
+</div>
 <a id="ac0b86467d1fbc2aad984effd18064efe" name="ac0b86467d1fbc2aad984effd18064efe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac0b86467d1fbc2aad984effd18064efe">&#9670;&#160;</a></span>getClock()</h2>
 
