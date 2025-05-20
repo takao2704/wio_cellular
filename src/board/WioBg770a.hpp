@@ -86,7 +86,7 @@ namespace wiocellular
              *
              * Groveの電源を投入します。
              */
-            [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, LOW) instead.")]]
+            [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON) instead.")]]
             void enableGrovePower(void)
             {
                 VgroveEnable_.write(0);
@@ -99,7 +99,7 @@ namespace wiocellular
              *
              * Groveの電源を開放します。
              */
-            [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, HIGH) instead.")]]
+            [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_OFF) instead.")]]
             void disableGrovePower(void)
             {
                 VgroveEnable_.write(1);

@@ -26,7 +26,7 @@ void setup(void) {
   Serial.println();
 
   WioCellular.begin();
-  digitalWrite(PIN_VGROVE_ENABLE, LOW);
+  digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON);
   delay(2 + 2);
 
   AccelInitialize();

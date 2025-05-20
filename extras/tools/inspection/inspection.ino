@@ -56,7 +56,7 @@ void setup(void) {
   Serial.println();
 
   Serial.print("Enable Grove ... ");
-  digitalWrite(PIN_VGROVE_ENABLE, LOW);
+  digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON);
   Serial.println("OK");
 
   Serial.println("Wait for USER button");
@@ -68,7 +68,7 @@ void setup(void) {
   }
 
   Serial.print("Disable Grove ... ");
-  digitalWrite(PIN_VGROVE_ENABLE, HIGH);
+  digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_OFF);
   Serial.println("OK");
 
   Serial.println("Wait for USER button");
