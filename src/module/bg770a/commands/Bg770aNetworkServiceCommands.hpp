@@ -94,6 +94,67 @@ namespace wiocellular
 
                     /**
                      * @~Japanese
+                     * @brief ネットワークオペレーターを設定
+                     *
+                     * @param [in] mode モード。
+                     *   @arg -1: 無し
+                     *   @arg 0: 自動
+                     *   @arg 1: 手動
+                     *   @arg 2: 登録解除
+                     *   @arg 3: オペレーターの書式を設定
+                     *   @arg 4: 手動->自動
+                     * @param [in] format オペレーターの書式。
+                     *   @arg -1: 無し
+                     *   @arg 0: 長い書式
+                     *   @arg 1: 短い書式
+                     *   @arg 2: 数字
+                     * @param [in] oper オペレーター名。
+                     * @param [in] act アクセステクノロジー。
+                     *   @arg -1: 無し
+                     *   @arg 7: eMTC
+                     *   @arg 9: NB-IoT
+                     * @return 実行結果。
+                     *
+                     * ネットワークオペレーターを設定します。
+                     *
+                     * > BG77xA-GL&BG95xA-GL AT Commands Manual @n
+                     * > 6.2. AT+COPS Operator Selection
+                     */
+                    WioCellularResult setOperator(int mode, int format, const std::string &oper, int act)
+                    {
+                        std::string commandParameter;
+
+                        if (mode != -1)
+                        {
+                            commandParameter += std::to_string(mode);
+                        }
+                        if (format != -1)
+                        {
+                            if (mode == -1)
+                                return WioCellularResult::InvalidOperation;
+
+                            commandParameter += "," + std::to_string(format);
+                        }
+                        if (!oper.empty())
+                        {
+                            if (mode == -1 || format == -1)
+                                return WioCellularResult::InvalidOperation;
+
+                            commandParameter += ",\"" + oper + "\"";
+                        }
+                        if (act != -1)
+                        {
+                            if (mode == -1 || format == -1 || oper.empty())
+                                return WioCellularResult::InvalidOperation;
+
+                            commandParameter += "," + std::to_string(act);
+                        }
+
+                        return static_cast<MODULE &>(*this).executeCommand("AT+COPS=" + commandParameter, 180000);
+                    }
+
+                    /**
+                     * @~Japanese
                      * @brief 受信信号強度を取得
                      *
                      * @param [out] rssi 受信信号強度。nullptrを指定すると値を代入しません。
