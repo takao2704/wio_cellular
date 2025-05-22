@@ -60,28 +60,6 @@ namespace wiocellular
 
             /**
              * @~Japanese
-             * @brief [DEPRECATED]セルラーモジュールの電源を投入
-             *
-             * セルラーモジュールの電源を投入します。
-             */
-            [[deprecated]]
-            void enableCellularPower(void)
-            {
-            }
-
-            /**
-             * @~Japanese
-             * @brief [DEPRECATED]セルラーモジュールの電源を開放
-             *
-             * セルラーモジュールの電源を開放します。
-             */
-            [[deprecated]]
-            void disableCellularPower(void)
-            {
-            }
-
-            /**
-             * @~Japanese
              * @brief [DEPRECATED]Groveの電源を投入
              *
              * Groveの電源を投入します。
