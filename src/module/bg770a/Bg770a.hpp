@@ -12,7 +12,6 @@
 #include "commands/Bg770aNetworkServiceCommands.hpp"
 #include "commands/Bg770aPacketDomainCommands.hpp"
 #include "commands/Bg770aSimRelatedCommands.hpp"
-#include "commands/Bg770aTcpipCommands.hpp"
 #include "commands/Bg770aTcpipCommands2.hpp"
 #include "commands/Bg770aHardwareRelatedCommands.hpp"
 #include "commands/Bg770aSerialInterfaceControlCommands.hpp"
@@ -43,7 +42,6 @@ namespace wiocellular
                            public commands::Bg770aNetworkServiceCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aPacketDomainCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aSimRelatedCommands<Bg770a<INTERFACE>>,
-                           public commands::Bg770aTcpipCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aTcpipCommands2<Bg770a<INTERFACE>>,
                            public commands::Bg770aHardwareRelatedCommands<Bg770a<INTERFACE>>,
                            public commands::Bg770aSerialInterfaceControlCommands<Bg770a<INTERFACE>>
