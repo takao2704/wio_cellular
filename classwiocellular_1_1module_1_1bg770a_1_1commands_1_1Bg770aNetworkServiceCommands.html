@@ -90,6 +90,9 @@ $(function() {
 <tr class="memitem:acd94de9cd1fcc86c0e19094e1619db9b" id="r_acd94de9cd1fcc86c0e19094e1619db9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#acd94de9cd1fcc86c0e19094e1619db9b">getOperator</a> (int *mode, int *format, std::string *oper, int *act)</td></tr>
 <tr class="memdesc:acd94de9cd1fcc86c0e19094e1619db9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ネットワークオペレーターを取得  <br /></td></tr>
 <tr class="separator:acd94de9cd1fcc86c0e19094e1619db9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02b46adb14459d21fcbb628de9d54080" id="r_a02b46adb14459d21fcbb628de9d54080"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#a02b46adb14459d21fcbb628de9d54080">setOperator</a> (int mode, int format, const std::string &amp;oper, int act)</td></tr>
+<tr class="memdesc:a02b46adb14459d21fcbb628de9d54080"><td class="mdescLeft">&#160;</td><td class="mdescRight">ネットワークオペレーターを設定  <br /></td></tr>
+<tr class="separator:a02b46adb14459d21fcbb628de9d54080"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fdcb296b860f156c630b920100913fd" id="r_a2fdcb296b860f156c630b920100913fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#a2fdcb296b860f156c630b920100913fd">getSignalQuality</a> (int *rssi, int *ber)</td></tr>
 <tr class="memdesc:a2fdcb296b860f156c630b920100913fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信信号強度を取得  <br /></td></tr>
 <tr class="separator:a2fdcb296b860f156c630b920100913fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -394,6 +397,92 @@ template&lt;typename MODULE &gt; </div>
 <blockquote class="doxtable">
 <p>&zwj;BG77xA-GL&amp;BG95xA-GL AT Commands Manual <br  />
 6.10. AT+CEDRXS e-I-DRX Setting </p>
+</blockquote>
+
+</div>
+</div>
+<a id="a02b46adb14459d21fcbb628de9d54080" name="a02b46adb14459d21fcbb628de9d54080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02b46adb14459d21fcbb628de9d54080">&#9670;&#160;</a></span>setOperator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a> <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html">wiocellular::module::bg770a::commands::Bg770aNetworkServiceCommands</a>&lt; MODULE &gt;::setOperator </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>format</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>oper</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>act</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ネットワークオペレーターを設定 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">mode</td><td>モード。 <ul>
+<li>-1: 無し </li>
+<li>0: 自動 </li>
+<li>1: 手動 </li>
+<li>2: 登録解除 </li>
+<li>3: オペレーターの書式を設定 </li>
+<li>4: 手動-&gt;自動 </li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">format</td><td>オペレーターの書式。 <ul>
+<li>-1: 無し </li>
+<li>0: 長い書式 </li>
+<li>1: 短い書式 </li>
+<li>2: 数字 </li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">oper</td><td>オペレーター名。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">act</td><td>アクセステクノロジー。 <ul>
+<li>-1: 無し </li>
+<li>7: eMTC </li>
+<li>9: NB-IoT </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>実行結果。</dd></dl>
+<p>ネットワークオペレーターを設定します。</p>
+<blockquote class="doxtable">
+<p>&zwj;BG77xA-GL&amp;BG95xA-GL AT Commands Manual <br  />
+6.2. AT+COPS Operator Selection </p>
 </blockquote>
 
 </div>

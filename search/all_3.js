@@ -12,8 +12,7 @@ var searchData=
   ['digitaloutputpin_3c_20constant_3a_3amain_5fdtr_5fpin_20_3e_9',['DigitalOutputPin&lt; CONSTANT::MAIN_DTR_PIN &gt;',['../classsuli3_1_1arduino_1_1DigitalOutputPin.html',1,'suli3::arduino']]],
   ['digitaloutputpin_3c_20constant_3a_3apwrkey_5fpin_20_3e_10',['DigitalOutputPin&lt; CONSTANT::PWRKEY_PIN &gt;',['../classsuli3_1_1arduino_1_1DigitalOutputPin.html',1,'suli3::arduino']]],
   ['digitaloutputpin_3c_20pin_5fvgrove_5fenable_20_3e_11',['DigitalOutputPin&lt; PIN_VGROVE_ENABLE &gt;',['../classsuli3_1_1arduino_1_1DigitalOutputPin.html',1,'suli3::arduino']]],
-  ['disablecellularpower_12',['disableCellularPower',['../classwiocellular_1_1board_1_1WioBg770a.html#acbb9b61bff182b20eacc6dd8bb2d69f7',1,'wiocellular::board::WioBg770a']]],
-  ['disablegrovepower_13',['disableGrovePower',['../classwiocellular_1_1board_1_1WioBg770a.html#a11509ab8aa9a37cf48bfe8924ed30a81',1,'wiocellular::board::WioBg770a']]],
-  ['dowork_14',['dowork',['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aed294dea60a4e7b6829053c396e1ede6',1,'wiocellular::module::at_client::AtClient::doWork(int timeout)'],['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a5a8fa15f321bd3976ef0c46043a076e2',1,'wiocellular::module::at_client::AtClient::doWork(int timeout, const std::function&lt; bool(void)&gt; &amp;completion)']]],
-  ['doworkuntil_15',['doWorkUntil',['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#acbf6b5ea52f9a4e8a638bf91993402c2',1,'wiocellular::module::at_client::AtClient']]]
+  ['disablegrovepower_12',['disableGrovePower',['../classwiocellular_1_1board_1_1WioBg770a.html#a11509ab8aa9a37cf48bfe8924ed30a81',1,'wiocellular::board::WioBg770a']]],
+  ['dowork_13',['dowork',['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#aed294dea60a4e7b6829053c396e1ede6',1,'wiocellular::module::at_client::AtClient::doWork(int timeout)'],['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#a5a8fa15f321bd3976ef0c46043a076e2',1,'wiocellular::module::at_client::AtClient::doWork(int timeout, const std::function&lt; bool(void)&gt; &amp;completion)']]],
+  ['doworkuntil_14',['doWorkUntil',['../classwiocellular_1_1module_1_1at__client_1_1AtClient.html#acbf6b5ea52f9a4e8a638bf91993402c2',1,'wiocellular::module::at_client::AtClient']]]
 ];

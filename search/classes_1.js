@@ -17,8 +17,6 @@ var searchData=
   ['bg770aserialinterfacecontrolcommands_3c_20bg770a_3c_20interface_20_3e_20_3e_14',['Bg770aSerialInterfaceControlCommands&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSerialInterfaceControlCommands.html',1,'wiocellular::module::bg770a::commands']]],
   ['bg770asimrelatedcommands_15',['Bg770aSimRelatedCommands',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html',1,'wiocellular::module::bg770a::commands']]],
   ['bg770asimrelatedcommands_3c_20bg770a_3c_20interface_20_3e_20_3e_16',['Bg770aSimRelatedCommands&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html',1,'wiocellular::module::bg770a::commands']]],
-  ['bg770atcpipcommands_17',['Bg770aTcpipCommands',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html',1,'wiocellular::module::bg770a::commands']]],
-  ['bg770atcpipcommands2_18',['Bg770aTcpipCommands2',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]],
-  ['bg770atcpipcommands2_3c_20bg770a_3c_20interface_20_3e_20_3e_19',['Bg770aTcpipCommands2&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]],
-  ['bg770atcpipcommands_3c_20bg770a_3c_20interface_20_3e_20_3e_20',['Bg770aTcpipCommands&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html',1,'wiocellular::module::bg770a::commands']]]
+  ['bg770atcpipcommands2_17',['Bg770aTcpipCommands2',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]],
+  ['bg770atcpipcommands2_3c_20bg770a_3c_20interface_20_3e_20_3e_18',['Bg770aTcpipCommands2&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]]
 ];

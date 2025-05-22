@@ -25,8 +25,6 @@ var searchData=
   ['getsiminitializationstatus_22',['getSimInitializationStatus',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html#adeef1e8a8f99cd9bcdd59c17d099d436',1,'wiocellular::module::bg770a::commands::Bg770aSimRelatedCommands']]],
   ['getsiminsertionstatus_23',['getSimInsertionStatus',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html#a908706c54216d2419d48e7fc0d536b4d',1,'wiocellular::module::bg770a::commands::Bg770aSimRelatedCommands']]],
   ['getsimstate_24',['getSimState',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html#a198e59e308a8258a5b61538b15860cce',1,'wiocellular::module::bg770a::commands::Bg770aSimRelatedCommands']]],
-  ['getsocketreceiveavailable_25',['getSocketReceiveAvailable',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#a14f530a821fb44847398666a30b017ee',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands']]],
-  ['getsocketstatus_26',['getSocketStatus',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a82a57458257d15214e37cf7d90812a7a',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2']]],
-  ['getsocketunusedconnectid_27',['getSocketUnusedConnectId',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands.html#a87edd975a3ecfc07b6763bdc4e4bcc57',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands']]],
-  ['getstate_28',['getState',['../classwiocellular_1_1client_1_1WioCellularTcpClient2.html#ace62d9496a967b8434d472ded484304d',1,'wiocellular::client::WioCellularTcpClient2']]]
+  ['getsocketstatus_25',['getSocketStatus',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a82a57458257d15214e37cf7d90812a7a',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2']]],
+  ['getstate_26',['getState',['../classwiocellular_1_1client_1_1WioCellularTcpClient2.html#ace62d9496a967b8434d472ded484304d',1,'wiocellular::client::WioCellularTcpClient2']]]
 ];

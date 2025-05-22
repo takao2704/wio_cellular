@@ -10,6 +10,5 @@ var searchData=
   ['bg770apacketdomaincommands_2ehpp_7',['Bg770aPacketDomainCommands.hpp',['../Bg770aPacketDomainCommands_8hpp.html',1,'']]],
   ['bg770aserialinterfacecontrolcommands_2ehpp_8',['Bg770aSerialInterfaceControlCommands.hpp',['../Bg770aSerialInterfaceControlCommands_8hpp.html',1,'']]],
   ['bg770asimrelatedcommands_2ehpp_9',['Bg770aSimRelatedCommands.hpp',['../Bg770aSimRelatedCommands_8hpp.html',1,'']]],
-  ['bg770atcpipcommands_2ehpp_10',['Bg770aTcpipCommands.hpp',['../Bg770aTcpipCommands_8hpp.html',1,'']]],
-  ['bg770atcpipcommands2_2ehpp_11',['Bg770aTcpipCommands2.hpp',['../Bg770aTcpipCommands2_8hpp.html',1,'']]]
+  ['bg770atcpipcommands2_2ehpp_10',['Bg770aTcpipCommands2.hpp',['../Bg770aTcpipCommands2_8hpp.html',1,'']]]
 ];
