@@ -22,7 +22,7 @@ static constexpr int PORT = 23080;
 
 static constexpr int INTERVAL = 1000 * 60 * 15;        // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
-static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
+static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 3;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 static constexpr int POWER_OFF_DELAY_TIME = 1000 * 3;  // [ms]
 

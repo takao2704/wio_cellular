@@ -25,7 +25,7 @@ static constexpr int MEASURE_PERIOD = 1000 * 60 * 5;   // [ms]
 static constexpr int PSM_PERIOD = 60 * 6;              // [s]
 static constexpr int PSM_ACTIVE = 2;                   // [s]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
-static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 2;  // [ms]
+static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 3;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 
 #define ABORT_IF_FAILED(result) \
