@@ -34,7 +34,16 @@ static void abortHandler(int sig) {
 static TaskHandle_t CellularTaskHandle;  // FreeRTOS
 static TaskHandle_t MeasureTaskHandle;   // FreeRTOS
 
+#define PIN_FSEL D31
+#define PIN_MODE D30
+
 void setup(void) {
+  digitalWrite(PIN_FSEL, HIGH);
+  pinMode(PIN_FSEL, OUTPUT);
+  digitalWrite(PIN_MODE, HIGH);
+  pinMode(PIN_MODE, OUTPUT);
+  digitalWrite(PIN_VGROVE_ENABLE, LOW);
+
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {

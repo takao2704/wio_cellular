@@ -28,7 +28,7 @@ void MeasureTaskFunction(void* param) {
   while (true) {
     // Power on the grove module
     Serial.println(TASK_NAME "Power on the grove module");
-    digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON);
+    digitalWrite(PIN_VGROVE_ENABLE, HIGH);
     delay(2 + 2);
     GpsBegin();
 
@@ -52,7 +52,7 @@ void MeasureTaskFunction(void* param) {
     // Power off the grove module
     Serial.println(TASK_NAME "Power off the grove module");
     GpsEnd();
-    digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_OFF);
+    digitalWrite(PIN_VGROVE_ENABLE, LOW);
     delay(2 + 2);
 
     if (measureResult) {
