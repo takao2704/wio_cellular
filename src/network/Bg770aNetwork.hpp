@@ -309,7 +309,7 @@ namespace wiocellular
                                                                     return true;
                                                                 }
                                                                 return false; });
-                if ((result = WioCellular.setEpsNetworkRegistrationStatusUrc(1)) != WioCellularResult::Ok)
+                if ((result = WioCellular.setEpsNetworkRegistrationStatusUrc(2)) != WioCellularResult::Ok)
                 {
                     abortHandler(__FILE__, __LINE__);
                 }
