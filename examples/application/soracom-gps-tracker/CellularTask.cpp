@@ -68,6 +68,9 @@ void CellularTaskFunction(void* param) {
 
       // Send
       if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
+        WioCellular.getSignalQuality(nullptr, nullptr);
+        WioCellular.getBatteryChargeState(nullptr, nullptr, nullptr);
+
         while (true) {
           // Read block info from storage
           std::vector<Storage::BlockInfo> blocks;
