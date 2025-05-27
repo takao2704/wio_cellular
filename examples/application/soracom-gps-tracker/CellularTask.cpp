@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include "CellularTask.hpp"
 #include <WioCellular.h>
-#include "Storage.hpp"
+#include "TaskSafeStorage.hpp"
 
 #define TASK_NAME "[cell]"
 #define USE_PSM
@@ -45,10 +45,9 @@ void CellularTaskFunction(void* param) {
   while (true) {
     // Check if data is in storage
     Serial.println(TASK_NAME "Check if data is in storage");
-    uint16_t readDataSize;
-    if (!Storage::peek(nullptr, 0, &readDataSize)) abort();
+    const auto dataAvailable = TaskSafeStorage::SendQueue::available();
 
-    if (time(nullptr) == 0 || readDataSize >= 1) {
+    if (time(nullptr) == 0 || dataAvailable) {
       // Power on the cellular module
       Serial.println(TASK_NAME "Power on the cellular module");
       if (WioCellular.powerOn(POWER_ON_TIMEOUT) != WioCellularResult::Ok) abort();
@@ -69,20 +68,21 @@ void CellularTaskFunction(void* param) {
       // Send
       if (WioNetwork.waitUntilCommunicationAvailable(NETWORK_TIMEOUT)) {
         while (true) {
-          // Read block info from storage
-          std::vector<Storage::BlockInfo> blocks;
-          if (!Storage::readBlockInfo(&blocks, BATCH_SIZE)) abort();
+          // Peek block info from storage
+          std::vector<wiocellular::component::nonvolatilememory::NonVolatileBlockQueue::BlockInfo> blocks;
+          TaskSafeStorage::SendQueue::peekBlockInfo(&blocks, BATCH_SIZE);
           Serial.printf(TASK_NAME "Read %d block info from storage\n", blocks.size());
           if (blocks.size() <= 0) break;
 
           std::string mergedData = "{\"data\":[";
           std::vector<char> data;
-          for (int i = 0; i < blocks.size(); ++i) {
+          for (size_t i = 0; i < blocks.size(); ++i) {
             const auto& block = blocks[i];
 
             // Peek data from storage
             data.resize(block.size + 1);
-            if (!Storage::peek(block, data.data(), data.size() - 1, &readDataSize)) abort();
+            size_t readDataSize;
+            TaskSafeStorage::SendQueue::peek(block, data.data(), data.size() - 1, &readDataSize);
             if (readDataSize != data.size() - 1) abort();
             data[data.size() - 1] = '\0';
             Serial.printf(TASK_NAME "Peek %d bytes from storage %s\n", data.size() - 1, data.data());
@@ -98,8 +98,8 @@ void CellularTaskFunction(void* param) {
           if (!send(mergedData.data(), mergedData.size())) break;
 
           // Processed data from storage
-          for (int i = 0; i < blocks.size(); ++i) {
-            if (!Storage::read(nullptr, 0, nullptr)) abort();
+          for (size_t i = 0; i < blocks.size(); ++i) {
+            TaskSafeStorage::SendQueue::read(nullptr, 0, nullptr);
             Serial.println(TASK_NAME "Processed data from storage");
           }
         }

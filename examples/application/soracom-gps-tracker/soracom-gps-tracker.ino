@@ -14,7 +14,7 @@
 #include <cassert>
 #include <csignal>
 #include <malloc.h>
-#include "Storage.hpp"
+#include "TaskSafeStorage.hpp"
 #include "CellularTask.hpp"
 #include "MeasureTask.hpp"
 
@@ -50,12 +50,10 @@ void setup(void) {
   digitalWrite(LED_BUILTIN, HIGH);
 
   // Check and clear storage
-  if (!Storage::begin()) abort();
-  uint32_t marker;
-  if (!Storage::readMarker(&marker)) abort();
-  if (marker != 0x12345678) {
-    if (!Storage::clear()) abort();
-    if (!Storage::writeMarker(0x12345678)) abort();
+  TaskSafeStorage::begin();
+  if (TaskSafeStorage::readMarker() != 0x12345678) {
+    TaskSafeStorage::clear();
+    TaskSafeStorage::writeMarker(0x12345678);
   }
 
   // Begin tasks

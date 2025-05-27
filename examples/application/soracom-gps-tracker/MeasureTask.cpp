@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include "MeasureTask.hpp"
 #include <ArduinoJson.h>
-#include "Storage.hpp"
+#include "TaskSafeStorage.hpp"
 
 #define TASK_NAME "[meas]"
 
@@ -57,15 +57,13 @@ void MeasureTaskFunction(void* param) {
 
     if (measureResult) {
       // Print free size of storage
-      uint16_t freeSize;
-      if (!Storage::freeSize(&freeSize)) abort();
-      Serial.printf(TASK_NAME "Free size of storage: %d\n", freeSize);
+      Serial.printf(TASK_NAME "Free size of storage: %d\n", TaskSafeStorage::SendQueue::freeSize());
 
       // Append data to storage
       std::string str;
       serializeJson(JsonDoc, str);
       Serial.printf(TASK_NAME "Append %d bytes to storage %s\n", str.size(), str.c_str());
-      if (!Storage::write(str.data(), str.size())) Serial.println(TASK_NAME "ERROR: Failed to write to storage");
+      if (!TaskSafeStorage::SendQueue::write(str.data(), str.size())) Serial.println(TASK_NAME "ERROR: Failed to write to storage");
     }
 
     delay(INTERVAL - POLLING_GPS);

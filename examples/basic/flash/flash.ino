@@ -12,6 +12,9 @@
 #include <Adafruit_TinyUSB.h>
 #include <csignal>
 #include <Adafruit_SPIFlash.h>
+#include <WioNonVolatileMemory.h>
+
+using namespace wiocellular::component::nonvolatilememory;
 
 static void abortHandler(int sig) {
   while (true) {
@@ -27,6 +30,9 @@ static const SPIFlash_Device_t SPIFLASH_DEVICE = FERAM_DEVICE_CONFIG;
 static SPIClass FlashSpi(FERAM_SPI, PIN_FERAM_SO, PIN_FERAM_SCK, PIN_FERAM_SI);
 static Adafruit_FlashTransport_SPI FlashTransport(PIN_FERAM_CS, FlashSpi);
 static Adafruit_SPIFlash Flash(&FlashTransport);
+static Adafruit_SPIFlashMemory FlashMemory(Flash);
+
+static NonVolatileMemory NvmValue(FlashMemory, 0x0000, 4);
 
 void setup(void) {
   signal(SIGABRT, abortHandler);
@@ -45,14 +51,14 @@ void setup(void) {
   digitalWrite(PIN_FERAM_HOLD, HIGH);
   pinMode(PIN_FERAM_WP, OUTPUT);
   pinMode(PIN_FERAM_HOLD, OUTPUT);
-  Flash.begin(&SPIFLASH_DEVICE, 1);
+  if (!Flash.begin(&SPIFLASH_DEVICE, 1)) abort();
 
   Serial.print("JEDEC ID:   0x");
   Serial.println(Flash.getJEDECID(), HEX);
 
   if (digitalRead(PIN_BUTTON1) == LOW) {
     Serial.println("Reset");
-    writeValue(0);
+    NvmValue.value<uint32_t>() = 0;
 
     while (digitalRead(PIN_BUTTON1) == LOW) delay(2);
     delay(100);
@@ -60,24 +66,12 @@ void setup(void) {
 }
 
 void loop(void) {
-  auto value = readValue();
+  uint32_t value = NvmValue.value<uint32_t>();
   Serial.println(value);
 
   delay(500);
   while (digitalRead(PIN_BUTTON1) == HIGH) delay(2);
 
   ++value;
-  writeValue(value);
-}
-
-uint32_t readValue(void) {
-  uint32_t value;
-
-  if (Flash.readBuffer(0, reinterpret_cast<uint8_t*>(&value), sizeof(value)) != sizeof(value)) abort();
-
-  return value;
-}
-
-void writeValue(uint32_t value) {
-  if (Flash.writeBuffer(0, reinterpret_cast<uint8_t*>(&value), sizeof(value)) != sizeof(value)) abort();
+  NvmValue.value<uint32_t>() = value;
 }
