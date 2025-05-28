@@ -18,5 +18,6 @@ var searchData=
   ['bg770asimrelatedcommands_15',['Bg770aSimRelatedCommands',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html',1,'wiocellular::module::bg770a::commands']]],
   ['bg770asimrelatedcommands_3c_20bg770a_3c_20interface_20_3e_20_3e_16',['Bg770aSimRelatedCommands&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aSimRelatedCommands.html',1,'wiocellular::module::bg770a::commands']]],
   ['bg770atcpipcommands2_17',['Bg770aTcpipCommands2',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]],
-  ['bg770atcpipcommands2_3c_20bg770a_3c_20interface_20_3e_20_3e_18',['Bg770aTcpipCommands2&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]]
+  ['bg770atcpipcommands2_3c_20bg770a_3c_20interface_20_3e_20_3e_18',['Bg770aTcpipCommands2&lt; Bg770a&lt; INTERFACE &gt; &gt;',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html',1,'wiocellular::module::bg770a::commands']]],
+  ['blockinfo_19',['BlockInfo',['../structwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue_1_1BlockInfo.html',1,'wiocellular::component::nonvolatilememory::NonVolatileBlockQueue']]]
 ];

@@ -7,6 +7,7 @@ var searchData=
   ['opensocket2_4',['openSocket2',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a04f2ae7d2fadcca5adb63ce234bb6b79',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2']]],
   ['opentimeout_5',['OpenTimeout',['../WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4afd94f7f80e1b9cdb71f28ca9b565af94',1,'WioCellularResult.hpp']]],
   ['operator_20bool_6',['operator bool',['../classWioCellularArduinoTcpClient.html#a96da258f30952fe8b85f9c85372f63d3',1,'WioCellularArduinoTcpClient']]],
-  ['operator_3d_7',['operator=',['../classwiocellular_1_1module_1_1at__client_1_1AtClient_1_1UrcHandler.html#a73972c63bcc89a4d27fc8749448482e9',1,'wiocellular::module::at_client::AtClient::UrcHandler']]],
-  ['operator_5b_5d_8',['operator[]',['../classwiocellular_1_1module_1_1at__client_1_1AtParameterParser.html#a8ba1886c10e97a86a23d9c82eb5a4b19',1,'wiocellular::module::at_client::AtParameterParser']]]
+  ['operator_20t_7',['operator T',['../classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory_1_1ValueRef.html#a72e1915b7e42b3fd189136d387fff152',1,'wiocellular::component::nonvolatilememory::NonVolatileMemory::ValueRef']]],
+  ['operator_3d_8',['operator=',['../classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory_1_1ValueRef.html#ad10e131854daf1ea703b4033f6911085',1,'wiocellular::component::nonvolatilememory::NonVolatileMemory::ValueRef::operator=()'],['../classwiocellular_1_1module_1_1at__client_1_1AtClient_1_1UrcHandler.html#a73972c63bcc89a4d27fc8749448482e9',1,'wiocellular::module::at_client::AtClient::UrcHandler::operator=()']]],
+  ['operator_5b_5d_9',['operator[]',['../classwiocellular_1_1module_1_1at__client_1_1AtParameterParser.html#a8ba1886c10e97a86a23d9c82eb5a4b19',1,'wiocellular::module::at_client::AtParameterParser']]]
 ];
