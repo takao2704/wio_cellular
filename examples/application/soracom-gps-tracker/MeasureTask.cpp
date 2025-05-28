@@ -74,9 +74,9 @@ void MeasureTaskFunction(void* param) {
 
 static bool measure(JsonDocument& doc) {
   const auto now = time(nullptr);
-  if (now < 0) return false;
+  if (now <= 0) return false;
 
-  doc["time"] = time(nullptr);
+  doc["time"] = now;
   doc["uptime"] = millis() / 1000;
 
   int index[5];
