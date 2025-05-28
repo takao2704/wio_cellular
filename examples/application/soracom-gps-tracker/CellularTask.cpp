@@ -93,7 +93,8 @@ void CellularTaskFunction(void* param) {
           mergedData += "]}";
 
           // Send data
-          Serial.printf(TASK_NAME "Sending %s\n", mergedData.c_str());
+          Serial.printf(TASK_NAME "Sending ");
+          Serial.println(mergedData.c_str());
           if (!send(mergedData.data(), mergedData.size())) break;
 
           // Processed data from storage
