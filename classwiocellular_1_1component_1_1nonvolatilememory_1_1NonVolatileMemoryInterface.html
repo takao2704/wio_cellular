@@ -80,16 +80,19 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>不揮発性メモリのインターフェース  
+ <a href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html#details">[詳解]</a></p>
+
 <p><code>#include &lt;NonVolatileMemoryInterface.hpp&gt;</code></p>
 <div class="dynheader">
 wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface の継承関係図</div>
 <div class="dyncontent">
 <div class="center"><img src="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface__inherit__graph.png" border="0" usemap="#awiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface_inherit__map" alt="Inheritance graph"/></div>
 <map name="awiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface_inherit__map" id="awiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,45,245,100"/>
-<area shape="rect" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html" title=" " alt="" coords="305,5,522,60"/>
+<area shape="rect" title="不揮発性メモリのインターフェース" alt="" coords="5,45,245,100"/>
+<area shape="rect" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html" title="Adafruit_SPIFlashライブラリの不揮発性メモリインターフェース" alt="" coords="305,5,522,60"/>
 <area shape="poly" title=" " alt="" coords="259,51,304,45,305,50,259,57"/>
-<area shape="rect" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html" title=" " alt="" coords="293,84,533,139"/>
+<area shape="rect" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html" title="不揮発性メモリ" alt="" coords="293,84,533,139"/>
 <area shape="poly" title=" " alt="" coords="259,88,294,93,293,98,259,93"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">凡例</a>]</span></center></div>
@@ -97,13 +100,19 @@ wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface の継承�
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 公開メンバ関数</h2></td></tr>
 <tr class="memitem:a56367c47a73295a9dabb82ef4353eff6" id="r_a56367c47a73295a9dabb82ef4353eff6"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html#a56367c47a73295a9dabb82ef4353eff6">size</a> () const =0</td></tr>
+<tr class="memdesc:a56367c47a73295a9dabb82ef4353eff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">不揮発性メモリのサイズを取得  <br /></td></tr>
 <tr class="separator:a56367c47a73295a9dabb82ef4353eff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a555afa31ae93df1338f163223dc942f6" id="r_a555afa31ae93df1338f163223dc942f6"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html#a555afa31ae93df1338f163223dc942f6">read</a> (uintptr_t address, void *data, size_t dataSize) const =0</td></tr>
+<tr class="memdesc:a555afa31ae93df1338f163223dc942f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">不揮発性メモリから読み込み  <br /></td></tr>
 <tr class="separator:a555afa31ae93df1338f163223dc942f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accf8eac4a6547627dde00f61522cef14" id="r_accf8eac4a6547627dde00f61522cef14"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html#accf8eac4a6547627dde00f61522cef14">write</a> (uintptr_t address, const void *data, size_t dataSize)=0</td></tr>
+<tr class="memdesc:accf8eac4a6547627dde00f61522cef14"><td class="mdescLeft">&#160;</td><td class="mdescRight">不揮発性メモリへ書き込み  <br /></td></tr>
 <tr class="separator:accf8eac4a6547627dde00f61522cef14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">関数詳解</h2>
+<a name="details" id="details"></a><h2 class="groupheader">詳解</h2>
+<div class="textblock"><p>不揮発性メモリのインターフェース </p>
+<p>不揮発性メモリとやりとりするインターフェースのクラスです。 </p>
+</div><h2 class="groupheader">関数詳解</h2>
 <a id="a555afa31ae93df1338f163223dc942f6" name="a555afa31ae93df1338f163223dc942f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a555afa31ae93df1338f163223dc942f6">&#9670;&#160;</a></span>read()</h2>
 
@@ -144,6 +153,24 @@ wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface の継承�
 </table>
 </div><div class="memdoc">
 
+<p>不揮発性メモリから読み込み </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">address</td><td>アドレス。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>データ。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ[バイト数]。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>不揮発性メモリからデータを読み込みます。 エラーのときは負の値を返します。 </p>
+
 <p><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html#aaaecc7fb7d07975f75e7199dd09b78c4">wiocellular::component::nonvolatilememory::Adafruit_SPIFlashMemory</a>, <a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html#a3e9cd25cb1e976f3ac57757834dd7cef">wiocellular::component::nonvolatilememory::NonVolatileMemory</a>で実装されています。</p>
 
 </div>
@@ -170,6 +197,10 @@ wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface の継承�
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>不揮発性メモリのサイズを取得 </p>
+<dl class="section return"><dt>戻り値</dt><dd>不揮発性メモリのサイズ[バイト数]</dd></dl>
+<p>不揮発性メモリのサイズを取得します。 </p>
 
 <p><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html#a77c315731112c7a3b19a6abe43603cad">wiocellular::component::nonvolatilememory::Adafruit_SPIFlashMemory</a>, <a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html#a4475e0b547a9fab448a5ea02dcba1882">wiocellular::component::nonvolatilememory::NonVolatileMemory</a>で実装されています。</p>
 
@@ -214,6 +245,24 @@ wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface の継承�
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>不揮発性メモリへ書き込み </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">address</td><td>アドレス。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>データ。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ[バイト数]。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>不揮発性メモリへデータを書き込みます。 エラーのときは負の値を返します。 </p>
 
 <p><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html#acacbc69dd4493d69d25ee8ee8767bb49">wiocellular::component::nonvolatilememory::Adafruit_SPIFlashMemory</a>, <a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html#a71c015825d92ceaea544adcee7cd7da5">wiocellular::component::nonvolatilememory::NonVolatileMemory</a>で実装されています。</p>
 

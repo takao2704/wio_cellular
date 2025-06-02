@@ -81,33 +81,48 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>不揮発性メモリのブロックキュー  
+ <a href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#details">[詳解]</a></p>
+
 <p><code>#include &lt;NonVolatileBlockQueue.hpp&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 クラス</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue_1_1BlockInfo.html">BlockInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ブロック情報  <a href="structwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue_1_1BlockInfo.html#details">[詳解]</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 公開メンバ関数</h2></td></tr>
 <tr class="memitem:a57d1821a9209e6bc650ad5873b9b7b39" id="r_a57d1821a9209e6bc650ad5873b9b7b39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#a57d1821a9209e6bc650ad5873b9b7b39">NonVolatileBlockQueue</a> (<a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html">NonVolatileMemoryInterface</a> &amp;interface)</td></tr>
+<tr class="memdesc:a57d1821a9209e6bc650ad5873b9b7b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンストラクタ  <br /></td></tr>
 <tr class="separator:a57d1821a9209e6bc650ad5873b9b7b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75ce1a0063c7113d155617aa593d8c91" id="r_a75ce1a0063c7113d155617aa593d8c91"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#a75ce1a0063c7113d155617aa593d8c91">clear</a> ()</td></tr>
+<tr class="memdesc:a75ce1a0063c7113d155617aa593d8c91"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリア  <br /></td></tr>
 <tr class="separator:a75ce1a0063c7113d155617aa593d8c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab147d61fb7c440a8ea2688c0a1c70ef0" id="r_ab147d61fb7c440a8ea2688c0a1c70ef0"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#ab147d61fb7c440a8ea2688c0a1c70ef0">freeSize</a> (size_t *size)</td></tr>
+<tr class="memdesc:ab147d61fb7c440a8ea2688c0a1c70ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">空きサイズを取得  <br /></td></tr>
 <tr class="separator:ab147d61fb7c440a8ea2688c0a1c70ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7510d37538abaf8ddc251acfcfbe4394" id="r_a7510d37538abaf8ddc251acfcfbe4394"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#a7510d37538abaf8ddc251acfcfbe4394">write</a> (const void *data, size_t dataSize)</td></tr>
+<tr class="memdesc:a7510d37538abaf8ddc251acfcfbe4394"><td class="mdescLeft">&#160;</td><td class="mdescRight">書き込み（キューに追加）  <br /></td></tr>
 <tr class="separator:a7510d37538abaf8ddc251acfcfbe4394"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62d3e82d41dd7fe48a2c4738cb527862" id="r_a62d3e82d41dd7fe48a2c4738cb527862"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#a62d3e82d41dd7fe48a2c4738cb527862">read</a> (void *data, size_t dataSize, size_t *readDataSize)</td></tr>
+<tr class="memdesc:a62d3e82d41dd7fe48a2c4738cb527862"><td class="mdescLeft">&#160;</td><td class="mdescRight">読み込み（キューから取出し）  <br /></td></tr>
 <tr class="separator:a62d3e82d41dd7fe48a2c4738cb527862"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09b18acb864c8d9c81972c0e9c4ca772" id="r_a09b18acb864c8d9c81972c0e9c4ca772"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#a09b18acb864c8d9c81972c0e9c4ca772">peek</a> (void *data, size_t dataSize, size_t *readDataSize)</td></tr>
+<tr class="memdesc:a09b18acb864c8d9c81972c0e9c4ca772"><td class="mdescLeft">&#160;</td><td class="mdescRight">読み込み（キューから取出さない）  <br /></td></tr>
 <tr class="separator:a09b18acb864c8d9c81972c0e9c4ca772"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaca978a9438667f780c57a306b51fd19" id="r_aaca978a9438667f780c57a306b51fd19"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#aaca978a9438667f780c57a306b51fd19">peekBlockInfo</a> (std::vector&lt; <a class="el" href="structwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue_1_1BlockInfo.html">BlockInfo</a> &gt; *blockInfoList, size_t maxSize=SIZE_MAX)</td></tr>
+<tr class="memdesc:aaca978a9438667f780c57a306b51fd19"><td class="mdescLeft">&#160;</td><td class="mdescRight">ブロック情報読み込み（キューから取出さない）  <br /></td></tr>
 <tr class="separator:aaca978a9438667f780c57a306b51fd19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3b3aa1867a80174052128b3285e42ea" id="r_ab3b3aa1867a80174052128b3285e42ea"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue.html#ab3b3aa1867a80174052128b3285e42ea">peek</a> (const <a class="el" href="structwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileBlockQueue_1_1BlockInfo.html">BlockInfo</a> &amp;blockInfo, void *data, size_t dataSize, size_t *readDataSize)</td></tr>
+<tr class="memdesc:ab3b3aa1867a80174052128b3285e42ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">読み込み（キューから取出さない）  <br /></td></tr>
 <tr class="separator:ab3b3aa1867a80174052128b3285e42ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">構築子と解体子</h2>
+<a name="details" id="details"></a><h2 class="groupheader">詳解</h2>
+<div class="textblock"><p>不揮発性メモリのブロックキュー </p>
+<p>不揮発性メモリのブロックキューのクラスです。 </p>
+</div><h2 class="groupheader">構築子と解体子</h2>
 <a id="a57d1821a9209e6bc650ad5873b9b7b39" name="a57d1821a9209e6bc650ad5873b9b7b39"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57d1821a9209e6bc650ad5873b9b7b39">&#9670;&#160;</a></span>NonVolatileBlockQueue()</h2>
 
@@ -131,6 +146,15 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>コンストラクタ </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">interface</td><td>不揮発性メモリインターフェースのインスタンス</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>コンストラクタ。 </p>
 
 </div>
 </div>
@@ -158,6 +182,16 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>クリア </p>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>キューをクリアします。 （書き込みインデックスと読み込みインデックスを0に設定します。） </p>
+
 </div>
 </div>
 <a id="ab147d61fb7c440a8ea2688c0a1c70ef0" name="ab147d61fb7c440a8ea2688c0a1c70ef0"></a>
@@ -183,6 +217,22 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>空きサイズを取得 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">size</td><td>空きサイズ[バイト]。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>キューの空きサイズを取得します。 （ブロックサイズの保存領域を減算しないため、書き込みできる最大サイズとは一致しません。） </p>
 
 </div>
 </div>
@@ -232,6 +282,25 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>読み込み（キューから取出さない） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">blockInfo</td><td>ブロック情報。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>データ。nullptrを指定すると読み捨てます。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ[バイト数]。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">readDataSize</td><td>取り出したデータサイズ[バイト数]。nullptrを指定すると値を代入しません。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>ブロック情報で指定されたデータを読み込みます。（キューから取出しません。） dataにnullptr、dataSizeに0を指定すると、データを読み捨てます。 エラーのときは負の値を返します。 </p>
+
 </div>
 </div>
 <a id="a09b18acb864c8d9c81972c0e9c4ca772" name="a09b18acb864c8d9c81972c0e9c4ca772"></a>
@@ -274,6 +343,24 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>読み込み（キューから取出さない） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>データ。nullptrを指定すると読み捨てます。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ[バイト数]。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">readDataSize</td><td>取り出したデータサイズ[バイト数]。nullptrを指定すると値を代入しません。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>データを読み込みます。（キューから取出しません。） dataにnullptr、dataSizeに0を指定すると、データを読み捨てます。 エラーのときは負の値を返します。 </p>
+
 </div>
 </div>
 <a id="aaca978a9438667f780c57a306b51fd19" name="aaca978a9438667f780c57a306b51fd19"></a>
@@ -309,6 +396,23 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>ブロック情報読み込み（キューから取出さない） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">blockInfoList</td><td>ブロック情報リスト。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">maxSize</td><td>読み込むブロック情報数の最大。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>ブロック情報を読み込みます。（キューから取出しません。） エラーのときは負の値を返します。 </p>
 
 </div>
 </div>
@@ -352,6 +456,24 @@ $(function() {
 </table>
 </div><div class="memdoc">
 
+<p>読み込み（キューから取出し） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">data</td><td>データ。nullptrを指定すると読み捨てます。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ[バイト数]。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">readDataSize</td><td>取り出したデータサイズ[バイト数]。nullptrを指定すると値を代入しません。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>データを読み込みます。（キューから取出します。） dataにnullptr、dataSizeに0を指定すると、データを読み捨てます。 エラーのときは負の値を返します。 </p>
+
 </div>
 </div>
 <a id="a7510d37538abaf8ddc251acfcfbe4394" name="a7510d37538abaf8ddc251acfcfbe4394"></a>
@@ -387,6 +509,23 @@ $(function() {
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>書き込み（キューに追加） </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>データ。 </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dataSize</td><td>データサイズ[バイト数]。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>戻り値</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">&gt;=0</td><td>成功 </td></tr>
+    <tr><td class="paramname">&lt;0</td><td>エラー</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>ブロックキューにデータを書き込みます。（キューに追加します。） エラーのときは負の値を返します。 </p>
 
 </div>
 </div>

@@ -1,5 +1,5 @@
 <map id="wiocellular::component::nonvolatilememory::Adafruit_SPIFlashMemory" name="wiocellular::component::nonvolatilememory::Adafruit_SPIFlashMemory">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,108,234,163"/>
-<area shape="rect" id="Node000002" href="$classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html" title=" " alt="" coords="5,5,245,60"/>
+<area shape="rect" id="Node000001" title="Adafruit_SPIFlashライブラリの不揮発性メモリインターフェース" alt="" coords="17,108,234,163"/>
+<area shape="rect" id="Node000002" href="$classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemoryInterface.html" title="不揮発性メモリのインターフェース" alt="" coords="5,5,245,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,74,128,108,123,108,123,74"/>
 </map>

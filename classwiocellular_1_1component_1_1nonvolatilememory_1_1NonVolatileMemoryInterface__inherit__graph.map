@@ -1,7 +1,7 @@
 <map id="wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface" name="wiocellular::component::nonvolatilememory::NonVolatileMemoryInterface">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,245,100"/>
-<area shape="rect" id="Node000002" href="$classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html" title=" " alt="" coords="305,5,522,60"/>
+<area shape="rect" id="Node000001" title="不揮発性メモリのインターフェース" alt="" coords="5,45,245,100"/>
+<area shape="rect" id="Node000002" href="$classwiocellular_1_1component_1_1nonvolatilememory_1_1Adafruit__SPIFlashMemory.html" title="Adafruit_SPIFlashライブラリの不揮発性メモリインターフェース" alt="" coords="305,5,522,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="259,51,304,45,305,50,259,57"/>
-<area shape="rect" id="Node000003" href="$classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html" title=" " alt="" coords="293,84,533,139"/>
+<area shape="rect" id="Node000003" href="$classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory.html" title="不揮発性メモリ" alt="" coords="293,84,533,139"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,88,294,93,293,98,259,93"/>
 </map>
