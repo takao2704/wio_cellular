@@ -16,6 +16,12 @@ namespace wiocellular
         namespace nonvolatilememory
         {
 
+            /**
+             * @~Japanese
+             * @brief 不揮発性メモリ
+             *
+             * 不揮発性メモリのクラスです。
+             */
             class NonVolatileMemory : public NonVolatileMemoryInterface
             {
             private:
@@ -24,17 +30,48 @@ namespace wiocellular
                 size_t Size_;
 
             public:
+                /**
+                 * @~Japanese
+                 * @brief コンストラクタ
+                 *
+                 * @param [in] interface 不揮発性メモリインターフェースのインスタンス
+                 * @param [in] baseAddress インターフェースへアクセスするベースアドレス
+                 * @param [in] size インターフェースへアクセスするサイズ
+                 *
+                 * コンストラクタ。
+                 */
                 NonVolatileMemory(NonVolatileMemoryInterface &interface, uintptr_t baseAddress, size_t size) : Interface_(interface),
                                                                                                                BaseAddress_(baseAddress),
                                                                                                                Size_(size)
                 {
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief サイズを取得
+                 *
+                 * @return サイズ[バイト数]
+                 *
+                 * サイズを取得します。
+                 */
                 size_t size() const override
                 {
                     return Size_;
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 読み込み
+                 *
+                 * @param [in] address アドレス。
+                 * @param [out] data データ。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * データを読み込みます。
+                 * エラーのときは負の値を返します。
+                 */
                 long read(uintptr_t address, void *data, size_t dataSize) const override
                 {
                     if (Size_ < address + dataSize)
@@ -43,6 +80,19 @@ namespace wiocellular
                     return Interface_.read(BaseAddress_ + address, data, dataSize);
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 書き込み
+                 *
+                 * @param [in] address アドレス。
+                 * @param [in] data データ。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * データを書き込みます。
+                 * エラーのときは負の値を返します。
+                 */
                 long write(uintptr_t address, const void *data, size_t dataSize) override
                 {
                     if (Size_ < address + dataSize)
@@ -81,6 +131,14 @@ namespace wiocellular
                     }
                 };
 
+                /**
+                 * @~Japanese
+                 * @brief 値の参照を取得
+                 *
+                 * @return 値の参照
+                 *
+                 * 特定の型でアクセスできる参照を取得します。
+                 */
                 template <typename T>
                 ValueRef<T> value()
                 {

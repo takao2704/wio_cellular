@@ -17,21 +17,56 @@ namespace wiocellular
         namespace nonvolatilememory
         {
 
+            /**
+             * @~Japanese
+             * @brief Adafruit_SPIFlashライブラリの不揮発性メモリインターフェース
+             *
+             * Adafruit_SPIFlashライブラリと不揮発性メモリインターフェースのブリッジクラスです。
+             */
             class Adafruit_SPIFlashMemory : public NonVolatileMemoryInterface
             {
             private:
                 Adafruit_SPIFlashBase &Flash_;
 
             public:
+                /**
+                 * @~Japanese
+                 * @brief コンストラクタ
+                 *
+                 * @param [in] flash Adafruit_SPIFlashライブラリのフラッシュメモリのインスタンス。
+                 *
+                 * コンストラクタ。
+                 */
                 explicit Adafruit_SPIFlashMemory(Adafruit_SPIFlashBase &flash) : Flash_(flash)
                 {
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief サイズを取得
+                 *
+                 * @return サイズ[バイト数]
+                 *
+                 * サイズを取得します。
+                 */
                 size_t size() const override
                 {
                     return Flash_.size();
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 読み込み
+                 *
+                 * @param [in] address アドレス。
+                 * @param [out] data データ。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * データを読み込みます。
+                 * エラーのときは負の値を返します。
+                 */
                 long read(uintptr_t address, void *data, size_t dataSize) const override
                 {
                     if (address + dataSize > Flash_.size())
@@ -55,6 +90,19 @@ namespace wiocellular
                     return 0;
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 書き込み
+                 *
+                 * @param [in] address アドレス。
+                 * @param [in] data データ。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * データを書き込みます。
+                 * エラーのときは負の値を返します。
+                 */
                 long write(uintptr_t address, const void *data, size_t dataSize) override
                 {
                     if (address + dataSize > Flash_.size())

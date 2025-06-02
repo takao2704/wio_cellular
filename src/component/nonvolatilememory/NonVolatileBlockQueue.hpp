@@ -18,6 +18,12 @@ namespace wiocellular
         namespace nonvolatilememory
         {
 
+            /**
+             * @~Japanese
+             * @brief 不揮発性メモリのブロックキュー
+             *
+             * 不揮発性メモリのブロックキューのクラスです。
+             */
             class NonVolatileBlockQueue
             {
             private:
@@ -166,17 +172,47 @@ namespace wiocellular
                 }
 
             public:
+                /**
+                 * @~Japanese
+                 * @brief ブロック情報
+                 */
                 struct BlockInfo
                 {
+                    /**
+                     * @~Japanese
+                     * @brief ブロックの開始インデックス
+                     */
                     size_t index;
+                    /**
+                     * @~Japanese
+                     * @brief ブロックのサイズ[バイト数]
+                     */
                     size_t size;
                 };
 
             public:
+                /**
+                 * @~Japanese
+                 * @brief コンストラクタ
+                 *
+                 * @param [in] interface 不揮発性メモリインターフェースのインスタンス
+                 *
+                 * コンストラクタ。
+                 */
                 explicit NonVolatileBlockQueue(NonVolatileMemoryInterface &interface) : Interface_(interface)
                 {
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief クリア
+                 *
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * キューをクリアします。
+                 * （書き込みインデックスと読み込みインデックスを0に設定します。）
+                 */
                 long clear()
                 {
 
@@ -188,6 +224,17 @@ namespace wiocellular
                     return 0;
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 空きサイズを取得
+                 *
+                 * @param [out] size 空きサイズ[バイト]。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * キューの空きサイズを取得します。
+                 * （ブロックサイズの保存領域を減算しないため、書き込みできる最大サイズとは一致しません。）
+                 */
                 long freeSize(size_t *size)
                 {
                     if (!size)
@@ -203,6 +250,18 @@ namespace wiocellular
                     return 0;
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 書き込み（キューに追加）
+                 *
+                 * @param [in] data データ。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * ブロックキューにデータを書き込みます。（キューに追加します。）
+                 * エラーのときは負の値を返します。
+                 */
                 long write(const void *data, size_t dataSize)
                 {
                     if (!data || dataSize < 1)
@@ -231,16 +290,56 @@ namespace wiocellular
                     return 0;
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 読み込み（キューから取出し）
+                 *
+                 * @param [out] data データ。nullptrを指定すると読み捨てます。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @param [out] readDataSize 取り出したデータサイズ[バイト数]。nullptrを指定すると値を代入しません。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * データを読み込みます。（キューから取出します。）
+                 * dataにnullptr、dataSizeに0を指定すると、データを読み捨てます。
+                 * エラーのときは負の値を返します。
+                 */
                 long read(void *data, size_t dataSize, size_t *readDataSize)
                 {
                     return readInternal(data, dataSize, readDataSize, false);
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 読み込み（キューから取出さない）
+                 *
+                 * @param [out] data データ。nullptrを指定すると読み捨てます。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @param [out] readDataSize 取り出したデータサイズ[バイト数]。nullptrを指定すると値を代入しません。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * データを読み込みます。（キューから取出しません。）
+                 * dataにnullptr、dataSizeに0を指定すると、データを読み捨てます。
+                 * エラーのときは負の値を返します。
+                 */
                 long peek(void *data, size_t dataSize, size_t *readDataSize)
                 {
                     return readInternal(data, dataSize, readDataSize, true);
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief ブロック情報読み込み（キューから取出さない）
+                 *
+                 * @param [out] blockInfoList ブロック情報リスト。
+                 * @param [in] maxSize 読み込むブロック情報数の最大。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * ブロック情報を読み込みます。（キューから取出しません。）
+                 * エラーのときは負の値を返します。
+                 */
                 long peekBlockInfo(std::vector<BlockInfo> *blockInfoList, size_t maxSize = SIZE_MAX)
                 {
                     if (!blockInfoList)
@@ -268,6 +367,21 @@ namespace wiocellular
                     return 0;
                 }
 
+                /**
+                 * @~Japanese
+                 * @brief 読み込み（キューから取出さない）
+                 *
+                 * @param [out] blockInfo ブロック情報。
+                 * @param [out] data データ。nullptrを指定すると読み捨てます。
+                 * @param [in] dataSize データサイズ[バイト数]。
+                 * @param [out] readDataSize 取り出したデータサイズ[バイト数]。nullptrを指定すると値を代入しません。
+                 * @retval >=0 成功
+                 * @retval <0 エラー
+                 *
+                 * ブロック情報で指定されたデータを読み込みます。（キューから取出しません。）
+                 * dataにnullptr、dataSizeに0を指定すると、データを読み捨てます。
+                 * エラーのときは負の値を返します。
+                 */
                 long peek(const BlockInfo &blockInfo, void *data, size_t dataSize, size_t *readDataSize)
                 {
                     if ((data && dataSize < 1) || (!data && dataSize > 0))
