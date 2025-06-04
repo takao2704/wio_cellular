@@ -7,8 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries:
 //   http://librarymanager#ArduinoJson 7.0.4
-//   http://librarymanager#Adafruit%20SPIFlash 4.3.4
-//   http://librarymanager#SdFat%20-%20Adafruit%20Fork 2.2.3
+//   http://librarymanager#Adafruit%20SPIFlash 5.1.1
+//   https://github.com/SeeedJP/SdFat.git
 
 #include <Adafruit_TinyUSB.h>
 #include <cassert>
