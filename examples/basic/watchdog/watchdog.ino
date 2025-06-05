@@ -10,6 +10,7 @@
 
 #include <Adafruit_TinyUSB.h>
 #include <Adafruit_SleepyDog.h>
+#include <string>
 
 static uint32_t start;
 
@@ -23,6 +24,31 @@ void setup(void) {
   }
   Serial.println();
   Serial.println();
+
+  const auto resetReason = readResetReason();
+  std::string resetReasonStr;
+  if (resetReason & POWER_RESETREAS_RESETPIN_Msk) {
+    if (!resetReasonStr.empty()) resetReasonStr += ", ";
+    resetReasonStr += "Pin";
+  }
+  if (resetReason & POWER_RESETREAS_DOG_Msk) {
+    if (!resetReasonStr.empty()) resetReasonStr += ", ";
+    resetReasonStr += "Watchdog";
+  }
+  if (resetReason & POWER_RESETREAS_SREQ_Msk) {
+    if (!resetReasonStr.empty()) resetReasonStr += ", ";
+    resetReasonStr += "Soft";
+  }
+  if (resetReason & POWER_RESETREAS_LOCKUP_Msk) {
+    if (!resetReasonStr.empty()) resetReasonStr += ", ";
+    resetReasonStr += "CpuLockUp";
+  }
+
+  if (resetReasonStr.empty()) {
+    Serial.printf("Reset reason: 0x%x\n", resetReason);
+  } else {
+    Serial.printf("Reset reason: 0x%x(%s)\n", resetReason, resetReasonStr.c_str());
+  }
 
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.println("Enable watchdog");
