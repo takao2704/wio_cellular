@@ -9,18 +9,21 @@
 //   http://librarymanager#ArduinoJson 7.0.4
 //   http://librarymanager#Adafruit%20SPIFlash 5.1.1
 //   https://github.com/SeeedJP/SdFat.git
+//   https://github.com/matsujirushi/Adafruit_SleepyDog master
 
 #include <Adafruit_TinyUSB.h>
 #include <cassert>
 #include <csignal>
 #include <malloc.h>
+#include <Adafruit_SleepyDog.h>
 #include "TaskSafeStorage.hpp"
 #include "CellularTask.hpp"
 #include "MeasureTask.hpp"
 
 #define TASK_NAME "[main]"
 
-static constexpr int INTERVAL = 1000 * 60 * 60;  // [ms]
+static constexpr int INTERVAL = 1000 * 60 * 60;     // [ms]
+static constexpr int WATCHDOG_TIMEOUT = 1000 * 10;  // [ms]
 
 static void abortHandler(int sig) {
   Serial.printf("ABORT: Signal %d received\n", sig);
@@ -39,6 +42,13 @@ static TaskHandle_t CellularTaskHandle;  // FreeRTOS
 static TaskHandle_t MeasureTaskHandle;   // FreeRTOS
 
 void setup() {
+  if (WATCHDOG_TIMEOUT >= 1) {
+    Watchdog.enable(WATCHDOG_TIMEOUT);
+    const auto handle = xTimerCreate("ResetWatchdog", pdMS_TO_TICKS(WATCHDOG_TIMEOUT * 80 / 100), pdTRUE, nullptr, [](TimerHandle_t) {
+      Watchdog.reset();
+    });
+    xTimerStart(handle, 0);
+  }
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
