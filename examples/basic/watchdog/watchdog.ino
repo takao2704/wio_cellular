@@ -14,7 +14,7 @@
 
 static uint32_t start;
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -56,7 +56,7 @@ void setup(void) {
   start = millis();
 }
 
-void loop(void) {
+void loop() {
   Serial.println(millis() - start);
 
   if (digitalRead(PIN_BUTTON1) == LOW) {

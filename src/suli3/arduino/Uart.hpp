@@ -62,7 +62,7 @@ namespace suli3
              *
              * UARTを解放します。
              */
-            void end(void)
+            void end()
             {
                 RealUart_.end();
             }
@@ -77,7 +77,7 @@ namespace suli3
              * UARTに受信したデータを読み込みます。
              * 受信データが無いときは負の値を返します。
              */
-            int read(void)
+            int read()
             {
                 return RealUart_.read();
             }

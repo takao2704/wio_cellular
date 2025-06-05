@@ -13,12 +13,12 @@
 
 static WioCellularModuleInterface WioCellularModuleInterfaceInstance;
 
-extern "C" void BG770AINTERFACE_MAIN_UARTE_IRQHANDLER(void)
+extern "C" void BG770AINTERFACE_MAIN_UARTE_IRQHANDLER()
 {
     WioCellularModuleInterfaceInstance.mainUartIrqHandler();
 }
 
-void BG770AINTERFACE_VDD_EXT_IRQHANDLER(void)
+void BG770AINTERFACE_VDD_EXT_IRQHANDLER()
 {
     WioCellularModuleInterfaceInstance.vddExtHandler();
 }

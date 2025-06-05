@@ -34,7 +34,7 @@ static void abortHandler(int sig) {
 static TaskHandle_t CellularTaskHandle;  // FreeRTOS
 static TaskHandle_t MeasureTaskHandle;   // FreeRTOS
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -67,12 +67,12 @@ void setup(void) {
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-void loop(void) {
+void loop() {
   diagnostics();
   delay(INTERVAL);
 }
 
-void diagnostics(void) {
+void diagnostics() {
   Serial.println(TASK_NAME "Diagnostics start");
 
   // Stack

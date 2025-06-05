@@ -7,7 +7,7 @@
 #ifndef CELLULARTASK_HPP
 #define CELLULARTASK_HPP
 
-void CellularTaskBegin(void);
+void CellularTaskBegin();
 void CellularTaskFunction(void* param);
 
 #endif  // CELLULARTASK_H

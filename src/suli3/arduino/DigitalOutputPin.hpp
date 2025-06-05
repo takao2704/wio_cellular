@@ -53,7 +53,7 @@ namespace suli3
              *
              * ピンをデジタル出力から解放します。
              */
-            void end(void)
+            void end()
             {
                 pinMode(PIN, NO_CONNECT);
             }

@@ -120,8 +120,8 @@ namespace wiocellular
                  *
                  * コンストラクタ。
                  */
-                AtClient(void) : Response_{},
-                                 UrcHandlers_{}
+                AtClient() : Response_{},
+                             UrcHandlers_{}
                 {
                 }
 
@@ -200,7 +200,7 @@ namespace wiocellular
                  * 永久にURC待ちしたいときはtimeoutに-1を指定します。
                  * URCを受信したときにcompletionを実行します。completionがtrueを返すと関数から返ります。
                  */
-                bool doWork(int timeout, const std::function<bool(void)> &completion)
+                bool doWork(int timeout, const std::function<bool()> &completion)
                 {
                     assert(completion);
 

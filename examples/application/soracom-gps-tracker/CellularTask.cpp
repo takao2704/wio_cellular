@@ -31,7 +31,7 @@ static constexpr int BATCH_SIZE = 6;
 
 static bool send(const void* data, size_t dataSize);
 
-void CellularTaskBegin(void) {
+void CellularTaskBegin() {
   // Network configuration
   WioNetwork.config.searchAccessTechnology = SEARCH_ACCESS_TECHNOLOGY;
   WioNetwork.config.ltemBand = LTEM_BAND;

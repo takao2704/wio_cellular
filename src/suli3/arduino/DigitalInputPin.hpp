@@ -43,7 +43,7 @@ namespace suli3
              *
              * ピンをデジタル入力から解放します。
              */
-            void end(void)
+            void end()
             {
                 pinMode(PIN, NO_CONNECT);
             }
@@ -57,7 +57,7 @@ namespace suli3
              *
              * ピンの状態を読み込みます。
              */
-            int read(void) const
+            int read() const
             {
                 static_assert(LOW == 0 && HIGH == 1, "Invalid LOW/HIGH");
 

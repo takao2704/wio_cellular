@@ -7,7 +7,7 @@
 #include <Adafruit_TinyUSB.h>
 #include <WioCellular.h>
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -25,7 +25,7 @@ void setup(void) {
   GpsBegin();
 }
 
-void loop(void) {
+void loop() {
   const auto data = GpsRead();
   if (data != NULL && strncmp(data, "$GPGGA,", 7) == 0) {
     Serial.println(data);
@@ -37,12 +37,12 @@ void loop(void) {
 char GpsData[100];
 int GpsDataLength;
 
-void GpsBegin(void) {
+void GpsBegin() {
   Serial1.begin(9600);
   GpsDataLength = 0;
 }
 
-const char* GpsRead(void) {
+const char* GpsRead() {
   while (true) {
     const auto data = Serial1.read();
     if (data < 0) return NULL;

@@ -23,7 +23,7 @@ namespace wiocellular::internal
             Start_ = millis();
         }
 
-        bool isTimeout(void) const
+        bool isTimeout() const
         {
             if (Timeout_ >= 0)
             {
@@ -35,7 +35,7 @@ namespace wiocellular::internal
             }
         }
 
-        int remaining(void) const
+        int remaining() const
         {
             if (Timeout_ >= 0)
             {

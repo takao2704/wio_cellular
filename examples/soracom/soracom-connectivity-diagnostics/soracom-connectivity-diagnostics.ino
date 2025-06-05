@@ -52,20 +52,20 @@ static WioCellularResult executeCommand(const char *command, int timeout) {
   return result;
 }
 
-static void showModemInformation(void) {
+static void showModemInformation() {
   ABORT_IF_FAILED(queryCommand("AT+GSN", 300));
   ABORT_IF_FAILED(queryCommand("AT+CIMI", 300));
   ABORT_IF_FAILED(queryCommand("AT+QSIMSTAT?", 300));
 }
 
-static void showNetworkInformation(void) {
+static void showNetworkInformation() {
   ABORT_IF_FAILED(queryCommand("AT+QIACT?", 300));
   ABORT_IF_FAILED(queryCommand("AT+QCSQ", 300));
   ABORT_IF_FAILED(queryCommand("AT+COPS?", 300));
   ABORT_IF_FAILED(queryCommand("AT+CGPADDR=1", 300));
 }
 
-static bool setupNetworkConfigurations(void) {
+static bool setupNetworkConfigurations() {
   const bool setupPDP = executeCommand("AT+CGDCONT=1,\"IP\",\"soracom.io\",\"0.0.0.0\",0,0,0", 300) == WioCellularResult::Ok;
   const bool networkCategory = executeCommand("AT+QCFG=\"iotopmode\",0,1", 300) == WioCellularResult::Ok;
   const bool scanSequence = executeCommand("AT+QCFG=\"nwscanseq\",00,1", 300) == WioCellularResult::Ok;
@@ -129,7 +129,7 @@ static int printPingSummary(String input) {
   return result;
 }
 
-static void pingToSoracomNetwork(void) {
+static void pingToSoracomNetwork() {
   std::vector<std::string> pingResponse;
   {
     const auto handler = WioCellular.registerUrcHandler2([&pingResponse](const std::string &response) -> bool {
@@ -167,7 +167,7 @@ static void pingToSoracomNetwork(void) {
   if (pingResponse.size() >= 4) printPingSummary(pingResponse[3].c_str());
 }
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -236,6 +236,6 @@ void setup(void) {
   CONSOLE.println("--- Execution completed, please write your own sketch and enjoy it.");
 }
 
-void loop(void) {
+void loop() {
   delay(1000);
 }

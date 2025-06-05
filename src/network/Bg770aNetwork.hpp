@@ -202,7 +202,7 @@ namespace wiocellular
              *
              * コンストラクタ。
              */
-            Bg770aNetwork(void)
+            Bg770aNetwork()
                 : abortHandler{nullptr},
                   config{SearchAccessTechnology::NOSET, "", "", 1, ""},
                   EpsRegistrationStatus_{-1},
@@ -216,7 +216,7 @@ namespace wiocellular
              *
              * ネットワーク支援を開始します。
              */
-            void begin(void)
+            void begin()
             {
                 WioCellularResult result;
 
@@ -433,7 +433,7 @@ namespace wiocellular
              *
              * ネットワーク状態を取得します。
              */
-            NetworkState getNetworkState(void)
+            NetworkState getNetworkState()
             {
                 switch (EpsRegistrationStatus_)
                 {
@@ -477,7 +477,7 @@ namespace wiocellular
              *
              * 通信可否を取得します。
              */
-            bool canCommunicate(void)
+            bool canCommunicate()
             {
                 if (getNetworkState() != Bg770aNetwork::NetworkState::Connected)
                     return false;

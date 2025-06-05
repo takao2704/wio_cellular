@@ -51,7 +51,7 @@ namespace wiocellular
              *
              * ボードを初期化します。
              */
-            void begin(void)
+            void begin()
             {
                 MODULE::getInterface().begin();
 
@@ -65,7 +65,7 @@ namespace wiocellular
              * Groveの電源を投入します。
              */
             [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON) instead.")]]
-            void enableGrovePower(void)
+            void enableGrovePower()
             {
                 VgroveEnable_.write(0);
                 delay(2 + 2);
@@ -78,7 +78,7 @@ namespace wiocellular
              * Groveの電源を開放します。
              */
             [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_OFF) instead.")]]
-            void disableGrovePower(void)
+            void disableGrovePower()
             {
                 VgroveEnable_.write(1);
                 delay(2 + 2);

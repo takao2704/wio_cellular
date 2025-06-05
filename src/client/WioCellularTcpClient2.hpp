@@ -88,7 +88,7 @@ namespace wiocellular::client
          * クライアント状態を取得します。
          * この関数は最後の実行結果に影響を与えません。
          */
-        State getState(void) const
+        State getState() const
         {
             return State_;
         }
@@ -101,7 +101,7 @@ namespace wiocellular::client
          *
          * 最後の実行結果を取得します。
          */
-        WioCellularResult getLastResult(void) const
+        WioCellularResult getLastResult() const
         {
             return LastResult_;
         }
@@ -167,7 +167,7 @@ namespace wiocellular::client
          *
          * デストラクタ。
          */
-        ~WioCellularTcpClient2(void)
+        ~WioCellularTcpClient2()
         {
             close();
         }
@@ -276,7 +276,7 @@ namespace wiocellular::client
          * TCPクライアントをクローズします。
          * エラーの詳細をgetLastResult()で取得できます。
          */
-        bool close(void)
+        bool close()
         {
             if (getState() != State::Closed)
             {

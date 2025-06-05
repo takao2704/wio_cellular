@@ -87,7 +87,7 @@ namespace wiocellular
                  *
                  * パラメータ数を取得します。
                  */
-                size_t size(void) const
+                size_t size() const
                 {
                     return Parameters_.size();
                 }

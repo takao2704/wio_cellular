@@ -46,7 +46,7 @@ static std::string SubscribeTopic;
 static std::string PublishTopic;
 static int ReconnectWaitTime = RECONNECT_WAIT_TIME;
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -92,7 +92,7 @@ void setup(void) {
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-void loop(void) {
+void loop() {
   if (!MqttClient.connected()) {
     Serial.print("Connecting ");
     Serial.print(MQTT_BROKER_HOST);

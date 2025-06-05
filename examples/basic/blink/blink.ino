@@ -6,10 +6,10 @@
 
 #include <Adafruit_TinyUSB.h>
 
-void setup(void) {
+void setup() {
 }
 
-void loop(void) {
+void loop() {
   digitalWrite(LED_BUILTIN, HIGH);
   delay(200);
   digitalWrite(LED_BUILTIN, LOW);

@@ -37,7 +37,7 @@ static void abortHandler(int sig) {
 
 static JsonDocument JsonDoc;
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -63,7 +63,7 @@ void setup(void) {
   digitalWrite(LED_BUILTIN, LOW);
 }
 
-void loop(void) {
+void loop() {
   digitalWrite(LED_BUILTIN, HIGH);
 
   // Power on the cellular module

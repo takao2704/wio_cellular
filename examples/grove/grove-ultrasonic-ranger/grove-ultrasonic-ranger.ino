@@ -17,7 +17,7 @@
 
 Ultrasonic UltrasonicRanger(ULTRASONIC_PIN);
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -33,7 +33,7 @@ void setup(void) {
   delay(2 + 2);
 }
 
-void loop(void) {
+void loop() {
   long distance;
   distance = UltrasonicRanger.MeasureInCentimeters();
   Serial.print(distance);

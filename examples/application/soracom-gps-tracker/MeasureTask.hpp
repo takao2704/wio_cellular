@@ -7,7 +7,7 @@
 #ifndef MEASURETASK_HPP
 #define MEASURETASK_HPP
 
-void MeasureTaskBegin(void);
+void MeasureTaskBegin();
 void MeasureTaskFunction(void* param);
 
 #endif  // MEASURETASK_HPP

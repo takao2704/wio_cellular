@@ -81,7 +81,7 @@ static const CommandType CommandList[] = {
   { "help", "", "Display command description.", CommandHelp },
 };
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -116,7 +116,7 @@ void setup(void) {
   WioNetwork.begin();
 }
 
-void loop(void) {
+void loop() {
   WioCellular.doWork(10);  // Spin
   ntshell_execute_nb(&Shell);
 }

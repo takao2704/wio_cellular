@@ -92,7 +92,7 @@ namespace wiocellular
                  *
                  * インターフェースを取得します。
                  */
-                INTERFACE &getInterface(void)
+                INTERFACE &getInterface()
                 {
                     return Interface_;
                 }
@@ -382,7 +382,7 @@ namespace wiocellular
                  *
                  * 電源をオフします。
                  */
-                WioCellularResult powerOff(void)
+                WioCellularResult powerOff()
                 {
                     getInterface().powerOff();
 

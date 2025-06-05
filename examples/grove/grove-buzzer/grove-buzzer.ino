@@ -11,7 +11,7 @@
 #define BUZZER_ON_TIME (100)
 #define BUZZER_OFF_TIME (3000)
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -30,7 +30,7 @@ void setup(void) {
   pinMode(BUZZER_PIN, OUTPUT);
 }
 
-void loop(void) {
+void loop() {
   digitalWrite(BUZZER_PIN, HIGH);
   delay(BUZZER_ON_TIME);
 

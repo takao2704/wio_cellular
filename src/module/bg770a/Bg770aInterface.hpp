@@ -10,7 +10,7 @@
 #include <Arduino.h>
 #include "Suli3.hpp"
 
-void BG770AINTERFACE_VDD_EXT_IRQHANDLER(void);
+void BG770AINTERFACE_VDD_EXT_IRQHANDLER();
 
 namespace wiocellular
 {
@@ -55,7 +55,7 @@ namespace wiocellular
                  *
                  * コンストラクタ。
                  */
-                Bg770aInterface(void)
+                Bg770aInterface()
                     : MainUartReceived_{nullptr},
                       MainUartReceived2_{nullptr},
                       RealMainUart_{BG770AINTERFACE_MAIN_UARTE, BG770AINTERFACE_MAIN_UARTE_IRQn, CONSTANT::MAIN_TXD_PIN, CONSTANT::MAIN_RXD_PIN, CONSTANT::MAIN_CTS_PIN, CONSTANT::MAIN_RTS_PIN},
@@ -72,13 +72,13 @@ namespace wiocellular
                  * MainUARTの割り込み処理です。
                  * UARTの割り込みハンドラから呼び出す必要があります。
                  * ```cpp
-                 * extern "C" void BG770AINTERFACE_MAIN_UARTE_IRQHANDLER(void)
+                 * extern "C" void BG770AINTERFACE_MAIN_UARTE_IRQHANDLER()
                  * {
                  *     WioCellularModuleInterfaceInstance.mainUartIrqHandler();
                  * }
                  * ```
                  */
-                void mainUartIrqHandler(void)
+                void mainUartIrqHandler()
                 {
                     BaseType_t higherPriorityTaskWoken = pdFALSE; // FreeRTOS
 
@@ -104,13 +104,13 @@ namespace wiocellular
                  * ```cpp
                  * attachInterrupt(BG770AINTERFACE_VDD_EXT, BG770AINTERFACE_VDD_EXT_IRQHANDLER, CHANGE);
                  *
-                 * void BG770AINTERFACE_VDD_EXT_IRQHANDLER(void)
+                 * void BG770AINTERFACE_VDD_EXT_IRQHANDLER()
                  * {
                  *     WioCellularModuleInterfaceInstance.vddExtHandler();
                  * }
                  * ```
                  */
-                void vddExtHandler(void)
+                void vddExtHandler()
                 {
                     if (isActive())
                     {
@@ -132,7 +132,7 @@ namespace wiocellular
                  *
                  * インターフェースを初期化します。
                  */
-                void begin(void)
+                void begin()
                 {
                     VddExt_.begin(INPUT_PULLUP);
 #if defined(BOARD_VERSION_ES2)
@@ -173,7 +173,7 @@ namespace wiocellular
                  *
                  * 電源をオンします。
                  */
-                void powerOn(void)
+                void powerOn()
                 {
 #if defined(BOARD_VERSION_ES2)
                     Pwrkey_.write(1);
@@ -194,7 +194,7 @@ namespace wiocellular
                  *
                  * 電源をオフします。
                  */
-                void powerOff(void)
+                void powerOff()
                 {
 #if defined(BOARD_VERSION_ES2)
                     Pwrkey_.write(1);
@@ -215,7 +215,7 @@ namespace wiocellular
                  *
                  * リセットします。
                  */
-                void reset(void)
+                void reset()
                 {
 #if defined(BOARD_VERSION_ES2)
 #elif defined(BOARD_VERSION_1_0)
@@ -236,7 +236,7 @@ namespace wiocellular
                  *
                  * 起動状態を取得します。
                  */
-                bool isActive(void)
+                bool isActive()
                 {
                     return !VddExt_.read();
                 }
@@ -247,7 +247,7 @@ namespace wiocellular
                  *
                  * スリープモードもしくはeDRXモードへ遷移します。
                  */
-                void sleep(void)
+                void sleep()
                 {
                     MainDtr_.write(1);
                 }
@@ -258,7 +258,7 @@ namespace wiocellular
                  *
                  * スリープモードから復帰します。
                  */
-                void wakeup(void)
+                void wakeup()
                 {
                     MainDtr_.write(0);
                 }
@@ -269,7 +269,7 @@ namespace wiocellular
                  *
                  * 受信通知セマフォを取得します。
                  */
-                SemaphoreHandle_t getReceivedNotificationSemaphone(void) // FreeRTOS
+                SemaphoreHandle_t getReceivedNotificationSemaphone() // FreeRTOS
                 {
                     return MainUartReceived2_;
                 }
@@ -312,7 +312,7 @@ namespace wiocellular
                  * MainUARTから受信したデータを読み込みます。
                  * 受信データが無いときは負の値を返します。
                  */
-                int read(void)
+                int read()
                 {
                     return MainUart_.read();
                 }

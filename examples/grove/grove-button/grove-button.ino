@@ -10,7 +10,7 @@
 #define BUTTON_PIN (D30)  // Grove - Digital (P1)
 #define INTERVAL (100)
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -28,7 +28,7 @@ void setup(void) {
   pinMode(BUTTON_PIN, INPUT);
 }
 
-void loop(void) {
+void loop() {
   static int count = 0;
 
   int buttonState = digitalRead(BUTTON_PIN);

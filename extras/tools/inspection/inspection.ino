@@ -22,7 +22,7 @@ static AceButton UserButton(PIN_BUTTON1);
 static bool UserButtonPressed = false;
 static int ErrorCount = 0;
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -115,7 +115,7 @@ void setup(void) {
   }
 }
 
-void loop(void) {
+void loop() {
   Serial.println();
   Serial.println("Completed");
   Serial.print("Number of errors: ");

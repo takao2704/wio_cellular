@@ -17,11 +17,11 @@ static constexpr int POLLING_GPS = 1000 * 60;   // [ms]
 static String LatestGpsData;
 
 static bool measure(JsonDocument& doc);
-static void GpsBegin(void);
-static void GpsEnd(void);
-static const char* GpsRead(void);
+static void GpsBegin();
+static void GpsEnd();
+static const char* GpsRead();
 
-void MeasureTaskBegin(void) {
+void MeasureTaskBegin() {
 }
 
 void MeasureTaskFunction(void* param) {
@@ -108,16 +108,16 @@ static bool measure(JsonDocument& doc) {
 static char GpsData[100];
 static int GpsDataLength;
 
-static void GpsBegin(void) {
+static void GpsBegin() {
   Serial1.begin(9600);
   GpsDataLength = 0;
 }
 
-static void GpsEnd(void) {
+static void GpsEnd() {
   Serial1.end();
 }
 
-static const char* GpsRead(void) {
+static const char* GpsRead() {
   while (true) {
     const auto data = Serial1.read();
     if (data < 0) return NULL;

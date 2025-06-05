@@ -19,7 +19,7 @@ static void abortHandler(int sig) {
   }
 }
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -43,7 +43,7 @@ void setup(void) {
   Serial.println("Ready");
 }
 
-void loop(void) {
+void loop() {
   int c;
 
   while (true) {

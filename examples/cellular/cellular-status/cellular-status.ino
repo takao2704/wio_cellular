@@ -20,7 +20,7 @@ static void abortHandler(int sig) {
   }
 }
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -43,7 +43,7 @@ void setup(void) {
   Serial.println();
 }
 
-void loop(void) {
+void loop() {
   PrintStatus();
 
   WioCellular.doWorkUntil(INTERVAL);
@@ -87,7 +87,7 @@ static std::string BerCodeToStr(int ber) {
   }
 }
 
-static void PrintInfo(void) {
+static void PrintInfo() {
   std::string imei;
   WioCellular.getIMEI(&imei);
   std::string revision;
@@ -134,7 +134,7 @@ static void PrintInfo(void) {
   Serial.printf("Search Band - NB-IoT: %s\n", nbiotBand.c_str());
 }
 
-static void PrintStatus(void) {
+static void PrintStatus() {
   const auto uptime = millis() / 1000;
   int rssi;
   int ber;

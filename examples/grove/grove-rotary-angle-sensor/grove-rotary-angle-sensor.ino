@@ -11,7 +11,7 @@
 #define INTERVAL (500)
 #define BAR_LENGTH (40)
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -29,7 +29,7 @@ void setup(void) {
   analogReadResolution(14);
 }
 
-void loop(void) {
+void loop() {
   const auto rotaryAngleRaw = analogRead(ROTARY_ANGLE_PIN);
 
   // Convert raw value to voltage

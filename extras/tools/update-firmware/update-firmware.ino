@@ -7,7 +7,7 @@
 #include <Adafruit_TinyUSB.h>
 #include <WioCellular.h>
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -40,7 +40,7 @@ void setup(void) {
   Serial.println("Ready");
 }
 
-void loop(void) {
+void loop() {
   int c;
 
   while (true) {

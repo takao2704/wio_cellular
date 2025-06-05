@@ -69,7 +69,7 @@ public:
      *
      * デストラクタ。
      */
-    virtual ~WioCellularArduinoTcpClient(void)
+    virtual ~WioCellularArduinoTcpClient()
     {
     }
 
@@ -165,7 +165,7 @@ public:
      *
      * TCPサーバーから受信した、未読のデータサイズを取得します。
      */
-    virtual int available(void)
+    virtual int available()
     {
         size_t size;
         const auto result = TcpClient_.receive(ReceiveBuffer_.data(), ReceiveBuffer_.size(), &size);
@@ -188,7 +188,7 @@ public:
      * TCPサーバーから受信します。
      * 受信データが無いときは負の値を返します。
      */
-    virtual int read(void)
+    virtual int read()
     {
         const int actualSize = available();
         if (actualSize <= 0)
@@ -236,7 +236,7 @@ public:
      * TCPサーバーから受信したデータを先読みします。
      * 受信データが無いときは負の値を返します。
      */
-    virtual int peek(void)
+    virtual int peek()
     {
         const int actualSize = available();
         if (actualSize <= 0)
@@ -251,7 +251,7 @@ public:
      *
      * TCPサーバーから受信したデータを破棄します。
      */
-    virtual void flush(void)
+    virtual void flush()
     {
         available();
 
@@ -265,7 +265,7 @@ public:
      *
      * TCPサーバーを切断します。
      */
-    virtual void stop(void)
+    virtual void stop()
     {
         TcpClient_.close();
 
@@ -282,7 +282,7 @@ public:
      *
      * TCPサーバーの接続状態を取得します。
      */
-    virtual uint8_t connected(void)
+    virtual uint8_t connected()
     {
         Module_.doWork(0);
         return TcpClient_.getState() == decltype(TcpClient_)::State::Connected ? 1 : 0;
@@ -297,7 +297,7 @@ public:
      *
      * TCPサーバーの接続状態を取得します。
      */
-    virtual operator bool(void)
+    virtual operator bool()
     {
         return connected();
     }

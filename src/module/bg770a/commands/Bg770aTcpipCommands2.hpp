@@ -134,7 +134,7 @@ namespace wiocellular
                      *
                      * コンストラクタ。
                      */
-                    Bg770aTcpipCommands2(void)
+                    Bg770aTcpipCommands2()
                     {
                     }
 

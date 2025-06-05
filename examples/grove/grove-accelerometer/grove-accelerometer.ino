@@ -14,7 +14,7 @@
 #define REG_POWER_CTL (0x2d)
 #define REG_DATAX0 (0x32)
 
-void setup(void) {
+void setup() {
   Serial.begin(115200);
   {
     const auto start = millis();
@@ -32,7 +32,7 @@ void setup(void) {
   AccelInitialize();
 }
 
-void loop(void) {
+void loop() {
   float x;
   float y;
   float z;
@@ -47,7 +47,7 @@ void loop(void) {
   delay(INTERVAL);
 }
 
-void AccelInitialize(void) {
+void AccelInitialize() {
   Wire.begin();
   Wire.beginTransmission(I2C_ADDRESS);
   Wire.write(REG_POWER_CTL);

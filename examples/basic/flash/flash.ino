@@ -34,7 +34,7 @@ static Adafruit_SPIFlashMemory FlashMemory(Flash);
 
 static NonVolatileMemory NvmValue(FlashMemory, 0x0000, 4);
 
-void setup(void) {
+void setup() {
   signal(SIGABRT, abortHandler);
   Serial.begin(115200);
   {
@@ -65,7 +65,7 @@ void setup(void) {
   }
 }
 
-void loop(void) {
+void loop() {
   uint32_t value = NvmValue.value<uint32_t>();
   Serial.println(value);
 
