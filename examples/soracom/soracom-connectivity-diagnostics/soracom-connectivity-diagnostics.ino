@@ -25,11 +25,15 @@ static constexpr int POWER_ON_TIMEOUT = 1000 * 20;  // [ms]
   } while (0)
 
 static void abortHandler(int sig) {
+  Serial.printf("ABORT: Signal %d received\n", sig);
+  yield();
+
+  vTaskSuspendAll();  // FreeRTOS
   while (true) {
     ledOn(LED_BUILTIN);
-    delay(100);
+    nrfx_coredep_delay_us(100000);  // Spin
     ledOff(LED_BUILTIN);
-    delay(100);
+    nrfx_coredep_delay_us(100000);  // Spin
   }
 }
 

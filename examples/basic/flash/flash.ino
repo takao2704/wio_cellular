@@ -17,11 +17,15 @@
 using namespace wiocellular::component::nonvolatilememory;
 
 static void abortHandler(int sig) {
+  Serial.printf("ABORT: Signal %d received\n", sig);
+  yield();
+
+  vTaskSuspendAll();  // FreeRTOS
   while (true) {
     ledOn(LED_BUILTIN);
-    delay(100);
+    nrfx_coredep_delay_us(100000);  // Spin
     ledOff(LED_BUILTIN);
-    delay(100);
+    nrfx_coredep_delay_us(100000);  // Spin
   }
 }
 

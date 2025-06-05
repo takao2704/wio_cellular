@@ -26,11 +26,15 @@ static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 3;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 
 static void abortHandler(int sig) {
+  Serial.printf("ABORT: Signal %d received\n", sig);
+  yield();
+
+  vTaskSuspendAll();  // FreeRTOS
   while (true) {
     ledOn(LED_BUILTIN);
-    delay(100);
+    nrfx_coredep_delay_us(100000);  // Spin
     ledOff(LED_BUILTIN);
-    delay(100);
+    nrfx_coredep_delay_us(100000);  // Spin
   }
 }
 
