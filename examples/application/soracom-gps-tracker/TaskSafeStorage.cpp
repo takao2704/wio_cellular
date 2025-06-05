@@ -18,7 +18,7 @@ static Adafruit_SPIFlash Flash(&FlashTransport);
 static Adafruit_SPIFlashMemory FlashMemory(Flash);
 
 static NonVolatileMemory NvmMarker(FlashMemory, 0x0000, 4);
-static NonVolatileMemory NvmSettings(FlashMemory, 0x0000, 0x0400 - 4);
+static NonVolatileMemory NvmAbnormalRebootCount(FlashMemory, 0x0004, 1);
 static NonVolatileMemory NvmSendBuffer(FlashMemory, 0x0400, 0x10000 - 0x400);
 static NonVolatileBlockQueue NvmSendQueue(NvmSendBuffer);
 
@@ -40,6 +40,7 @@ void TaskSafeStorage::clear() {
   std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
 
   NvmMarker.value<uint32_t>() = 0;
+  NvmAbnormalRebootCount.value<uint8_t>() = 0;
   if (NvmSendQueue.clear() < 0) abort();
 }
 
@@ -53,6 +54,18 @@ uint32_t TaskSafeStorage::readMarker() {
   std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
 
   return NvmMarker.value<uint32_t>();
+}
+
+void TaskSafeStorage::writeAbnormalRebootCount(uint8_t count) {
+  std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
+
+  NvmAbnormalRebootCount.value<uint8_t>() = count;
+}
+
+uint8_t TaskSafeStorage::readAbnormalRebootCount() {
+  std::unique_ptr<CriticalSection> cs = std::make_unique<CriticalSection>(FeramMutex);
+
+  return NvmAbnormalRebootCount.value<uint8_t>();
 }
 
 size_t TaskSafeStorage::SendQueue::freeSize() {

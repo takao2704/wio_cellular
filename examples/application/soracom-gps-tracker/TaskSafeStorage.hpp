@@ -40,6 +40,8 @@ public:
   static void writeMarker(uint32_t marker);
   static uint32_t readMarker();
 
+  static void writeAbnormalRebootCount(uint8_t count);
+  static uint8_t readAbnormalRebootCount();
 
   class SendQueue {
   public:

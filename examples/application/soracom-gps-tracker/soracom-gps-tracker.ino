@@ -70,6 +70,30 @@ void setup() {
     TaskSafeStorage::writeMarker(0x12345678);
   }
 
+  // Update abnormal reboot count
+  uint8_t abnormalRebootCount = TaskSafeStorage::readAbnormalRebootCount();
+  if (readResetReason() & POWER_RESETREAS_RESETPIN_Msk) {
+    if (abnormalRebootCount > 0) {
+      abnormalRebootCount = 0;
+      TaskSafeStorage::writeAbnormalRebootCount(abnormalRebootCount);
+    }
+  } else {
+    if (abnormalRebootCount < std::numeric_limits<decltype(abnormalRebootCount)>::max()) {
+      ++abnormalRebootCount;
+      TaskSafeStorage::writeAbnormalRebootCount(abnormalRebootCount);
+    }
+    Serial.printf(TASK_NAME "Abnormal reboot count: %u\n", abnormalRebootCount);
+
+    if (abnormalRebootCount >= 10) {
+      while (true) {
+        ledOn(LED_BUILTIN);
+        delay(100);
+        ledOff(LED_BUILTIN);
+        delay(100);
+      }
+    }
+  }
+
   // Begin tasks
   CellularTaskBegin();
   MeasureTaskBegin();
