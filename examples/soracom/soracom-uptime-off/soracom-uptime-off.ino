@@ -20,9 +20,13 @@ static const char APN[] = "soracom.io";
 static const char HOST[] = "uni.soracom.io";
 static constexpr int PORT = 23080;
 
+template<typename MODULE> using CellularClient = WioCellularTcpClient2<MODULE>;  // TCP
+// template<typename MODULE> using CellularClient = WioCellularUdpClient2<MODULE>; // UDP
+
 static constexpr int INTERVAL = 1000 * 60 * 15;        // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
 static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 3;  // [ms]
+static constexpr int CONNECT_TIMEOUT = 1000 * 10;      // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 static constexpr int POWER_OFF_DELAY_TIME = 1000 * 3;  // [ms]
 
@@ -111,13 +115,13 @@ static bool send(const JsonDocument &doc) {
   Serial.println(PORT);
 
   {
-    WioCellularTcpClient2<WioCellularModule> client{ WioCellular };
+    CellularClient<WioCellularModule> client{ WioCellular };
     if (!client.open(WioNetwork.config.pdpContextId, HOST, PORT)) {
       Serial.printf("ERROR: Failed to open %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
 
-    if (!client.waitforConnect()) {
+    if (!client.waitforConnect(CONNECT_TIMEOUT)) {
       Serial.printf("ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }

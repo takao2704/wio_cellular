@@ -1,11 +1,11 @@
 /*
- * WioCellularTcpClient2.hpp
+ * WioCellularUdpClient2.hpp
  * Copyright (C) Seeed K.K.
  * MIT License
  */
 
-#ifndef WIOCELLULARTCPCLIENT2_HPP
-#define WIOCELLULARTCPCLIENT2_HPP
+#ifndef WIOCELLULARUDPCLIENT2_HPP
+#define WIOCELLULARUDPCLIENT2_HPP
 
 #include <memory>
 #include "internal/CountdownTimer.hpp"
@@ -18,14 +18,14 @@ namespace wiocellular::client
 
     /**
      * @~Japanese
-     * @brief TCPクライアント
+     * @brief UDPクライアント
      *
      * @tparam MODULE モジュールのクラス
      *
-     * TCPクライアントのクラスです。
+     * UDPクライアントのクラスです。
      */
     template <typename MODULE>
-    class WioCellularTcpClient2
+    class WioCellularUdpClient2
     {
     public:
         /**
@@ -54,11 +54,6 @@ namespace wiocellular::client
              * @brief 接続完了
              */
             Connected,
-            /**
-             * @~Japanese
-             * @brief クローズ中
-             */
-            Closing, // CLOSE_WAIT
         };
 
     private:
@@ -73,7 +68,7 @@ namespace wiocellular::client
     private:
         void setState(State state)
         {
-            printf("---> WioCellularTcpClient2<%d> state changed %d to %d\n", ConnectId_, static_cast<int>(State_), static_cast<int>(state));
+            printf("---> WioCellularUdpClient2<%d> state changed %d to %d\n", ConnectId_, static_cast<int>(State_), static_cast<int>(state));
             State_ = state;
         }
 
@@ -120,20 +115,11 @@ namespace wiocellular::client
             }
             if (getState() == State::Connected)
             {
-                const std::string urcQiurcClosed = wiocellular::internal::stringFormat("+QIURC: \"closed\",%d", ConnectId_);
-                if (response == urcQiurcClosed)
-                {
-                    setState(State::Closing);
-                    return true;
-                }
-            }
-            if (getState() == State::Connected || getState() == State::Closing)
-            {
                 const std::string urcQiurcRecv = wiocellular::internal::stringFormat("+QIURC: \"recv\",%d", ConnectId_);
                 const std::string urcQiurcRecvPrefix = wiocellular::internal::stringFormat("+QIURC: \"recv\",%d,", ConnectId_);
                 if (response == urcQiurcRecv || response.starts_with(urcQiurcRecvPrefix))
                 {
-                    printf("---> WioCellularTcpClient2<%d> received\n", ConnectId_);
+                    printf("---> WioCellularUdpClient2<%d> received\n", ConnectId_);
                     ReceivedNofity_ = true;
                     return true;
                 }
@@ -150,7 +136,7 @@ namespace wiocellular::client
          *
          * コンストラクタ。
          */
-        WioCellularTcpClient2(MODULE &module) : Module_{module},
+        WioCellularUdpClient2(MODULE &module) : Module_{module},
                                                 State_{State::Closed},
                                                 LastResult_{WioCellularResult::Ok},
                                                 UrcHandler_{nullptr},
@@ -166,7 +152,7 @@ namespace wiocellular::client
          *
          * デストラクタ。
          */
-        ~WioCellularTcpClient2()
+        ~WioCellularUdpClient2()
         {
             close();
         }
@@ -181,7 +167,7 @@ namespace wiocellular::client
          * @retval true 成功
          * @retval false エラー
          *
-         * TCPクライアントをオープンします。
+         * UDPクライアントをオープンします。
          * エラーの詳細をgetLastResult()で取得できます。
          */
         bool open(int cid, const std::string &ipAddress, int remotePort)
@@ -212,9 +198,9 @@ namespace wiocellular::client
             }
 
             ReceivedNofity_ = false;
-            UrcHandler_ = Module_.registerUrcHandler2(std::bind(&WioCellularTcpClient2::urcHandler, this, std::placeholders::_1));
+            UrcHandler_ = Module_.registerUrcHandler2(std::bind(&WioCellularUdpClient2::urcHandler, this, std::placeholders::_1));
 
-            if (const auto result = WioCellular.openSocket2(cid, ConnectId_, "TCP", ipAddress, remotePort, 0); result != WioCellularResult::Ok)
+            if (const auto result = WioCellular.openSocket2(cid, ConnectId_, "UDP", ipAddress, remotePort, 0); result != WioCellularResult::Ok)
             {
                 UrcHandler_ = nullptr;
                 wiocellular::internal::UsedConnectIds.reset(ConnectId_);
@@ -237,9 +223,14 @@ namespace wiocellular::client
          * @retval true 接続完了
          * @retval false タイムアウトもしくは接続エラー
          *
-         * TCPクライアントの接続完了を待機します。
+         * UDPクライアントの接続完了を待機します。
          * 永久に待機したいときはtimeoutに-1を指定します。
          * エラーの詳細をgetLastResult()で取得できます。
+         * 
+         * @note
+         * UDPには接続という概念はありませんが、モジュールとのやりとりにはオープンと接続があります。
+         * そのため、UDPであっても接続完了を待機しなければいけません。
+         * なお、オープンのときにドメイン名の名前解決の送受信が発生しますが、接続処理として送受信は発生しません。
          */
         bool waitforConnect(int timeout = 150000)
         {
@@ -272,7 +263,7 @@ namespace wiocellular::client
          * @retval true 成功
          * @retval false エラー
          *
-         * TCPクライアントをクローズします。
+         * UDPクライアントをクローズします。
          * エラーの詳細をgetLastResult()で取得できます。
          */
         bool close()
@@ -284,7 +275,7 @@ namespace wiocellular::client
                 if (getState() == State::Opened && millis() - openedTime_ < 150000)
                 {
                     const auto wait = 150000 - (millis() - openedTime_);
-                    printf("---> WioCellularTcpClient2<%d> forced to wait %lu\n", ConnectId_, wait);
+                    printf("---> WioCellularUdpClient2<%d> forced to wait %lu\n", ConnectId_, wait);
                     WioCellular.doWork(wait, [this]
                                        { return getState() != State::Opened; });
                 }
@@ -352,7 +343,7 @@ namespace wiocellular::client
          */
         bool receive(void *data, size_t dataSize, size_t *readDataSize)
         {
-            if (getState() != State::Connected && getState() != State::Closing)
+            if (getState() != State::Connected)
             {
                 LastResult_ = WioCellularResult::InvalidOperation;
                 return false;
@@ -379,12 +370,6 @@ namespace wiocellular::client
                 *readDataSize = 0;
             }
 
-            if (*readDataSize == 0 && getState() != State::Connected)
-            {
-                LastResult_ = WioCellularResult::Closing;
-                return false;
-            }
-
             LastResult_ = WioCellularResult::Ok;
             return true;
         }
@@ -406,7 +391,7 @@ namespace wiocellular::client
          */
         bool receive(void *data, size_t dataSize, size_t *readDataSize, int timeout)
         {
-            if (getState() != State::Connected && getState() != State::Closing)
+            if (getState() != State::Connected)
             {
                 LastResult_ = WioCellularResult::InvalidOperation;
                 return false;
@@ -439,4 +424,4 @@ namespace wiocellular::client
 
 }
 
-#endif // WIOCELLULARTCPCLIENT2_HPP
+#endif // WIOCELLULARUDPCLIENT2_HPP
