@@ -254,6 +254,56 @@ namespace wiocellular
 
                     /**
                      * @~Japanese
+                     * @brief 無線接続状態を取得
+                     *
+                     * @param [out] enable URC通知設定。nullptrを指定すると値を代入しません。
+                     * @param [out] mode モード。nullptrを指定すると値を代入しません。
+                     *   @arg 0: アイドル
+                     *   @arg 1: 接続済み
+                     * @return 実行結果。
+                     *
+                     * 無線接続状態を取得します。
+                     *
+                     * > BG77xA-GL&BG95xA-GL AT Commands Manual @n
+                     * > 6.15. AT+QCSCON Signaling Connection Status
+                     */
+                    WioCellularResult getSignalingConnectionStatus(bool *enable, int *mode)
+                    {
+                        return static_cast<MODULE &>(*this).queryCommand(
+                            "AT+QCSCON?", [enable, mode](const std::string &response) -> bool
+                            {
+                                std::string responseParameter;
+                                if (internal::stringStartsWith(response, "+QCSCON: ", &responseParameter))
+                                {
+                                    at_client::AtParameterParser parser{responseParameter};
+                                    if (parser.size() != 2) return false;
+                                    if (enable) *enable = std::stoi(parser[0]) != 0;
+                                    if (mode) *mode = std::stoi(parser[1]);
+                                    return true;
+                                }
+                                return false; },
+                            300);
+                    }
+
+                    /**
+                     * @~Japanese
+                     * @brief 無線接続状態のURC通知を設定
+                     *
+                     * @param [in] enable 有効。
+                     * @return 実行結果。
+                     *
+                     * 無線接続状態のURC通知を設定します。
+                     *
+                     * > BG77xA-GL&BG95xA-GL AT Commands Manual @n
+                     * > 6.15. AT+QCSCON Signaling Connection Status
+                     */
+                    WioCellularResult setSignalingConnectionStatus(bool enable)
+                    {
+                        return static_cast<MODULE &>(*this).executeCommand(internal::stringFormat("AT+QCSCON=%d", enable ? 1 : 0), 300);
+                    }
+
+                    /**
+                     * @~Japanese
                      * @brief 電話番号を取得
                      *
                      * @param [out] phoneNumber 電話番号。nullptrを指定すると値を代入しません。
