@@ -20,6 +20,24 @@
 #include "internal/Misc.hpp"
 #include "WioCellularResult.hpp"
 
+#if 0
+#define COLOR_CMD "\033[32;1m"
+#define COLOR_ECO "\033[32m"
+#define COLOR_INF "\033[32m"
+#define COLOR_FRC "\033[32m"
+#define COLOR_URC "\033[32;1;7m"
+#define COLOR_UNK "\033[31;1m"
+#define COLOR_RESET "\033[0m"
+#else
+#define COLOR_CMD ""
+#define COLOR_ECO ""
+#define COLOR_INF ""
+#define COLOR_FRC ""
+#define COLOR_URC ""
+#define COLOR_UNK ""
+#define COLOR_RESET ""
+#endif
+
 namespace wiocellular
 {
     namespace module
@@ -80,7 +98,7 @@ namespace wiocellular
                 {
                     at_client::AtClient<Bg770a<INTERFACE>>::registerUrcHandler([](const std::string &response) -> bool
                                                                                {
-                                                                                    printf("URC> %s\n", response.c_str());
+                                                                                    printf(COLOR_URC "URC> %s" COLOR_RESET "\n", response.c_str());
                                                                                     return false; });
                 }
 
@@ -110,13 +128,13 @@ namespace wiocellular
                  */
                 WioCellularResult executeCommand(const std::string &command, int timeout)
                 {
-                    printf("CMD> %s\n", command.c_str());
+                    printf(COLOR_CMD "CMD> %s" COLOR_RESET "\n", command.c_str());
                     auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
-                    printf("ECO> %s ... %lu[ms]\n", command.c_str(), millis() - start);
+                    printf(COLOR_ECO "ECO> %s ... %lu[ms]" COLOR_RESET "\n", command.c_str(), millis() - start);
                     start = millis();
 
                     std::string response;
@@ -130,17 +148,17 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "OK")
                         {
-                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
+                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || internal::stringStartsWith(response, "+CME ERROR: ") || internal::stringStartsWith(response, "+CMS ERROR: "))
                         {
-                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
+                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
                         // Unknown
-                        printf("unk> %s\n", response.c_str());
+                        printf(COLOR_UNK "unk> %s" COLOR_RESET "\n", response.c_str());
                     }
 
                     return WioCellularResult::Ok;
@@ -161,13 +179,13 @@ namespace wiocellular
                  */
                 WioCellularResult queryCommand(const std::string &command, const std::function<bool(const std::string &response)> &informationTextHandler, int timeout)
                 {
-                    printf("CMD> %s\n", command.c_str());
+                    printf(COLOR_CMD "CMD> %s" COLOR_RESET "\n", command.c_str());
                     auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
-                    printf("ECO> %s ... %lu[ms]\n", command.c_str(), millis() - start);
+                    printf(COLOR_ECO "ECO> %s ... %lu[ms]" COLOR_RESET "\n", command.c_str(), millis() - start);
                     start = millis();
 
                     std::string response;
@@ -181,24 +199,24 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "OK")
                         {
-                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
+                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || internal::stringStartsWith(response, "+CME ERROR: ") || internal::stringStartsWith(response, "+CMS ERROR: "))
                         {
-                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
+                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
                         // Information text
                         if (informationTextHandler && informationTextHandler(response))
                         {
-                            printf("INF> %s\n", response.c_str());
+                            printf(COLOR_INF "INF> %s" COLOR_RESET "\n", response.c_str());
                             continue;
                         }
 
                         // Unknown
-                        printf("unk> %s\n", response.c_str());
+                        printf(COLOR_UNK "unk> %s" COLOR_RESET "\n", response.c_str());
                     }
 
                     return WioCellularResult::Ok;
@@ -219,13 +237,13 @@ namespace wiocellular
                  */
                 WioCellularResult sendCommand(const std::string &command, std::function<bool(const std::string &response)> informationTextHandler, int timeout)
                 {
-                    printf("CMD> %s\n", command.c_str());
+                    printf(COLOR_CMD "CMD> %s" COLOR_RESET "\n", command.c_str());
                     auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
-                    printf("ECO> %s ... %lu[ms]\n", command.c_str(), millis() - start);
+                    printf(COLOR_ECO "ECO> %s ... %lu[ms]" COLOR_RESET "\n", command.c_str(), millis() - start);
                     start = millis();
 
                     std::string response;
@@ -241,24 +259,24 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "SEND OK")
                         {
-                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
+                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || response == "SEND FAIL")
                         {
-                            printf("FRC> %s ... %lu[ms]\n", response.c_str(), millis() - start);
+                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
                         // Information text
                         if (informationTextHandler && informationTextHandler(response))
                         {
-                            printf("INF> %s\n", response.c_str());
+                            printf(COLOR_INF "INF> %s" COLOR_RESET "\n", response.c_str());
                             continue;
                         }
 
                         // Unknown
-                        printf("unk> %s\n", response.c_str());
+                        printf(COLOR_UNK "unk> %s" COLOR_RESET "\n", response.c_str());
                     }
 
                     return WioCellularResult::Ok;
