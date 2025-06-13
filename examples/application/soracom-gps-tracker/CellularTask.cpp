@@ -157,7 +157,7 @@ static bool send(const void* data, size_t dataSize) {
       return false;
     }
 
-    if (!client.waitforConnect()) {
+    if (!client.waitForConnect()) {
       Serial.printf(TASK_NAME "ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }

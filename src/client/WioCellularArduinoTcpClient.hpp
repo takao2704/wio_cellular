@@ -113,7 +113,7 @@ public:
         if (!TcpClient_.open(PdpContextId_, host, port))
             return 0;
 
-        if (!TcpClient_.waitforConnect(ConnectionTimeout_))
+        if (!TcpClient_.waitForConnect(ConnectionTimeout_))
         {
             TcpClient_.close();
             return 0;

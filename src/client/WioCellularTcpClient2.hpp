@@ -241,7 +241,7 @@ namespace wiocellular::client
          * 永久に待機したいときはtimeoutに-1を指定します。
          * エラーの詳細をgetLastResult()で取得できます。
          */
-        bool waitforConnect(int timeout = 150000)
+        bool waitForConnect(int timeout = 150000)
         {
             if (getState() != State::Opened)
             {
@@ -263,6 +263,12 @@ namespace wiocellular::client
 
             LastResult_ = WioCellularResult::Ok;
             return true;
+        }
+
+        [[deprecated("Use waitForConnect() instead.")]]
+        bool waitforConnect(int timeout = 150000)
+        {
+            return waitForConnect(timeout);
         }
 
         /**

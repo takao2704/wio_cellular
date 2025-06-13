@@ -115,7 +115,7 @@ static bool send(const JsonDocument &doc) {
       return false;
     }
 
-    if (!client.waitforConnect(CONNECT_TIMEOUT)) {
+    if (!client.waitForConnect(CONNECT_TIMEOUT)) {
       Serial.printf("ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }

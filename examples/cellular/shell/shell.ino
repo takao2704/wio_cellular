@@ -332,7 +332,7 @@ static int CommandSocketOpen(int argc, char **argv) {
     return 1;
   }
 
-  if (!TcpClient->waitforConnect()) {
+  if (!TcpClient->waitForConnect()) {
     TcpClient.reset();
     Serial.printf("Failed to connect. %s\n", WioCellularResultToString(TcpClient->getLastResult()));
     return 1;
