@@ -22,6 +22,7 @@ static constexpr int PORT = 23080;
 static constexpr int INTERVAL = 1000 * 60 * 15;           // [ms]
 static constexpr int POWER_ON_TIMEOUT = 1000 * 20;        // [ms]
 static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 3;     // [ms]
+static constexpr int CONNECT_TIMEOUT = 1000 * 10;         // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;         // [ms]
 static constexpr int PSM_PERIOD = 60 * 17;                // [s]
 static constexpr int PSM_ACTIVE = 2;                      // [s]
@@ -151,13 +152,13 @@ static bool send(const void* data, size_t dataSize) {
   Serial.printf(TASK_NAME "Connecting %s:%d\n", HOST, PORT);
 
   {
-    WioCellularTcpClient2<WioCellularModule> client{ WioCellular };
+    WioCellularUdpClient2<WioCellularModule> client{ WioCellular };
     if (!client.open(WioNetwork.config.pdpContextId, HOST, PORT)) {
       Serial.printf(TASK_NAME "ERROR: Failed to open %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
 
-    if (!client.waitForConnect()) {
+    if (!client.waitForConnect(CONNECT_TIMEOUT)) {
       Serial.printf(TASK_NAME "ERROR: Failed to connect %s\n", WioCellularResultToString(client.getLastResult()));
       return false;
     }
