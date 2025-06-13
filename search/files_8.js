@@ -7,5 +7,6 @@ var searchData=
   ['wiocellulararduinotcpclient_2ehpp_4',['WioCellularArduinoTcpClient.hpp',['../WioCellularArduinoTcpClient_8hpp.html',1,'']]],
   ['wiocellularresult_2ehpp_5',['WioCellularResult.hpp',['../WioCellularResult_8hpp.html',1,'']]],
   ['wiocellulartcpclient2_2ehpp_6',['WioCellularTcpClient2.hpp',['../WioCellularTcpClient2_8hpp.html',1,'']]],
-  ['wiononvolatilememory_2eh_7',['WioNonVolatileMemory.h',['../WioNonVolatileMemory_8h.html',1,'']]]
+  ['wiocellularudpclient2_2ehpp_7',['WioCellularUdpClient2.hpp',['../WioCellularUdpClient2_8hpp.html',1,'']]],
+  ['wiononvolatilememory_2eh_8',['WioNonVolatileMemory.h',['../WioNonVolatileMemory_8h.html',1,'']]]
 ];

@@ -99,6 +99,12 @@ $(function() {
 <tr class="memitem:a356ddae9b89874358476b3786553b74c" id="r_a356ddae9b89874358476b3786553b74c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#a356ddae9b89874358476b3786553b74c">setEdrx</a> (int mode, int actType, int edrxCycle)</td></tr>
 <tr class="memdesc:a356ddae9b89874358476b3786553b74c"><td class="mdescLeft">&#160;</td><td class="mdescRight">eDRXを設定  <br /></td></tr>
 <tr class="separator:a356ddae9b89874358476b3786553b74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4de0315df63abb314bed24451be8873" id="r_ad4de0315df63abb314bed24451be8873"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#ad4de0315df63abb314bed24451be8873">getSignalingConnectionStatus</a> (bool *enable, int *mode)</td></tr>
+<tr class="memdesc:ad4de0315df63abb314bed24451be8873"><td class="mdescLeft">&#160;</td><td class="mdescRight">無線接続状態を取得  <br /></td></tr>
+<tr class="separator:ad4de0315df63abb314bed24451be8873"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a1cf56c587d40459f12da7faa990a0" id="r_a88a1cf56c587d40459f12da7faa990a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#a88a1cf56c587d40459f12da7faa990a0">setSignalingConnectionStatus</a> (bool enable)</td></tr>
+<tr class="memdesc:a88a1cf56c587d40459f12da7faa990a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">無線接続状態のURC通知を設定  <br /></td></tr>
+<tr class="separator:a88a1cf56c587d40459f12da7faa990a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb5c861f12ef8965e3ee796cefbcf179" id="r_acb5c861f12ef8965e3ee796cefbcf179"><td class="memItemLeft" align="right" valign="top"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html#acb5c861f12ef8965e3ee796cefbcf179">getPhoneNumber</a> (std::string *phoneNumber)</td></tr>
 <tr class="memdesc:acb5c861f12ef8965e3ee796cefbcf179"><td class="mdescLeft">&#160;</td><td class="mdescRight">電話番号を取得  <br /></td></tr>
 <tr class="separator:acb5c861f12ef8965e3ee796cefbcf179"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,6 +244,63 @@ template&lt;typename MODULE &gt; </div>
 <blockquote class="doxtable">
 <p>&zwj;EC25&amp;EC21 AT Commands Manual <br  />
 8.1. AT+CNUM Subscriber Number </p>
+</blockquote>
+
+</div>
+</div>
+<a id="ad4de0315df63abb314bed24451be8873" name="ad4de0315df63abb314bed24451be8873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4de0315df63abb314bed24451be8873">&#9670;&#160;</a></span>getSignalingConnectionStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a> <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html">wiocellular::module::bg770a::commands::Bg770aNetworkServiceCommands</a>&lt; MODULE &gt;::getSignalingConnectionStatus </td>
+          <td>(</td>
+          <td class="paramtype">bool *&#160;</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>無線接続状態を取得 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">enable</td><td>URC通知設定。nullptrを指定すると値を代入しません。 </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">mode</td><td>モード。nullptrを指定すると値を代入しません。 <ul>
+<li>0: アイドル </li>
+<li>1: 接続済み </li>
+</ul>
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>実行結果。</dd></dl>
+<p>無線接続状態を取得します。</p>
+<blockquote class="doxtable">
+<p>&zwj;BG77xA-GL&amp;BG95xA-GL AT Commands Manual <br  />
+6.15. AT+QCSCON Signaling Connection Status </p>
 </blockquote>
 
 </div>
@@ -483,6 +546,48 @@ template&lt;typename MODULE &gt; </div>
 <blockquote class="doxtable">
 <p>&zwj;BG77xA-GL&amp;BG95xA-GL AT Commands Manual <br  />
 6.2. AT+COPS Operator Selection </p>
+</blockquote>
+
+</div>
+</div>
+<a id="a88a1cf56c587d40459f12da7faa990a0" name="a88a1cf56c587d40459f12da7faa990a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88a1cf56c587d40459f12da7faa990a0">&#9670;&#160;</a></span>setSignalingConnectionStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="WioCellularResult_8hpp.html#ab15d5953bed9055c90c0f06f30e1daf4">WioCellularResult</a> <a class="el" href="classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aNetworkServiceCommands.html">wiocellular::module::bg770a::commands::Bg770aNetworkServiceCommands</a>&lt; MODULE &gt;::setSignalingConnectionStatus </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>無線接続状態のURC通知を設定 </p>
+<dl class="params"><dt>引数</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">enable</td><td>有効。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>戻り値</dt><dd>実行結果。</dd></dl>
+<p>無線接続状態のURC通知を設定します。</p>
+<blockquote class="doxtable">
+<p>&zwj;BG77xA-GL&amp;BG95xA-GL AT Commands Manual <br  />
+6.15. AT+QCSCON Signaling Connection Status </p>
 </blockquote>
 
 </div>

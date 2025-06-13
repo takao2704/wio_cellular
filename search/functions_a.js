@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['open_0',['open',['../classwiocellular_1_1client_1_1WioCellularTcpClient2.html#acede5a1fb2fedaa6ca74f290b70ba609',1,'wiocellular::client::WioCellularTcpClient2']]],
+  ['open_0',['open',['../classwiocellular_1_1client_1_1WioCellularTcpClient2.html#acede5a1fb2fedaa6ca74f290b70ba609',1,'wiocellular::client::WioCellularTcpClient2::open()'],['../classwiocellular_1_1client_1_1WioCellularUdpClient2.html#aa8e025aef3ed8def716d09cf4c1a6a30',1,'wiocellular::client::WioCellularUdpClient2::open()']]],
   ['opensocket2_1',['openSocket2',['../classwiocellular_1_1module_1_1bg770a_1_1commands_1_1Bg770aTcpipCommands2.html#a04f2ae7d2fadcca5adb63ce234bb6b79',1,'wiocellular::module::bg770a::commands::Bg770aTcpipCommands2']]],
   ['operator_20bool_2',['operator bool',['../classWioCellularArduinoTcpClient.html#a1dd05d15571a52c17c6695837edfb335',1,'WioCellularArduinoTcpClient']]],
   ['operator_20t_3',['operator T',['../classwiocellular_1_1component_1_1nonvolatilememory_1_1NonVolatileMemory_1_1ValueRef.html#a72e1915b7e42b3fd189136d387fff152',1,'wiocellular::component::nonvolatilememory::NonVolatileMemory::ValueRef']]],

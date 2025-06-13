@@ -117,8 +117,10 @@ $(function() {
 <tr class="memitem:acede5a1fb2fedaa6ca74f290b70ba609" id="r_acede5a1fb2fedaa6ca74f290b70ba609"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html#acede5a1fb2fedaa6ca74f290b70ba609">open</a> (int cid, const std::string &amp;ipAddress, int remotePort)</td></tr>
 <tr class="memdesc:acede5a1fb2fedaa6ca74f290b70ba609"><td class="mdescLeft">&#160;</td><td class="mdescRight">オープン  <br /></td></tr>
 <tr class="separator:acede5a1fb2fedaa6ca74f290b70ba609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37df746bf0ca56ce1ba23d08882a5b44" id="r_a37df746bf0ca56ce1ba23d08882a5b44"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html#a37df746bf0ca56ce1ba23d08882a5b44">waitForConnect</a> (int timeout=150000)</td></tr>
+<tr class="memdesc:a37df746bf0ca56ce1ba23d08882a5b44"><td class="mdescLeft">&#160;</td><td class="mdescRight">接続完了を待機  <br /></td></tr>
+<tr class="separator:a37df746bf0ca56ce1ba23d08882a5b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bcd61a17a6fbbf70abab09db4766d88" id="r_a7bcd61a17a6fbbf70abab09db4766d88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html#a7bcd61a17a6fbbf70abab09db4766d88">waitforConnect</a> (int timeout=150000)</td></tr>
-<tr class="memdesc:a7bcd61a17a6fbbf70abab09db4766d88"><td class="mdescLeft">&#160;</td><td class="mdescRight">接続完了を待機  <br /></td></tr>
 <tr class="separator:a7bcd61a17a6fbbf70abab09db4766d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21dd74d9f3f67c7141e3ee2b795d6906" id="r_a21dd74d9f3f67c7141e3ee2b795d6906"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html#a21dd74d9f3f67c7141e3ee2b795d6906">close</a> ()</td></tr>
 <tr class="memdesc:a21dd74d9f3f67c7141e3ee2b795d6906"><td class="mdescLeft">&#160;</td><td class="mdescRight">クローズ  <br /></td></tr>
@@ -598,8 +600,8 @@ template&lt;typename MODULE &gt; </div>
 
 </div>
 </div>
-<a id="a7bcd61a17a6fbbf70abab09db4766d88" name="a7bcd61a17a6fbbf70abab09db4766d88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bcd61a17a6fbbf70abab09db4766d88">&#9670;&#160;</a></span>waitforConnect()</h2>
+<a id="a37df746bf0ca56ce1ba23d08882a5b44" name="a37df746bf0ca56ce1ba23d08882a5b44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37df746bf0ca56ce1ba23d08882a5b44">&#9670;&#160;</a></span>waitForConnect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -610,7 +612,7 @@ template&lt;typename MODULE &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html">wiocellular::client::WioCellularTcpClient2</a>&lt; MODULE &gt;::waitforConnect </td>
+          <td class="memname">bool <a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html">wiocellular::client::WioCellularTcpClient2</a>&lt; MODULE &gt;::waitForConnect </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>timeout</em> = <code>150000</code></td><td>)</td>
@@ -639,6 +641,34 @@ template&lt;typename MODULE &gt; </div>
   </dd>
 </dl>
 <p>TCPクライアントの接続完了を待機します。 永久に待機したいときはtimeoutに-1を指定します。 エラーの詳細をgetLastResult()で取得できます。 </p>
+
+</div>
+</div>
+<a id="a7bcd61a17a6fbbf70abab09db4766d88" name="a7bcd61a17a6fbbf70abab09db4766d88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bcd61a17a6fbbf70abab09db4766d88">&#9670;&#160;</a></span>waitforConnect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename MODULE &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classwiocellular_1_1client_1_1WioCellularTcpClient2.html">wiocellular::client::WioCellularTcpClient2</a>&lt; MODULE &gt;::waitforConnect </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>150000</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
