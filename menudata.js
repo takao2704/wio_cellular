@@ -25,7 +25,10 @@
 var menudata={children:[
 {text:"総合概要",url:"index.html"},
 {text:"名前空間",url:"namespaces.html",children:[
-{text:"名前空間一覧",url:"namespaces.html"}]},
+{text:"名前空間一覧",url:"namespaces.html"},
+{text:"名前空間メンバ",url:"namespacemembers.html",children:[
+{text:"全て",url:"namespacemembers.html"},
+{text:"列挙型",url:"namespacemembers_enum.html"}]}]},
 {text:"クラス",url:"annotated.html",children:[
 {text:"クラス一覧",url:"annotated.html"},
 {text:"クラス索引",url:"classes.html"},
@@ -95,5 +98,4 @@ var menudata={children:[
 {text:"全て",url:"globals.html"},
 {text:"関数",url:"globals_func.html"},
 {text:"型定義",url:"globals_type.html"},
-{text:"列挙型",url:"globals_enum.html"},
-{text:"マクロ定義",url:"globals_defs.html"}]}]}]}
+{text:"列挙型",url:"globals_enum.html"}]}]}]}

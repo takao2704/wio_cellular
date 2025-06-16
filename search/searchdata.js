@@ -9,8 +9,7 @@ var indexSectionsWithContent =
   6: "puw",
   7: "nsw",
   8: "acdilnorsuw",
-  9: "a",
-  10: "c"
+  9: "a"
 };
 
 var indexSectionNames =
@@ -24,8 +23,7 @@ var indexSectionNames =
   6: "typedefs",
   7: "enums",
   8: "enumvalues",
-  9: "related",
-  10: "defines"
+  9: "related"
 };
 
 var indexSectionLabels =
@@ -39,7 +37,6 @@ var indexSectionLabels =
   6: "型定義",
   7: "列挙型",
   8: "列挙値",
-  9: "フレンド",
-  10: "マクロ定義"
+  9: "フレンド"
 };
 
