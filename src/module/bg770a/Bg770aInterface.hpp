@@ -8,6 +8,7 @@
 #define BG770AINTERFACE_HPP
 
 #include <Arduino.h>
+#include "internal/WioLog.hpp"
 #include "Suli3.hpp"
 
 void BG770AINTERFACE_VDD_EXT_IRQHANDLER();
@@ -159,7 +160,7 @@ namespace wiocellular
                         }
                         if (isActive())
                         {
-                            printf("---> Interface is active when begin()\n");
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is active when begin()");
                             vddExtHandler();
                         }
                     }

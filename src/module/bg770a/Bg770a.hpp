@@ -18,25 +18,8 @@
 
 #include "module/at_client/AtClient.hpp"
 #include "internal/Misc.hpp"
+#include "internal/WioLog.hpp"
 #include "WioCellularResult.hpp"
-
-#if 0
-#define COLOR_CMD "\033[32;1m"
-#define COLOR_ECO "\033[32m"
-#define COLOR_INF "\033[32m"
-#define COLOR_FRC "\033[32m"
-#define COLOR_URC "\033[32;1;7m"
-#define COLOR_UNK "\033[31;1m"
-#define COLOR_RESET "\033[0m"
-#else
-#define COLOR_CMD ""
-#define COLOR_ECO ""
-#define COLOR_INF ""
-#define COLOR_FRC ""
-#define COLOR_URC ""
-#define COLOR_UNK ""
-#define COLOR_RESET ""
-#endif
 
 namespace wiocellular
 {
@@ -98,7 +81,7 @@ namespace wiocellular
                 {
                     at_client::AtClient<Bg770a<INTERFACE>>::registerUrcHandler([](const std::string &response) -> bool
                                                                                {
-                                                                                    printf(COLOR_URC "URC> %s" COLOR_RESET "\n", response.c_str());
+                                                                                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_URC, response.c_str());
                                                                                     return false; });
                 }
 
@@ -128,13 +111,13 @@ namespace wiocellular
                  */
                 WioCellularResult executeCommand(const std::string &command, int timeout)
                 {
-                    printf(COLOR_CMD "CMD> %s" COLOR_RESET "\n", command.c_str());
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_CMD, command.c_str());
                     auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
-                    printf(COLOR_ECO "ECO> %s ... %lu[ms]" COLOR_RESET "\n", command.c_str(), millis() - start);
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_ECO, "%s ... %lu[ms]", command.c_str(), millis() - start);
                     start = millis();
 
                     std::string response;
@@ -148,17 +131,17 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "OK")
                         {
-                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_FRC, "%s ... %lu[ms]", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || internal::stringStartsWith(response, "+CME ERROR: ") || internal::stringStartsWith(response, "+CMS ERROR: "))
                         {
-                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_FRC, "%s ... %lu[ms]", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
                         // Unknown
-                        printf(COLOR_UNK "unk> %s" COLOR_RESET "\n", response.c_str());
+                        wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_UNK, response.c_str());
                     }
 
                     return WioCellularResult::Ok;
@@ -179,13 +162,13 @@ namespace wiocellular
                  */
                 WioCellularResult queryCommand(const std::string &command, const std::function<bool(const std::string &response)> &informationTextHandler, int timeout)
                 {
-                    printf(COLOR_CMD "CMD> %s" COLOR_RESET "\n", command.c_str());
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_CMD, command.c_str());
                     auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
-                    printf(COLOR_ECO "ECO> %s ... %lu[ms]" COLOR_RESET "\n", command.c_str(), millis() - start);
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_ECO, "%s ... %lu[ms]", command.c_str(), millis() - start);
                     start = millis();
 
                     std::string response;
@@ -199,24 +182,24 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "OK")
                         {
-                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_FRC, "%s ... %lu[ms]", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || internal::stringStartsWith(response, "+CME ERROR: ") || internal::stringStartsWith(response, "+CMS ERROR: "))
                         {
-                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_FRC, "%s ... %lu[ms]", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
                         // Information text
                         if (informationTextHandler && informationTextHandler(response))
                         {
-                            printf(COLOR_INF "INF> %s" COLOR_RESET "\n", response.c_str());
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_INF, response.c_str());
                             continue;
                         }
 
                         // Unknown
-                        printf(COLOR_UNK "unk> %s" COLOR_RESET "\n", response.c_str());
+                        wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_UNK, response.c_str());
                     }
 
                     return WioCellularResult::Ok;
@@ -237,13 +220,13 @@ namespace wiocellular
                  */
                 WioCellularResult sendCommand(const std::string &command, std::function<bool(const std::string &response)> informationTextHandler, int timeout)
                 {
-                    printf(COLOR_CMD "CMD> %s" COLOR_RESET "\n", command.c_str());
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_CMD, command.c_str());
                     auto start = millis();
                     if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
-                    printf(COLOR_ECO "ECO> %s ... %lu[ms]" COLOR_RESET "\n", command.c_str(), millis() - start);
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_ECO, "%s ... %lu[ms]", command.c_str(), millis() - start);
                     start = millis();
 
                     std::string response;
@@ -259,24 +242,24 @@ namespace wiocellular
                         // Final Result Code
                         if (response == "SEND OK")
                         {
-                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_FRC, "%s ... %lu[ms]", response.c_str(), millis() - start);
                             break;
                         }
                         if (response == "ERROR" || response == "SEND FAIL")
                         {
-                            printf(COLOR_FRC "FRC> %s ... %lu[ms]" COLOR_RESET "\n", response.c_str(), millis() - start);
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_FRC, "%s ... %lu[ms]", response.c_str(), millis() - start);
                             return WioCellularResult::CommandRejected;
                         }
 
                         // Information text
                         if (informationTextHandler && informationTextHandler(response))
                         {
-                            printf(COLOR_INF "INF> %s" COLOR_RESET "\n", response.c_str());
+                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_INF, response.c_str());
                             continue;
                         }
 
                         // Unknown
-                        printf(COLOR_UNK "unk> %s" COLOR_RESET "\n", response.c_str());
+                        wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_UNK, response.c_str());
                     }
 
                     return WioCellularResult::Ok;
@@ -326,11 +309,11 @@ namespace wiocellular
                                 getInterface().powerOn();
                                 if (!getInterface().isActive())
                                 {
-                                    printf("---> Interface is not active when powerOn()\n");
+                                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is not active when powerOn()");
                                     return WioCellularResult::NotActivate;
                                 }
 #elif defined(BOARD_VERSION_1_0)
-                                printf("---> Interface is not active when powerOn()\n");
+                                wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is not active when powerOn()");
                                 return WioCellularResult::NotActivate;
 #else
 #error "Unknown board version"
@@ -348,7 +331,7 @@ namespace wiocellular
                             getInterface().powerOn();
                             if (!getInterface().isActive())
                             {
-                                printf("---> Interface is not active when powerOn()\n");
+                                wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is not active when powerOn()");
                                 return WioCellularResult::NotActivate;
                             }
 #elif defined(BOARD_VERSION_1_0)

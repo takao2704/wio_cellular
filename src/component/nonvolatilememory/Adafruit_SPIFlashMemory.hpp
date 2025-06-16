@@ -79,14 +79,6 @@ namespace wiocellular
                     if (Flash_.readBuffer(address, reinterpret_cast<uint8_t *>(data), dataSize) != dataSize)
                         return -1;
 
-                    // // for debug
-                    // Serial.printf("R [%04X] ", address);
-                    // for (size_t i = 0; i < dataSize; ++i)
-                    // {
-                    //     Serial.printf("%02X ", reinterpret_cast<uint8_t *>(data)[i]);
-                    // }
-                    // Serial.println();
-
                     return 0;
                 }
 
@@ -111,14 +103,6 @@ namespace wiocellular
                         return -1;
                     if (dataSize < 1)
                         return -1;
-
-                    // // for debug
-                    // Serial.printf("W [%04X] ", address);
-                    // for (size_t i = 0; i < dataSize; ++i)
-                    // {
-                    //     Serial.printf("%02X ", reinterpret_cast<const uint8_t *>(data)[i]);
-                    // }
-                    // Serial.println();
 
                     if (nrf_dma_accessible_check(nullptr, data))
                     {

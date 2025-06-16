@@ -11,6 +11,7 @@
 #include "internal/CountdownTimer.hpp"
 #include "internal/Misc.hpp"
 #include "internal/UsedConnectIds.hpp"
+#include "internal/WioLog.hpp"
 #include "WioCellularResult.hpp"
 
 namespace wiocellular::client
@@ -68,7 +69,7 @@ namespace wiocellular::client
     private:
         void setState(State state)
         {
-            printf("---> WioCellularUdpClient2<%d> state changed %d to %d\n", ConnectId_, static_cast<int>(State_), static_cast<int>(state));
+            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::INFO, "WioCellularUdpClient2<%d> state changed %d to %d", ConnectId_, static_cast<int>(State_), static_cast<int>(state));
             State_ = state;
         }
 
@@ -119,7 +120,7 @@ namespace wiocellular::client
                 const std::string urcQiurcRecvPrefix = wiocellular::internal::stringFormat("+QIURC: \"recv\",%d,", ConnectId_);
                 if (response == urcQiurcRecv || response.starts_with(urcQiurcRecvPrefix))
                 {
-                    printf("---> WioCellularUdpClient2<%d> received\n", ConnectId_);
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::INFO, "---> WioCellularUdpClient2<%d> received", ConnectId_);
                     ReceivedNofity_ = true;
                     return true;
                 }
@@ -281,7 +282,7 @@ namespace wiocellular::client
                 if (getState() == State::Opened && millis() - openedTime_ < 150000)
                 {
                     const auto wait = 150000 - (millis() - openedTime_);
-                    printf("---> WioCellularUdpClient2<%d> forced to wait %lu\n", ConnectId_, wait);
+                    wiocellular::internal::WioLog(wiocellular::internal::WioLogType::INFO, "WioCellularUdpClient2<%d> forced to wait %lu", ConnectId_, wait);
                     WioCellular.doWork(wait, [this]
                                        { return getState() != State::Opened; });
                 }

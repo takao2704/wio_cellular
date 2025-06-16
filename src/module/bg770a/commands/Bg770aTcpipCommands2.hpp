@@ -11,6 +11,7 @@
 #include <vector>
 #include "module/at_client/AtParameterParser.hpp"
 #include "internal/Misc.hpp"
+#include "internal/WioLog.hpp"
 #include "WioCellularResult.hpp"
 
 namespace wiocellular
@@ -252,12 +253,12 @@ namespace wiocellular
                                     static_cast<MODULE &>(*this).writeBinary(data, 1);
                                     if (!static_cast<MODULE &>(*this).readBinaryDiscard(1, 10))
                                     {
-                                        printf("---> Binary echo not coming (connectId=%d)\n", connectId);
+                                        wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Binary echo not coming (connectId=%d)", connectId);
                                         delay(100);
                                         static_cast<MODULE &>(*this).writeBinary(data, 1);
                                         if (!static_cast<MODULE &>(*this).readBinaryDiscard(1, 10))
                                         {
-                                            printf("---> Binary echo not coming (connectId=%d)\n", connectId);
+                                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Binary echo not coming (connectId=%d)", connectId);
                                             return true;
                                         }
                                     }
