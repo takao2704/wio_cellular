@@ -149,6 +149,7 @@ static HttpResponse httpRequest(Client& client, const char* host, int port, cons
   Serial.println("]");
 
   HttpClient httpClient(client, host, port);
+  httpClient.setTimeout(RECEIVE_TIMEOUT);
   int err = httpClient.startRequest(path, method, contentType, strlen(requestBody), (const byte*)requestBody);
   if (err != 0) {
     httpClient.stop();
