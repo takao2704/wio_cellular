@@ -27,9 +27,6 @@ namespace wiocellular
         template <typename MODULE, typename INTERFACE>
         class WioBg770a : public MODULE
         {
-        private:
-            suli3::arduino::DigitalOutputPin<PIN_VGROVE_ENABLE> VgroveEnable_;
-
         public:
             /**
              * @~Japanese
@@ -54,8 +51,6 @@ namespace wiocellular
             void begin()
             {
                 MODULE::getInterface().begin();
-
-                VgroveEnable_.begin(OUTPUT, 1);
             }
 
             /**
@@ -67,7 +62,7 @@ namespace wiocellular
             [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON) instead.")]]
             void enableGrovePower()
             {
-                VgroveEnable_.write(0);
+                digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_ON);
                 delay(2 + 2);
             }
 
@@ -80,7 +75,7 @@ namespace wiocellular
             [[deprecated("Use digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_OFF) instead.")]]
             void disableGrovePower()
             {
-                VgroveEnable_.write(1);
+                digitalWrite(PIN_VGROVE_ENABLE, VGROVE_ENABLE_OFF);
                 delay(2 + 2);
             }
         };
