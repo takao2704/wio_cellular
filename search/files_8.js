@@ -8,6 +8,5 @@ var searchData=
   ['wiocellularresult_2ehpp_5',['WioCellularResult.hpp',['../WioCellularResult_8hpp.html',1,'']]],
   ['wiocellulartcpclient2_2ehpp_6',['WioCellularTcpClient2.hpp',['../WioCellularTcpClient2_8hpp.html',1,'']]],
   ['wiocellularudpclient2_2ehpp_7',['WioCellularUdpClient2.hpp',['../WioCellularUdpClient2_8hpp.html',1,'']]],
-  ['wiolog_2ehpp_8',['WioLog.hpp',['../WioLog_8hpp.html',1,'']]],
-  ['wiononvolatilememory_2eh_9',['WioNonVolatileMemory.h',['../WioNonVolatileMemory_8h.html',1,'']]]
+  ['wiononvolatilememory_2eh_8',['WioNonVolatileMemory.h',['../WioNonVolatileMemory_8h.html',1,'']]]
 ];
