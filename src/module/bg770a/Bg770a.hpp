@@ -113,7 +113,7 @@ namespace wiocellular
                 {
                     wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_CMD, command.c_str());
                     auto start = millis();
-                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
+                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, commandEchoTimeout >= 0 ? std::max(commandEchoTimeout, commandTimeoutMin) : commandEchoTimeout))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
@@ -123,7 +123,7 @@ namespace wiocellular
                     std::string response;
                     while (true)
                     {
-                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(std::max(timeout, commandTimeoutMin))).empty())
+                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout >= 0 ? std::max(timeout, commandTimeoutMin) : timeout)).empty())
                         {
                             return WioCellularResult::ReadResponseTimeout;
                         }
@@ -164,7 +164,7 @@ namespace wiocellular
                 {
                     wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_CMD, command.c_str());
                     auto start = millis();
-                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
+                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, commandEchoTimeout >= 0 ? std::max(commandEchoTimeout, commandTimeoutMin) : commandEchoTimeout))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
@@ -174,7 +174,7 @@ namespace wiocellular
                     std::string response;
                     while (true)
                     {
-                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(std::max(timeout, commandTimeoutMin))).empty())
+                        if ((response = at_client::AtClient<Bg770a<INTERFACE>>::readResponse(timeout >= 0 ? std::max(timeout, commandTimeoutMin) : timeout)).empty())
                         {
                             return WioCellularResult::ReadResponseTimeout;
                         }
@@ -222,7 +222,7 @@ namespace wiocellular
                 {
                     wiocellular::internal::WioLog(wiocellular::internal::WioLogType::AT_CMD, command.c_str());
                     auto start = millis();
-                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, std::max(commandEchoTimeout, commandTimeoutMin)))
+                    if (!at_client::AtClient<Bg770a<INTERFACE>>::writeAndWaitCommand(command, commandEchoTimeout >= 0 ? std::max(commandEchoTimeout, commandTimeoutMin) : commandEchoTimeout))
                     {
                         return WioCellularResult::WaitCommandTimeout;
                     }
