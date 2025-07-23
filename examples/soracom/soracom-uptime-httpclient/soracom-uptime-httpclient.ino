@@ -29,12 +29,6 @@ static constexpr int POWER_ON_TIMEOUT = 1000 * 20;     // [ms]
 static constexpr int NETWORK_TIMEOUT = 1000 * 60 * 3;  // [ms]
 static constexpr int RECEIVE_TIMEOUT = 1000 * 10;      // [ms]
 
-struct HttpResponse {
-  int statusCode;
-  std::map<std::string, std::string> headers;
-  std::string body;
-};
-
 static void abortHandler(int sig) {
   Serial.printf("ABORT: Signal %d received\n", sig);
   yield();
@@ -87,36 +81,8 @@ void loop() {
   digitalWrite(LED_BUILTIN, HIGH);
 
   JsonDoc.clear();
-  if (generateRequestBody(JsonDoc)) {
-    std::string jsonStr;
-    serializeJson(JsonDoc, jsonStr);
-    Serial.println(jsonStr.c_str());
-
-    HttpResponse response;
-    {
-      WioCellularArduinoTcpClient<WioCellularModule> client{ WioCellular, WioNetwork.config.pdpContextId };
-      response = httpRequest(client, HOST, PORT, PATH, "PUT", "application/json", jsonStr.c_str());
-    }
-
-    Serial.println("Header(s):");
-    for (auto header : response.headers) {
-      Serial.print("  ");
-      Serial.print(header.first.c_str());
-      Serial.print(" : ");
-      Serial.print(header.second.c_str());
-      Serial.println();
-    }
-    Serial.print("Body: ");
-    Serial.println(response.body.c_str());
-
-    if (response.statusCode == 200) {
-      JsonDoc.clear();
-      deserializeJson(JsonDoc, response.body.c_str());
-      // Output the IMSI field as an example of how to use the response
-      Serial.print("Response imsi> ");
-      Serial.print(JsonDoc["imsi"].as<String>());
-      Serial.println();
-    }
+  if (measure(JsonDoc)) {
+    send(JsonDoc);
   }
 
   digitalWrite(LED_BUILTIN, LOW);
@@ -128,7 +94,7 @@ void loop() {
  * Generate request body for update SIM tag
  * See: https://users.soracom.io/ja-jp/docs/air/use-metadata/#%E3%83%A1%E3%82%BF%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E6%9B%B8%E3%81%8D%E8%BE%BC%E3%81%BF%E4%BE%8B-iot-sim-%E3%81%AE%E3%82%BF%E3%82%B0%E3%82%92%E8%BF%BD%E5%8A%A0--%E6%9B%B4%E6%96%B0%E3%81%99%E3%82%8B
  */
-static bool generateRequestBody(JsonDocument& doc) {
+static bool measure(JsonDocument &doc) {
   Serial.println("### Measuring");
 
   JsonArray rootArray = doc.to<JsonArray>();
@@ -142,54 +108,52 @@ static bool generateRequestBody(JsonDocument& doc) {
   return true;
 }
 
-static HttpResponse httpRequest(Client& client, const char* host, int port, const char* path, const char* method, const char* contentType, const char* requestBody) {
-  HttpResponse httpResponse;
+static bool send(const JsonDocument &doc) {
   Serial.print("### Requesting to [");
-  Serial.print(host);
+  Serial.print(HOST);
   Serial.println("]");
 
-  HttpClient httpClient(client, host, port);
-  httpClient.setTimeout(RECEIVE_TIMEOUT);
-  int err = httpClient.startRequest(path, method, contentType, strlen(requestBody), (const byte*)requestBody);
-  if (err != 0) {
-    httpClient.stop();
-    httpResponse.statusCode = err;
-    return httpResponse;
+  int statusCode = -1;
+  int contentLength = -1;
+  String responseBody;
+  {
+    WioCellularArduinoTcpClient<WioCellularModule> client{ WioCellular, WioNetwork.config.pdpContextId };
+    HttpClient httpClient{ client, HOST, PORT };
+    httpClient.setTimeout(RECEIVE_TIMEOUT);
+
+    std::string requestBody;
+    serializeJson(doc, requestBody);
+    Serial.println(requestBody.c_str());
+    if (const auto result = httpClient.put(PATH, "application/json", requestBody.c_str()); result != 0) {
+      Serial.printf("ERROR: Failed to HTTP PUT %d\n", result);
+      return false;
+    }
+
+    statusCode = httpClient.responseStatusCode();
+    if (statusCode >= 0) {
+      contentLength = httpClient.contentLength();
+      responseBody = httpClient.responseBody();
+    }
   }
-
-  int statusCode = httpClient.responseStatusCode();
-  if (!statusCode) {
-    httpClient.stop();
-    httpResponse.statusCode = statusCode;
-    return httpResponse;
-  }
-
-  Serial.print("Status code returned ");
-  Serial.println(statusCode);
-  httpResponse.statusCode = statusCode;
-
-  while (httpClient.headerAvailable()) {
-    String headerName = httpClient.readHeaderName();
-    String headerValue = httpClient.readHeaderValue();
-    httpResponse.headers[headerName.c_str()] = headerValue.c_str();
-  }
-
-  int length = httpClient.contentLength();
-  if (length >= 0) {
-    Serial.print("Content length: ");
-    Serial.println(length);
-  }
-  if (httpClient.isResponseChunked()) {
-    Serial.println("The response is chunked");
-  }
-
-  String responseBody = httpClient.responseBody();
-  httpResponse.body = responseBody.c_str();
-
-  httpClient.stop();
 
   Serial.println("### End HTTP request");
   Serial.println();
 
-  return httpResponse;
+  Serial.print("Status code returned ");
+  Serial.println(statusCode);
+  Serial.print("Content length: ");
+  Serial.println(contentLength);
+  Serial.print("Body: ");
+  Serial.println(responseBody);
+
+  if (statusCode == 200) {
+    JsonDocument doc;
+    deserializeJson(doc, responseBody);
+    // Output the IMSI field as an example of how to use the response
+    Serial.print("Response imsi> ");
+    Serial.print(doc["imsi"].as<String>());
+    Serial.println();
+  }
+
+  return true;
 }
