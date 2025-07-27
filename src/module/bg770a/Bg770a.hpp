@@ -312,7 +312,7 @@ namespace wiocellular
                                     wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is not active when powerOn()");
                                     return WioCellularResult::NotActivate;
                                 }
-#elif defined(BOARD_VERSION_1_0)
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                                 wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is not active when powerOn()");
                                 return WioCellularResult::NotActivate;
 #else
@@ -334,7 +334,7 @@ namespace wiocellular
                                 wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Interface is not active when powerOn()");
                                 return WioCellularResult::NotActivate;
                             }
-#elif defined(BOARD_VERSION_1_0)
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                             getInterface().reset();
 #else
 #error "Unknown board version"

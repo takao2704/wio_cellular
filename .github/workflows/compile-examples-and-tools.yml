@@ -11,6 +11,7 @@ jobs:
         board_version:
           - 1_0
           - es2
+          - 1_1
         debug_output:
           - none
           - rtt
