@@ -1,0 +1,29 @@
+name: Compile Examples and Tools Action by PlatformIO
+
+on: workflow_dispatch
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Build all PlatformIO projects
+        run: |
+          set -e
+          for ini in $(find examples extras/tools src -name platformio.ini); do
+            dir=$(dirname "$ini")
+            echo "::group::Project: $dir"
+            platformio run -d "$dir"
+            echo "::endgroup::"
+          done
