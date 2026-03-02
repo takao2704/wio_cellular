@@ -48,7 +48,12 @@
 
         <img src="media/2.png" width="200">
 
-    1. WioBG770AのBOOTボタンをクリックします。すると、ダウンロードが開始されます。
+    1. WioBG770AのUSERボタンをクリックします。すると、ダウンロードが開始されます。
+
+        ダウンロードが開始されず、"FAIL, Check chip info time out"というエラーが発生したときは、COMの詳細設定を既定値にして、ボーレートを115200にしてから、再度試してください。
+
+        <img src="media/4.png" width="200">
+        <img src="media/5.png" width="200">
 
     1. QFlashに"PASS"と表示されるまで待ちます。（540秒ほどかかります。）
 
