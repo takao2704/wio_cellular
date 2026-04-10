@@ -107,9 +107,11 @@ void loop() {
     }
   }
   if (!powerDown) {
+    Serial.println("PSM failed, powering off");
     WioNetwork.end();
     if (WioCellular.powerOff() != WioCellularResult::Ok) abort();
   } else {
+    Serial.println("PSM entered");
     WioNetwork.end(false);
   }
 
