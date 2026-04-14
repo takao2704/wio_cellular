@@ -250,24 +250,8 @@ namespace wiocellular
                             {
                                 if (response == "> ")
                                 {
-                                    static_cast<MODULE &>(*this).writeBinary(data, 1);
-                                    if (!static_cast<MODULE &>(*this).readBinaryDiscard(1, 10))
-                                    {
-                                        wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Binary echo not coming (connectId=%d)", connectId);
-                                        delay(100);
-                                        static_cast<MODULE &>(*this).writeBinary(data, 1);
-                                        if (!static_cast<MODULE &>(*this).readBinaryDiscard(1, 10))
-                                        {
-                                            wiocellular::internal::WioLog(wiocellular::internal::WioLogType::WARNING, "Binary echo not coming (connectId=%d)", connectId);
-                                            return true;
-                                        }
-                                    }
-                                    
-                                    if (dataSize >= 2)
-                                    {
-                                        static_cast<MODULE &>(*this).writeBinary(reinterpret_cast<const uint8_t*>(data) + 1, dataSize - 1);
-                                        static_cast<MODULE &>(*this).readBinaryDiscard(dataSize - 1, static_cast<MODULE &>(*this).commandEchoTimeout);
-                                    }
+                                    static_cast<MODULE &>(*this).writeBinary(data, dataSize);
+                                    static_cast<MODULE &>(*this).readBinaryDiscard(dataSize, static_cast<MODULE &>(*this).commandEchoTimeout);
                                     return true;
                                 }
                                 return false; },
