@@ -1,3 +1,18 @@
+# 0.3.14 (2026/4/15)
+
+* SeeedJP nRF52 Boards is 1.5.0
+
+## What's Changed
+
+* module
+  * Remove the retransmission logic from sendSocket2()
+* examples
+  * soracom-uptime-psm: Add PSM status log to soracom-uptime-psm example
+
+## New Contributors
+
+* @nmikuni Thanks for pull request. 
+
 # 0.3.13 (2025/9/3)
 
 * SeeedJP nRF52 Boards is 1.5.0
