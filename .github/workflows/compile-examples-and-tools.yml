@@ -11,6 +11,7 @@ jobs:
         board_version:
           - 1_0
           - es2
+          - 1_1
         debug_output:
           - none
           - rtt
@@ -19,14 +20,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Tools
         run: |
           pip3 install adafruit-nrfutil
 
       - name: Compile sketches
-        uses: arduino/compile-sketches@v1.1.1
+        uses: arduino/compile-sketches@v1.1.2
         with:
           fqbn: SeeedJP:nrf52:wio_bg770a:board_version=${{matrix.board_version}},debug_output=${{matrix.debug_output}}
           platforms: |

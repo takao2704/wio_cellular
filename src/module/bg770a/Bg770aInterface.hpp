@@ -35,7 +35,8 @@ namespace wiocellular
                 suli3::arduino::DigitalInputPin<CONSTANT::VDD_EXT_PIN> VddExt_;
                 suli3::arduino::DigitalOutputPin<CONSTANT::PWRKEY_PIN> Pwrkey_;
 #if defined(BOARD_VERSION_ES2)
-#elif defined(BOARD_VERSION_1_0)
+                // Nothing to do
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                 suli3::arduino::DigitalOutputPin<CONSTANT::RESET_N_PIN> ResetN_;
 #else
 #error "Unknown board version"
@@ -138,7 +139,7 @@ namespace wiocellular
                     VddExt_.begin(INPUT_PULLUP);
 #if defined(BOARD_VERSION_ES2)
                     Pwrkey_.begin(OUTPUT, 0);
-#elif defined(BOARD_VERSION_1_0)
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                     Pwrkey_.begin(OUTPUT_S0D1, 1);
                     ResetN_.begin(OUTPUT_S0D1, 1);
 #else
@@ -180,7 +181,7 @@ namespace wiocellular
                     Pwrkey_.write(1);
                     delay(500 + 2);
                     Pwrkey_.write(0);
-#elif defined(BOARD_VERSION_1_0)
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                     Pwrkey_.write(0);
                     delay(500 + 2);
                     Pwrkey_.write(1);
@@ -201,7 +202,7 @@ namespace wiocellular
                     Pwrkey_.write(1);
                     delay(650 + 2);
                     Pwrkey_.write(0);
-#elif defined(BOARD_VERSION_1_0)
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                     Pwrkey_.write(0);
                     delay(650 + 2);
                     Pwrkey_.write(1);
@@ -219,7 +220,8 @@ namespace wiocellular
                 void reset()
                 {
 #if defined(BOARD_VERSION_ES2)
-#elif defined(BOARD_VERSION_1_0)
+                    // Nothing to do
+#elif defined(BOARD_VERSION_1_0) || defined(BOARD_VERSION_1_1)
                     ResetN_.write(0);
                     delay(100 + 2);
                     ResetN_.write(1);

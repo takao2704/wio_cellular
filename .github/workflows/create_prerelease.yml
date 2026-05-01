@@ -6,7 +6,6 @@ on:
       - "[0-9]+.[0-9]+.[0-9]+"
 
 env:
-  BOARD_VERSION: 1_0
   DEBUG_OUTPUT: none
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -16,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Create draft release
         run: |
@@ -29,20 +28,40 @@ jobs:
     strategy:
       matrix:
         include:
-          - sketch_path: examples/cellular/cellular-status
+          - board_version: 1_0
+            sketch_path: examples/cellular/cellular-status
             sketch_name: cellular-status
-          - sketch_path: examples/cellular/transparent
+          - board_version: 1_1
+            sketch_path: examples/cellular/cellular-status
+            sketch_name: cellular-status
+          - board_version: 1_0
+            sketch_path: examples/cellular/transparent
             sketch_name: transparent
-          - sketch_path: examples/cellular/shell
+          - board_version: 1_1
+            sketch_path: examples/cellular/transparent
+            sketch_name: transparent
+          - board_version: 1_0
+            sketch_path: examples/cellular/shell
             sketch_name: shell
-          - sketch_path: examples/soracom/soracom-connectivity-diagnostics
+          - board_version: 1_1
+            sketch_path: examples/cellular/shell
+            sketch_name: shell
+          - board_version: 1_0
+            sketch_path: examples/soracom/soracom-connectivity-diagnostics
             sketch_name: soracom-connectivity-diagnostics
-          - sketch_path: extras/tools/inspection
+          - board_version: 1_1
+            sketch_path: examples/soracom/soracom-connectivity-diagnostics
+            sketch_name: soracom-connectivity-diagnostics
+          - board_version: 1_0
+            sketch_path: extras/tools/inspection
+            sketch_name: inspection
+          - board_version: 1_1
+            sketch_path: extras/tools/inspection
             sketch_name: inspection
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install tools
         run: |
@@ -51,9 +70,9 @@ jobs:
           wget https://github.com/microsoft/uf2/raw/master/utils/uf2families.json
 
       - name: Compile sketches
-        uses: arduino/compile-sketches@v1.1.1
+        uses: arduino/compile-sketches@v1.1.2
         with:
-          fqbn: SeeedJP:nrf52:wio_bg770a:board_version=${{ env.BOARD_VERSION }},debug_output=${{ env.DEBUG_OUTPUT }}
+          fqbn: SeeedJP:nrf52:wio_bg770a:board_version=${{ matrix.board_version }},debug_output=${{ env.DEBUG_OUTPUT }}
           platforms: |
             - name: SeeedJP:nrf52
               source-url: https://www.seeed.co.jp/package_SeeedJP_index.json
@@ -70,8 +89,8 @@ jobs:
       - name: Convert HEX to UF2
         run: |
           mkdir build
-          python3 uf2conv.py ${{ matrix.sketch_path }}/build/SeeedJP.nrf52.wio_bg770a/${{ matrix.sketch_name }}.ino.hex --family 0xADA52840 --convert --output build/${{ matrix.sketch_name }}.uf2
+          python3 uf2conv.py ${{ matrix.sketch_path }}/build/SeeedJP.nrf52.wio_bg770a/${{ matrix.sketch_name }}.ino.hex --family 0xADA52840 --convert --output build/${{ matrix.sketch_name }}.${{ matrix.board_version }}.uf2
 
       - name: Upload UF2
         run: |
-          gh release upload ${{ github.ref_name }} build/${{ matrix.sketch_name }}.uf2
+          gh release upload ${{ github.ref_name }} build/${{ matrix.sketch_name }}.${{ matrix.board_version }}.uf2
