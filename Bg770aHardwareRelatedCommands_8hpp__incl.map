@@ -1,13 +1,8 @@
 <map id="Bg770aHardwareRelatedCommands.hpp" name="Bg770aHardwareRelatedCommands.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="13,5,299,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,64,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,33,67,74,65,69,135,28"/>
-<area shape="rect" id="Node000003" href="$Misc_8hpp.html" title=" " alt="" coords="89,79,223,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,31,159,65,153,65,153,31"/>
-<area shape="rect" id="Node000006" href="$WioCellularResult_8hpp.html" title=" " alt="" coords="247,79,414,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="185,28,290,71,288,76,183,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="83,152,144,177"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="151,106,129,142,125,139,147,103"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="168,152,227,177"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="165,103,186,139,181,141,161,106"/>
+<area shape="rect" id="node1" title=" " alt="" coords="13,5,299,31"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,79,64,104"/>
+<area shape="rect" id="node3" href="$Misc_8hpp.html" title=" " alt="" coords="89,79,223,104"/>
+<area shape="rect" id="node6" href="$WioCellularResult_8hpp.html" title=" " alt="" coords="247,79,414,104"/>
+<area shape="rect" id="node4" title=" " alt="" coords="83,152,144,177"/>
+<area shape="rect" id="node5" title=" " alt="" coords="168,152,227,177"/>
 </map>

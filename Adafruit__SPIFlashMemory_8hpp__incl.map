@@ -1,7 +1,5 @@
 <map id="Adafruit_SPIFlashMemory.hpp" name="Adafruit_SPIFlashMemory.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="27,5,243,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,83,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,33,71,72,68,68,118,29"/>
-<area shape="rect" id="Node000003" href="$NonVolatileMemoryInterface_8hpp.html" title=" " alt="" coords="107,79,344,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,29,201,68,198,72,148,33"/>
+<area shape="rect" id="node1" title=" " alt="" coords="27,5,243,31"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,79,83,104"/>
+<area shape="rect" id="node3" href="$NonVolatileMemoryInterface_8hpp.html" title=" " alt="" coords="107,79,344,104"/>
 </map>

@@ -1,5 +1,4 @@
 <map id="wiocellular::board::WioBg770a&lt; MODULE, INTERFACE &gt;" name="wiocellular::board::WioBg770a&lt; MODULE, INTERFACE &gt;">
-<area shape="rect" id="Node000001" title="Seeed Studio Wio BG770Aボード" alt="" coords="5,79,185,133"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="56,5,135,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,44,98,79,93,79,93,44"/>
+<area shape="rect" id="node1" title="Seeed Studio Wio BG770Aボード" alt="" coords="5,79,185,133"/>
+<area shape="rect" id="node2" title=" " alt="" coords="56,5,135,31"/>
 </map>
