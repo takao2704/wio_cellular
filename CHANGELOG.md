@@ -1,3 +1,14 @@
+# 0.3.15 (2026/5/1)
+
+* SeeedJP nRF52 Boards is 1.5.0
+
+## What's Changed
+
+* module
+  * Support Wio BG770A v1.1
+* examples
+  * vsys: Add example of measuring VSYS
+
 # 0.3.14 (2026/4/15)
 
 * SeeedJP nRF52 Boards is 1.5.0
