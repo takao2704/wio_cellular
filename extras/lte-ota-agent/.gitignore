@@ -1,0 +1,7 @@
+.pio/
+.venv/
+__pycache__/
+artifacts/
+dist/
+include/ota_config.local.h
+*.pyc
