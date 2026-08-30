@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "WioOtaSha256.h"
+#include "WioOtaImageVerifier.h"
 
 namespace wio_ota {
 
@@ -45,10 +45,12 @@ class Writer {
   void discard();
   void resetToApply() const;
 
-  size_t bytesWritten() const { return bytes_written_; }
-  size_t imageSize() const { return image_size_; }
-  uint16_t calculatedCrc() const { return crc_; }
-  const uint8_t* calculatedSha256() const { return sha256_; }
+  size_t bytesWritten() const { return verifier_.bytesReceived(); }
+  size_t imageSize() const { return verifier_.imageSize(); }
+  uint16_t calculatedCrc() const { return verifier_.calculatedCrc(); }
+  const uint8_t* calculatedSha256() const {
+    return verifier_.calculatedSha256();
+  }
   bool isVerified() const { return state_ == State::kVerified; }
   bool isActivated() const { return state_ == State::kActivated; }
 
@@ -62,11 +64,7 @@ class Writer {
   Error writeAndVerify(uint32_t address, const void* data, size_t size);
 
   State state_;
-  size_t image_size_;
-  size_t bytes_written_;
-  uint16_t crc_;
-  Sha256 sha_;
-  uint8_t sha256_[kSha256Size];
+  ImageVerifier verifier_;
 };
 
 }  // namespace wio_ota

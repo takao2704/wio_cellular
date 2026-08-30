@@ -4,4 +4,5 @@ __pycache__/
 artifacts/
 dist/
 include/ota_config.local.h
+examples/cellular-status-ota/src/ota_manifest_public_key.h
 *.pyc

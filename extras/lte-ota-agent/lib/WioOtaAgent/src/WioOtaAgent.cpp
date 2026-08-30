@@ -1,30 +1,18 @@
 #include "WioOtaAgent.h"
 
-#include <ArduinoJson.h>
-
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
-#include <limits>
+
+#if defined(WIO_OTA_M5_HALT_BEFORE_ACTIVATE) && \
+    defined(WIO_OTA_M5_HALT_AFTER_ACTIVATE)
+#error "Select only one M5 activation halt point"
+#endif
 
 namespace wio_ota_agent {
-namespace {
-
-constexpr size_t kManifestCapacity = 1024;
-
-bool copyString(const char* source, char* destination, size_t capacity) {
-  if (source == nullptr || destination == nullptr || capacity == 0) {
-    return false;
-  }
-  const size_t length = strlen(source);
-  if (length >= capacity) {
-    return false;
-  }
-  memcpy(destination, source, length + 1);
-  return true;
-}
-
-}  // namespace
+constexpr size_t kManifestCapacity = 1536;
+static_assert(kManifestSha256Size == wio_ota::kSha256Size,
+              "manifest and writer SHA-256 sizes must match");
 
 const char* errorString(Error error) {
   switch (error) {
@@ -50,6 +38,8 @@ const char* errorString(Error error) {
       return "firmware URL invalid";
     case Error::kFirmwareHostRejected:
       return "firmware host rejected";
+    case Error::kManifestSecurityRejected:
+      return "manifest security policy rejected update";
     case Error::kFirmwareGetFailed:
       return "firmware GET failed";
     case Error::kFirmwareResponseRejected:
@@ -90,7 +80,8 @@ Agent::Agent(WioCellularModule& module, const Config& config, Stream* logger)
       last_manifest_{},
       last_error_{Error::kNone},
       last_http_error_{wio_bg770a_http::Error::kNone},
-      last_writer_error_{wio_ota::Error::kNone} {}
+      last_writer_error_{wio_ota::Error::kNone},
+      last_security_error_{SecurityError::kNone} {}
 
 bool Agent::configurationIsValid() const {
   return config_.target_hardware != nullptr &&
@@ -101,7 +92,14 @@ bool Agent::configurationIsValid() const {
          config_.manifest_path[0] == '/' &&
          config_.allowed_firmware_host != nullptr &&
          config_.allowed_firmware_host[0] != '\0' &&
-         config_.allowed_firmware_port != 0 && config_.pdp_context_id > 0;
+         config_.allowed_firmware_port != 0 && config_.pdp_context_id > 0 &&
+         (!config_.security.require_signature ||
+          (config_.security.manifest_public_key != nullptr &&
+           config_.security.expected_key_id != nullptr &&
+           config_.security.expected_key_id[0] != '\0')) &&
+         (!config_.security.enforce_rollout ||
+          (config_.security.rollout_device_id != nullptr &&
+           config_.security.rollout_device_id[0] != '\0'));
 }
 
 void Agent::log(const char* message) const {
@@ -196,121 +194,6 @@ bool Agent::fetchManifest(HttpClient& client, char* output, size_t capacity) {
   return true;
 }
 
-bool Agent::decodeHex(const char* hex, uint8_t* output,
-                      size_t output_size) const {
-  if (hex == nullptr || output == nullptr || strlen(hex) != output_size * 2) {
-    return false;
-  }
-  for (size_t i = 0; i < output_size; ++i) {
-    unsigned int value = 0;
-    if (sscanf(hex + i * 2, "%2x", &value) != 1) {
-      return false;
-    }
-    output[i] = static_cast<uint8_t>(value);
-  }
-  return true;
-}
-
-bool Agent::parseHttpUrl(const char* url, FirmwareLocation* location) const {
-  constexpr char kPrefix[] = "http://";
-  if (url == nullptr || location == nullptr ||
-      strncmp(url, kPrefix, sizeof(kPrefix) - 1) != 0) {
-    return false;
-  }
-  const char* authority = url + sizeof(kPrefix) - 1;
-  const char* path = strchr(authority, '/');
-  if (path == nullptr || !copyString(path, location->path,
-                                     sizeof(location->path))) {
-    return false;
-  }
-  const char* colon = static_cast<const char*>(
-      memchr(authority, ':', static_cast<size_t>(path - authority)));
-  const char* host_end = colon == nullptr ? path : colon;
-  const size_t host_length = static_cast<size_t>(host_end - authority);
-  if (host_length == 0 || host_length >= sizeof(location->host)) {
-    return false;
-  }
-  memcpy(location->host, authority, host_length);
-  location->host[host_length] = '\0';
-
-  if (colon != nullptr) {
-    char* end = nullptr;
-    const unsigned long parsed = strtoul(colon + 1, &end, 10);
-    if (end != path || parsed == 0 || parsed > 65535) {
-      return false;
-    }
-    location->port = static_cast<uint16_t>(parsed);
-  }
-  return true;
-}
-
-bool Agent::parseManifest(const char* json, Manifest* manifest) {
-  if (json == nullptr || manifest == nullptr) {
-    last_error_ = Error::kManifestJsonInvalid;
-    return false;
-  }
-  JsonDocument document;
-  const DeserializationError json_error = deserializeJson(document, json);
-  if (json_error) {
-    last_error_ = Error::kManifestJsonInvalid;
-    return false;
-  }
-
-  const int format = document["format"] | -1;
-  const char* hardware = document["hardware"];
-  const long version = document["version"] | -1L;
-  const long image_size = document["size"] | -1L;
-  const char* crc_text = document["crc16"];
-  const char* sha_text = document["sha256"];
-  const char* url = document["url"];
-  if (format != 1 || hardware == nullptr ||
-      strcmp(hardware, config_.target_hardware) != 0 || version < 0 ||
-      static_cast<unsigned long>(version) >
-          std::numeric_limits<uint32_t>::max() ||
-      image_size < 8 ||
-      image_size > static_cast<long>(wio_ota::kMaximumImageSize) ||
-      !copyString(hardware, manifest->hardware,
-                  sizeof(manifest->hardware)) ||
-      !copyString(url, manifest->url, sizeof(manifest->url))) {
-    last_error_ = Error::kManifestFieldsInvalid;
-    return false;
-  }
-
-  uint8_t crc_bytes[2] = {};
-  if (!decodeHex(crc_text, crc_bytes, sizeof(crc_bytes)) ||
-      !decodeHex(sha_text, manifest->sha256, sizeof(manifest->sha256))) {
-    last_error_ = Error::kManifestFieldsInvalid;
-    return false;
-  }
-  manifest->crc16 =
-      (static_cast<uint16_t>(crc_bytes[0]) << 8) | crc_bytes[1];
-  if (manifest->crc16 == 0) {
-    last_error_ = Error::kManifestFieldsInvalid;
-    return false;
-  }
-
-  FirmwareLocation location;
-  if (!parseHttpUrl(manifest->url, &location)) {
-    last_error_ = Error::kFirmwareUrlInvalid;
-    return false;
-  }
-  if (strcmp(location.host, config_.allowed_firmware_host) != 0 ||
-      location.port != config_.allowed_firmware_port) {
-    last_error_ = Error::kFirmwareHostRejected;
-    return false;
-  }
-
-  manifest->format = format;
-  manifest->version = static_cast<uint32_t>(version);
-  manifest->image_size = static_cast<size_t>(image_size);
-  manifest->firmware_port = location.port;
-  copyString(location.host, manifest->firmware_host,
-             sizeof(manifest->firmware_host));
-  copyString(location.path, manifest->firmware_path,
-             sizeof(manifest->firmware_path));
-  return true;
-}
-
 bool Agent::downloadFirmware(HttpClient& client, const Manifest& manifest,
                              const ProgressCallback& on_progress) {
   log("[HTTP] GET firmware image");
@@ -373,6 +256,7 @@ Result Agent::check(const DecisionCallback& decide,
   last_error_ = Error::kNone;
   last_http_error_ = wio_bg770a_http::Error::kNone;
   last_writer_error_ = wio_ota::Error::kNone;
+  last_security_error_ = SecurityError::kNone;
   last_manifest_ = Manifest{};
   if (!configurationIsValid() || !decide) {
     return fail(Error::kInvalidConfiguration);
@@ -397,8 +281,56 @@ Result Agent::check(const DecisionCallback& decide,
     }
     return Result::kFailed;
   }
-  if (!parseManifest(manifest_json, &last_manifest_)) {
+  ManifestPolicy manifest_policy;
+  manifest_policy.target_hardware = config_.target_hardware;
+  manifest_policy.allowed_firmware_host = config_.allowed_firmware_host;
+  manifest_policy.allowed_firmware_port = config_.allowed_firmware_port;
+  manifest_policy.maximum_image_size = wio_ota::kMaximumImageSize;
+  const ManifestError manifest_error =
+      parseManifest(manifest_json, manifest_policy, &last_manifest_);
+  if (manifest_error != ManifestError::kNone) {
+    switch (manifest_error) {
+      case ManifestError::kInvalidPolicy:
+        last_error_ = Error::kInvalidConfiguration;
+        break;
+      case ManifestError::kJsonInvalid:
+        last_error_ = Error::kManifestJsonInvalid;
+        break;
+      case ManifestError::kFieldsInvalid:
+        last_error_ = Error::kManifestFieldsInvalid;
+        break;
+      case ManifestError::kFirmwareUrlInvalid:
+        last_error_ = Error::kFirmwareUrlInvalid;
+        break;
+      case ManifestError::kFirmwareHostRejected:
+        last_error_ = Error::kFirmwareHostRejected;
+        break;
+      case ManifestError::kNone:
+        break;
+    }
     return fail(last_error_);
+  }
+
+  last_security_error_ =
+      evaluateManifestSecurity(last_manifest_, config_.security);
+  if (last_security_error_ == SecurityError::kAlreadyInstalled) {
+    logf("[OTA] no update: %s", securityErrorString(last_security_error_));
+    return Result::kNoUpdate;
+  }
+  if (last_security_error_ == SecurityError::kRolloutNotSelected) {
+    logf("[OTA] deferred: %s", securityErrorString(last_security_error_));
+    return Result::kDeferred;
+  }
+  if (last_security_error_ != SecurityError::kNone) {
+    last_error_ = Error::kManifestSecurityRejected;
+    logf("[OTA] rejected: %s", securityErrorString(last_security_error_));
+    return last_security_error_ == SecurityError::kInvalidPolicy ||
+                   last_security_error_ ==
+                       SecurityError::kVerifierUnavailable ||
+                   last_security_error_ ==
+                       SecurityError::kCanonicalEncodingFailed
+               ? Result::kFailed
+               : Result::kRejected;
   }
 
   const Decision decision = decide(last_manifest_);
@@ -440,10 +372,28 @@ Result Agent::check(const DecisionCallback& decide,
     writer_.discard();
     return fail(Error::kModemPowerOffFailed);
   }
+#if defined(WIO_OTA_M5_HALT_BEFORE_ACTIVATE)
+  log("[M5] verified; halted before activate; press RESET");
+  if (logger_ != nullptr) {
+    logger_->flush();
+  }
+  for (;;) {
+    delay(1000);
+  }
+#endif
   if (const auto error = writer_.activate();
       error != wio_ota::Error::kNone) {
     return failWriter(error);
   }
+#if defined(WIO_OTA_M5_HALT_AFTER_ACTIVATE)
+  log("[M5] settings committed; halted before software reset; press RESET");
+  if (logger_ != nullptr) {
+    logger_->flush();
+  }
+  for (;;) {
+    delay(1000);
+  }
+#endif
   log("[OTA] activated; rebooting");
   if (logger_ != nullptr) {
     logger_->flush();

@@ -9,6 +9,13 @@
 #include <WioCellular.h>
 #include <WioOtaAgent.h>
 
+#if defined(WIO_OTA_SECURE)
+#include <WioOtaVersionStore.h>
+#include <nrf.h>
+
+#include "ota_manifest_public_key.h"
+#endif
+
 #ifndef APP_VERSION
 #define APP_VERSION 1
 #endif
@@ -18,6 +25,13 @@ namespace {
 constexpr uint32_t kPowerOnTimeoutMs = 20UL * 1000UL;
 constexpr uint32_t kNetworkTimeoutMs = 3UL * 60UL * 1000UL;
 constexpr uint32_t kStatusIntervalMs = 5UL * 1000UL;
+
+#if defined(WIO_OTA_SECURE)
+wio_ota_agent::VersionStore version_store;
+uint32_t loaded_highest_version = 0;
+char rollout_device_id[17] = {};
+bool ota_security_ready = false;
+#endif
 
 wio_ota_agent::Decision decideUpdate(
     const wio_ota_agent::Manifest& manifest) {
@@ -41,6 +55,17 @@ wio_ota_agent::Result checkOta() {
   config.manifest_path = "/v1/userdata";
   config.allowed_firmware_host = "harvest-files.soracom.io";
   config.pdp_context_id = WioNetwork.config.pdpContextId;
+#if defined(WIO_OTA_SECURE)
+  config.security.require_signature = true;
+  config.security.manifest_public_key = wio_ota_keys::kManifestPublicKey;
+  config.security.expected_key_id = wio_ota_keys::kManifestKeyId;
+  config.security.enforce_anti_rollback = true;
+  config.security.current_version = APP_VERSION;
+  config.security.highest_installed_version =
+      version_store.highestInstalledVersion();
+  config.security.enforce_rollout = true;
+  config.security.rollout_device_id = rollout_device_id;
+#endif
 
   static wio_ota_agent::Agent agent{WioCellular, config, &Serial};
   return agent.check(decideUpdate, reportProgress);
@@ -57,6 +82,28 @@ void setup() {
   }
 
   Serial.printf("cellular-status + OTA, app-version=%d\n", APP_VERSION);
+#if defined(WIO_OTA_M5_HALT_BEFORE_ACTIVATE)
+  Serial.println("[M5] validation-build=c1-before-activate");
+#elif defined(WIO_OTA_M5_HALT_AFTER_ACTIVATE)
+  Serial.println("[M5] validation-build=c2-after-activate");
+#endif
+
+#if defined(WIO_OTA_SECURE)
+  snprintf(rollout_device_id, sizeof(rollout_device_id), "%08lx%08lx",
+           static_cast<unsigned long>(NRF_FICR->DEVICEID[1]),
+           static_cast<unsigned long>(NRF_FICR->DEVICEID[0]));
+  ota_security_ready = version_store.begin();
+  if (ota_security_ready) {
+    // Preserve the value loaded from flash before recording this boot's version.
+    loaded_highest_version = version_store.highestInstalledVersion();
+    ota_security_ready = version_store.recordCurrentVersion(APP_VERSION);
+  }
+  if (!ota_security_ready) {
+    Serial.printf("[OTA] security state unavailable: %s\n",
+                  wio_ota_agent::versionStoreErrorString(
+                      version_store.lastError()));
+  }
+#endif
 
   WioNetwork.config.apn = "soracom.io";
   WioCellular.begin();
@@ -72,6 +119,16 @@ void setup() {
   }
 
   Serial.println("[LTE] network ready");
+#if defined(WIO_OTA_SECURE)
+  if (!ota_security_ready) {
+    Serial.println("[OTA] skipped because anti-rollback state is unavailable");
+    return;
+  }
+  Serial.printf("[OTA] security state loaded=%lu current=%d highest=%lu\n",
+                static_cast<unsigned long>(loaded_highest_version), APP_VERSION,
+                static_cast<unsigned long>(
+                    version_store.highestInstalledVersion()));
+#endif
   const auto result = checkOta();
   Serial.printf("[OTA] result=%s\n", wio_ota_agent::resultString(result));
 }

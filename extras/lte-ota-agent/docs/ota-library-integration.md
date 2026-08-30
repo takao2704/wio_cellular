@@ -35,6 +35,12 @@ lib_deps =
     bblanchon/ArduinoJson@7.0.4
 ```
 
+署名検証を使うPlatformIO環境では、`WioOtaAgent`の`library.json`に含まれるbuild
+scriptがArduino Core内のCryptoCellライブラリを解決する。Arduino IDEではCoreに
+同梱された`Adafruit_nRFCrypto`をそのまま利用する。独自アプリではbuild flagに
+`WIO_OTA_ENABLE_ED25519`を追加する。exampleは`WIO_OTA_SECURE`を定義すると同じ実装を
+有効化する。
+
 ## 1回分のOTA確認
 
 Configにはmanifest取得先と、firmware URLに許可するhost/portを指定する。manifestに別hostが書かれていてもAgentが拒否する。
@@ -138,7 +144,7 @@ void loop() {
 アプリの判断コールバックを呼ぶ前に、Agentが次を検証する。
 
 - JSONとして解析可能
-- `format == 1`
+- `format`が1または2
 - `hardware`がConfigと一致
 - image sizeが8〜397,312 bytes
 - CRC16が4桁hexかつゼロではない
@@ -146,7 +152,10 @@ void loop() {
 - URLが`http://`形式
 - firmware host/portがConfigの許可値と一致
 
-download後は`WioOta`が受信サイズ、CRC16、SHA-256、vector table、Flash read-backを検証する。CRC16とSHA-256は破損検出であり、配信者の真正性は保証しない。本番利用前に電子署名とアンチロールバックを追加する。
+format 2では、上記に加えてEd25519署名、`key_id`、anti-rollback floor、段階配信を
+アプリの判断コールバックより先に検証できる。設定例、署名ツール、VersionStoreの
+扱いは[M6 署名・アンチロールバック・段階配信](m6-security-and-rollout.md)を参照する。
+CRC16とSHA-256だけのformat 1は破損検出用であり、本番の配信者認証には使わない。
 
 ## エラー取得
 
@@ -156,6 +165,8 @@ download後は`WioOta`が受信サイズ、CRC16、SHA-256、vector table、Flas
 Serial.println(wio_ota_agent::errorString(agent.lastError()));
 Serial.println(wio_bg770a_http::errorString(agent.lastHttpError()));
 Serial.println(wio_ota::errorString(agent.lastWriterError()));
+Serial.println(wio_ota_agent::securityErrorString(
+    agent.lastSecurityError()));
 ```
 
 `Agent::check()`はblockingかつ非再入APIであり、同時に複数のOTA確認を実行しない。ファームウェア取得中はユーザーアプリの時間制約がある処理を停止または退避する。途中失敗時はBank 0を変更せず、次回確認でBank 1を消去して最初から取得する。途中再開は未対応。

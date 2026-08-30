@@ -29,8 +29,8 @@ PlatformIOの公式board定義は最大サイズが`798,720 bytes`のままな�
 | M2 | 通信非依存のBank 1 writerとローカル転送PoC | USBからv2を受信し、CRC検証後にv1→v2更新 | 完了 |
 | M3 | LTE HTTPストリーミング | manifestとbinをLTEで取得しBank 1へ保存 | 完了 |
 | M4 | LTE OTA E2E | 遠隔更新確認から更新結果通知まで成功 | 完了 |
-| M5 | 障害耐性 | 通信断、電源断、破損、容量超過を試験 | 未着手 |
-| M6 | セキュリティ・運用 | 署名、アンチロールバック、段階配信 | 未着手 |
+| M5 | 障害耐性 | 通信断、電源断、破損、容量超過を試験 | 完了（自動試験と実機A1〜A6・B1〜B3・C1〜C2完了） |
+| M6 | セキュリティ・運用 | 署名、アンチロールバック、段階配信 | 完了（自動試験・HW v1.0実機1台での受入試験1〜8） |
 
 ## M1の実機手順
 
@@ -102,6 +102,36 @@ M4で実機確認したmanifest取得、技術的検証、Harvest Files download
 
 2026-08-30の追加実機試験では、旧v3が自動適用無効だったため、ライブラリ化した`lte_target_v3_apply`をUSB DFUで試験起点として導入した。以後はLTEだけで131,784-byteのv4を取得し、CRC16 `0xbde9`、SHA-256 `7c51d4f6976c844a05ad5dbc268dd0be05e42b601456838dca8743b7842d87ae`を検証して適用した。再起動後のv4で`current=4 manifest=4`、`application reports no update`、`ota-check-complete`を確認した。v4も自動適用を有効にしているため、同じAgentによる将来のv5更新経路を保持している。
 
+## M5の進捗
+
+manifest検証を`WioOtaManifest`へ、受信サイズとCRC16/SHA-256検証を
+`WioOta::ImageVerifier`へ分離した。これにより、実機フラッシュを操作せずに
+次の失敗を自動試験できる。
+
+- HW識別子、サイズ、CRC16、SHA-256が不正なmanifest
+- HTTPS、許可外ホスト、許可外ポートを指定したURL
+- ファームウェア受信の途中切断
+- CRC16不一致、SHA-256不一致、受信サイズ超過
+
+自動試験は`tools/run_native_tests.sh`で実行する。実機の通信断と電源断は
+[M5障害注入試験](m5-fault-injection.md)のA1〜A6、B1〜B3、C1〜C2を完了した。manifest不正、
+HTTP応答不一致、CRC16不一致、LTE session断、Wio本体reset、装置全体の電源断で、
+現在のアプリが起動不能にならないことを実機で確認した。さらにM5専用停止ポイントで、
+検証完了後のsettings登録前resetと、settings登録後のsoftware reset前resetを確認した。
+Bank 1からBank 0へのcopy中に電源を切るC3は通常の受入対象から除外し、SWD復旧手段を
+用意した破壊的試験として別管理する。
+
 ## セキュリティ上の注意
 
-CRC16とSHA-256だけでは配信者の真正性を保証できない。本番投入前に署名検証を必須化する。署名鍵、配信URL、APNなどの実値はリポジトリへコミットしない。
+format 2 manifest、Ed25519署名、最高適用versionの二重化保存、端末ごとの
+決定的bucketによる段階配信を実装した。詳細と鍵管理手順は
+[M6 署名・アンチロールバック・段階配信](m6-security-and-rollout.md)を参照する。
+2026-08-31に、未署名manifestの拒否、署名付きv2→v3のLTE OTA、更新後の同一versionに
+対する更新なし判定、署名改ざんと旧versionの拒否、配信率0%での延期を実機で確認した。
+その後、配信率を100%へ変更してv3→v4更新を確認した。v4起動時に保存済みversion 3の
+再読出しとversion 4の保存に成功し、v4をもう一度resetした後も`loaded=4 current=4 highest=4`
+を確認した。M6の予定した受入試験は完了した。詳細と未検証範囲は
+[M6実機検証記録](m6-hardware-validation-2026-08-31.md)を参照する。
+通常ビルドとの互換性のためformat 1は残しているが、本番では
+`require_signature = true`を必須とする。秘密鍵、配信URL、APNなどの実値は
+リポジトリへコミットしない。

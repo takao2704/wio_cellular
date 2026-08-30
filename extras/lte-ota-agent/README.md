@@ -32,3 +32,18 @@ SORACOM Metadataのユーザーデータをmanifest、SORACOM Harvest Filesをfi
 [`examples/cellular-status-ota`](examples/cellular-status-ota)にあります。
 `ota_v1`を書き込んだ後、`ota_v2`をHarvest Filesから配信することで、
 既存アプリへAgentを追加して更新する流れを確認できます。
+
+## 自動テスト
+
+```bash
+tools/run_native_tests.sh
+```
+
+CRC16、SHA-256、manifestの拒否条件に加え、ファームウェア受信の完了、
+途中切断、CRC16不一致、SHA-256不一致をPC上で検証します。実機での通信断と
+電源断は[M5障害注入試験](docs/m5-fault-injection.md)に従って段階的に実施します。
+
+署名付きmanifest、アンチロールバック、段階配信は
+[M6セキュリティ手順](docs/m6-security-and-rollout.md)を参照してください。実装・自動試験に加え、
+HW v1.0実機で署名付き更新、改ざんと旧versionの拒否、配信率0%での延期と100%での更新、
+再起動後のversion保存状態を確認しました。[実機検証記録と検証範囲](docs/m6-hardware-validation-2026-08-31.md)を参照してください。

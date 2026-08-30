@@ -5,8 +5,6 @@
 #include <nrfx_nvmc.h>
 #include <nrf_sdm.h>
 
-#include "WioOtaCrc16.h"
-
 namespace wio_ota {
 namespace {
 
@@ -38,6 +36,26 @@ static_assert(kBank1Address + kMaximumImageSize <= kBootloaderAddress,
 alignas(4) uint32_t settings_page[kFlashPageSize / sizeof(uint32_t)];
 
 bool isWordAligned(uint32_t value) { return (value & 0x3u) == 0; }
+
+Error mapVerificationError(VerificationError error) {
+  switch (error) {
+    case VerificationError::kNone:
+      return Error::kNone;
+    case VerificationError::kInvalidState:
+      return Error::kInvalidState;
+    case VerificationError::kInvalidArgument:
+      return Error::kInvalidArgument;
+    case VerificationError::kImageIncomplete:
+      return Error::kImageIncomplete;
+    case VerificationError::kCrcMismatch:
+      return Error::kCrcMismatch;
+    case VerificationError::kSha256Mismatch:
+      return Error::kSha256Mismatch;
+    case VerificationError::kCrcDisabledValue:
+      return Error::kCrcDisabledValue;
+  }
+  return Error::kInvalidState;
+}
 
 }  // namespace
 
@@ -75,13 +93,7 @@ const char* errorString(Error error) {
   return "unknown";
 }
 
-Writer::Writer()
-    : state_(State::kIdle),
-      image_size_(0),
-      bytes_written_(0),
-      crc_(kCrc16InitialValue),
-      sha_(),
-      sha256_{} {}
+Writer::Writer() : state_(State::kIdle), verifier_() {}
 
 Error Writer::fail(Error error) {
   state_ = State::kFailed;
@@ -112,6 +124,9 @@ Error Writer::begin(size_t image_size) {
   if (state_ != State::kIdle && state_ != State::kFailed) {
     return Error::kInvalidState;
   }
+  // A previous hardware or vector-table failure can leave the pure verifier
+  // in Receiving or Verified state. A new transfer always starts cleanly.
+  verifier_.reset();
   if (image_size < 8) {
     return fail(Error::kInvalidArgument);
   }
@@ -125,11 +140,10 @@ Error Writer::begin(size_t image_size) {
     return fail(error);
   }
 
-  image_size_ = image_size;
-  bytes_written_ = 0;
-  crc_ = kCrc16InitialValue;
-  sha_.reset();
-  std::memset(sha256_, 0, sizeof(sha256_));
+  const VerificationError verification_error = verifier_.begin(image_size);
+  if (verification_error != VerificationError::kNone) {
+    return fail(mapVerificationError(verification_error));
+  }
   state_ = State::kReceiving;
   return Error::kNone;
 }
@@ -146,22 +160,24 @@ Error Writer::write(const uint8_t* data, size_t size) {
   if (state_ != State::kReceiving) {
     return Error::kInvalidState;
   }
-  if (data == nullptr || size == 0 || size > image_size_ - bytes_written_) {
+  if (data == nullptr || size == 0 ||
+      size > verifier_.imageSize() - verifier_.bytesReceived()) {
     return fail(Error::kInvalidArgument);
   }
   if (const Error error = requireSoftDeviceDisabled(); error != Error::kNone) {
     return fail(error);
   }
 
-  const uint32_t address = kBank1Address + bytes_written_;
+  const uint32_t address = kBank1Address + verifier_.bytesReceived();
   if (const Error error = writeAndVerify(address, data, size);
       error != Error::kNone) {
     return fail(error);
   }
 
-  crc_ = crc16Ccitt(data, size, crc_);
-  sha_.update(data, size);
-  bytes_written_ += size;
+  const VerificationError verification_error = verifier_.update(data, size);
+  if (verification_error != VerificationError::kNone) {
+    return fail(mapVerificationError(verification_error));
+  }
   return Error::kNone;
 }
 
@@ -176,7 +192,8 @@ Error Writer::validateVectorTable() const {
                            initial_stack_pointer <= kRamEnd;
   const bool reset_valid = (reset_handler & 1u) != 0 &&
                            reset_address >= kApplicationAddress &&
-                           reset_address < kApplicationAddress + image_size_;
+                           reset_address <
+                               kApplicationAddress + verifier_.imageSize();
   return stack_valid && reset_valid ? Error::kNone
                                     : Error::kInvalidVectorTable;
 }
@@ -186,21 +203,10 @@ Error Writer::finish(uint16_t expected_crc,
   if (state_ != State::kReceiving) {
     return Error::kInvalidState;
   }
-  if (bytes_written_ != image_size_) {
-    return fail(Error::kImageIncomplete);
-  }
-  if (crc_ != expected_crc) {
-    return fail(Error::kCrcMismatch);
-  }
-  if (crc_ == 0) {
-    return fail(Error::kCrcDisabledValue);
-  }
-  if (expected_sha256 == nullptr) {
-    return fail(Error::kInvalidArgument);
-  }
-  sha_.finish(sha256_);
-  if (std::memcmp(sha256_, expected_sha256, sizeof(sha256_)) != 0) {
-    return fail(Error::kSha256Mismatch);
+  const VerificationError verification_error =
+      verifier_.finish(expected_crc, expected_sha256);
+  if (verification_error != VerificationError::kNone) {
+    return fail(mapVerificationError(verification_error));
   }
   if (const Error error = validateVectorTable(); error != Error::kNone) {
     return fail(error);
@@ -228,8 +234,8 @@ Error Writer::activate() {
   }
 
   settings->bank_1 = kBankValidApp;
-  settings->bank_1_crc = crc_;
-  settings->bank_1_size = image_size_;
+  settings->bank_1_crc = verifier_.calculatedCrc();
+  settings->bank_1_size = verifier_.imageSize();
 
   if (nrfx_nvmc_page_erase(kBootloaderSettingsAddress) != NRFX_SUCCESS) {
     return fail(Error::kFlashEraseFailed);
@@ -247,11 +253,7 @@ Error Writer::activate() {
 
 void Writer::discard() {
   state_ = State::kIdle;
-  image_size_ = 0;
-  bytes_written_ = 0;
-  crc_ = kCrc16InitialValue;
-  sha_.reset();
-  std::memset(sha256_, 0, sizeof(sha256_));
+  verifier_.reset();
 }
 
 void Writer::resetToApply() const {
