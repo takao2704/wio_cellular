@@ -78,7 +78,11 @@ python3 tools/send_firmware.py /dev/cu.usbmodemXXX .pio/build/blinky_v2/firmware
 - manifestはSORACOM Metadataのユーザーデータから取得する
 - `firmware.bin`はSORACOM Harvest Filesから取得する
 
-`lte_bootstrap`は固定Content-Lengthのみを受け付け、chunked transferとHTTPS URLを拒否する。manifestはMetadataの閉域IP `http://100.127.100.127/v1/userdata`、ファームウェアはHarvest Filesの閉域IP `http://100.127.111.48/...`を使い、manifest内のURLもHarvest FilesのIPと80番ポートに限定する。DNS依存を避けるため、SORACOM公式の固定サービスIPを利用する。`include/ota_config.local.h.example`をコピーして設定する。既定では`WIO_OTA_ENABLED=0`かつ`WIO_OTA_AUTO_APPLY=0`であり、誤って遠隔更新を開始しない。
+初期PoCの`lte_bootstrap`は、HTTPレスポンスの`Content-Length`を必須とし、chunked transferには対応しない。manifestの`size`、HTTPレスポンスの`Content-Length`、Bank 1へ書き込んだバイト数を照合するためである。HTTPSも初期PoCの対象外とし、SORACOM AirからSORACOMサービスへ接続するHTTP経路を前提とした。
+
+初期の実機切り分けでは、DNS解決を検証対象から外すため、MetadataとHarvest FilesをIPアドレスで指定した。これはDNS障害が実測されたためではなく、HTTP取得、UFS保存、Bank 1書込みの検証に集中するための一時的な設定である。エンドポイントのIPアドレスを製品仕様として固定する意図はなく、現在の再現用サンプルでは`metadata.soracom.io`と`harvest-files.soracom.io`を使用し、manifest内のファームウェアURLも許可したFQDNとポートに一致する場合だけ受け付ける。SORACOMサービスのIPアドレスは将来変更される可能性があるため、恒久的な設定にはFQDNを使用する。
+
+`include/ota_config.local.h.example`は初期PoC用の設定例である。誤って遠隔更新を開始しないよう、`WIO_OTA_ENABLED`と`WIO_OTA_AUTO_APPLY`の初期値は無効とし、検証段階に応じて明示的に有効化する。この安全設定は、DNSやHTTP方式の選択とは独立している。
 
 Metadata ServiceとHarvest Filesは対象IoT SIMのグループで有効化する。Metadataはreadonlyのままでよく、ユーザーデータにmanifest JSONを設定する。Harvest Filesにはバージョン別の不変パス（例: `/wio-bg770a/v2/firmware.bin`）でraw binaryを保存する。
 
