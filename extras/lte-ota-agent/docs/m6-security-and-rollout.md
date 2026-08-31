@@ -65,9 +65,15 @@ python3 tools/firmware_manifest.py firmware.zip \
 
 ## アプリへ組み込む
 
-`examples/cellular-status-ota`では`WIO_OTA_SECURE`をbuild flagに定義すると、Ed25519
-実装をリンクし、次の処理を有効にする。独自アプリでConfigだけを組み立てる場合は
-`WIO_OTA_ENABLE_ED25519`を定義する。
+PlatformIOの`examples/cellular-status-ota`では`WIO_OTA_SECURE`をbuild flagに定義すると、
+Ed25519実装をリンクし、次の処理を有効にする。PlatformIOの独自アプリでConfigだけを
+組み立てる場合は`WIO_OTA_ENABLE_ED25519`をbuild flagへ定義する。
+
+Arduino IDE/CLIではnRF52840向け署名検証実装をライブラリ側で自動的にコンパイルする。
+スケッチ内の`#define`は別途コンパイルされるライブラリへ伝わらないためである。
+署名を必須にするかはConfigで指定する。共通`.ino`は署名必須が既定であり、
+`ota_sketch_config.h`で設定する。公開鍵ヘッダは`src`ではなく`.ino`と同じフォルダへ
+生成する。導入とビルド手順は[Arduino IDEガイド](arduino-ide.md)を参照する。
 
 1. `VersionStore::begin()`で不揮発レコードを読む。
 2. `setup()`まで到達した現在の`APP_VERSION`を記録する。

@@ -21,6 +21,10 @@
 - OTA開始前にSoftDeviceを無効化できる
 - 更新対象はapplication raw binaryで、397,312 bytes以下
 
+Arduino IDEで使う場合は[Arduino IDEガイド](arduino-ide.md)を参照する。
+3ライブラリのZIPと共通の`.ino`を用意しており、下記のPlatformIO設定は不要である。
+SeeedJP core 1.5.1のArduino IDEボード定義には397,312 bytesの上限が設定済みである。
+
 既存PlatformIOプロジェクトへ`lib/WioOta`、`lib/WioBg770aHttp`、`lib/WioOtaAgent`をコピーする。最小のビルド設定は次のとおり。
 
 ```ini
@@ -37,9 +41,10 @@ lib_deps =
 
 署名検証を使うPlatformIO環境では、`WioOtaAgent`の`library.json`に含まれるbuild
 scriptがArduino Core内のCryptoCellライブラリを解決する。Arduino IDEではCoreに
-同梱された`Adafruit_nRFCrypto`をそのまま利用する。独自アプリではbuild flagに
-`WIO_OTA_ENABLE_ED25519`を追加する。exampleは`WIO_OTA_SECURE`を定義すると同じ実装を
-有効化する。
+同梱された`Adafruit_nRFCrypto`をそのまま利用し、nRF52840向け署名検証実装を自動的に
+コンパイルする。PlatformIOの独自アプリではbuild flagに`WIO_OTA_ENABLE_ED25519`を
+追加する。PlatformIOのexampleは`WIO_OTA_SECURE`で有効化する。
+いずれも署名を必須にするには`config.security.require_signature = true`を設定する。
 
 ## 1回分のOTA確認
 

@@ -33,6 +33,30 @@ SORACOM Metadataのユーザーデータをmanifest、SORACOM Harvest Filesをfi
 `ota_v1`を書き込んだ後、`ota_v2`をHarvest Filesから配信することで、
 既存アプリへAgentを追加して更新する流れを確認できます。
 
+### Arduino IDE
+
+同じアプリ本体を使う
+[`CellularStatusOta.ino`](examples/cellular-status-ota/CellularStatusOta/CellularStatusOta.ino)
+も用意しています。Arduino IDE向けは署名検証を既定で有効にしています。
+設定は同じフォルダの`ota_sketch_config.h`で行い、公開鍵ヘッダを生成してからビルドします。
+
+```bash
+python3 tools/package_arduino_libraries.py
+```
+
+`dist/arduino`に生成した3つのZIPをArduino IDEへ導入します。
+ボード設定、公開鍵の準備、バイナリのエクスポート、署名付き配信データの作成は
+[Arduino IDEガイド](docs/arduino-ide.md)を参照してください。
+
+Arduino CLIではHW v1.0へのUSB書込み、LTE接続、署名付きmanifestの更新なし判定、
+version保存状態に加え、Arduinoビルド同士のv4→v5 LTE OTAも実機で確認済みです。
+[USB導入の検証記録](docs/arduino-hardware-validation-2026-08-31.md)と
+[LTE OTAの検証記録](docs/arduino-ota-validation-2026-08-31.md)を参照してください。
+Arduino IDE 2.3.10のGUIでもコンパイル、手動DFU後のUSB書込み、LTE接続、
+署名付きmanifestの更新なし判定、最高適用versionの読み戻しを確認しました。
+[GUI操作の検証記録](docs/arduino-ide-gui-validation-2026-08-31.md)に環境とログを残しています。
+GUI生成バイナリ同士の新versionへのLTE OTAは未試験です。
+
 ## 自動テスト
 
 ```bash

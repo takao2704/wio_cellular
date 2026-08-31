@@ -61,5 +61,6 @@ mkdir -p "$build_dir"
 "$build_dir/test_manifest"
 "$build_dir/test_security"
 python3 "$project_root/tests/python/test_manifest_signing.py"
+python3 "$project_root/tests/python/test_arduino_support.py"
 
 echo "native tests: PASS"

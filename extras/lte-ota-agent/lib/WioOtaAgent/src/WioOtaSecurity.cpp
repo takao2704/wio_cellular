@@ -1,11 +1,11 @@
 #include "WioOtaSecurity.h"
+#include "WioOtaBuildConfig.h"
 
 #include <cstring>
 
 #include <WioOtaSha256.h>
 
-#if defined(NRF52840_XXAA) &&                                       \
-    (defined(WIO_OTA_ENABLE_ED25519) || defined(WIO_OTA_SECURE))
+#if WIO_OTA_HAS_ED25519
 #include <Adafruit_nRFCrypto.h>
 #include <nrf_cc310/include/crys_ec_edw_api.h>
 #endif
@@ -19,8 +19,7 @@ bool nonEmpty(const char* value) {
 
 SecurityError verifyEd25519(const Manifest& manifest,
                             const uint8_t* public_key) {
-#if defined(NRF52840_XXAA) &&                                       \
-    (defined(WIO_OTA_ENABLE_ED25519) || defined(WIO_OTA_SECURE))
+#if WIO_OTA_HAS_ED25519
   uint8_t canonical[kManifestCanonicalCapacity] = {};
   size_t canonical_size = 0;
   if (!encodeManifestCanonical(manifest, canonical, sizeof(canonical),
