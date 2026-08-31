@@ -46,7 +46,14 @@ scriptがArduino Core内のCryptoCellライブラリを解決する。Arduino ID
 追加する。PlatformIOのexampleは`WIO_OTA_SECURE`で有効化する。
 いずれも署名を必須にするには`config.security.require_signature = true`を設定する。
 
+ボードパッケージとビルド設定の完全例は[PlatformIOガイド](platformio.md)、
+実機側の確認・移行は[bootloader移行ガイド](bootloader-migration.md)を参照する。
+
 ## 1回分のOTA確認
+
+以下は既存アプリへ追加する部分の例であり、単独のスケッチではない。
+`batteryVoltageTooLow()`や`userApplicationIsBusy()`などの業務関数は利用側で実装する。
+ビルド可能な共通スケッチは[CellularStatusOta](../examples/cellular-status-ota/CellularStatusOta/CellularStatusOta.ino)を参照する。
 
 Configにはmanifest取得先と、firmware URLに許可するhost/portを指定する。manifestに別hostが書かれていてもAgentが拒否する。
 
@@ -54,7 +61,7 @@ Configにはmanifest取得先と、firmware URLに許可するhost/portを指定
 #include <WioCellular.h>
 #include <WioOtaAgent.h>
 
-constexpr uint32_t kApplicationVersion = 4;
+constexpr uint32_t kApplicationVersion = 1;
 
 wio_ota_agent::Decision decideUpdate(
     const wio_ota_agent::Manifest& manifest) {
@@ -75,10 +82,10 @@ void reportProgress(size_t received, size_t total) {
 wio_ota_agent::Result checkOtaOnce() {
   wio_ota_agent::Config config;
   config.target_hardware = "wio-bg770a-v1.0";
-  config.manifest_host = "100.127.100.127";
+  config.manifest_host = "metadata.soracom.io";
   config.manifest_port = 80;
   config.manifest_path = "/v1/userdata";
-  config.allowed_firmware_host = "100.127.111.48";
+  config.allowed_firmware_host = "harvest-files.soracom.io";
   config.allowed_firmware_port = 80;
   config.pdp_context_id = WioNetwork.config.pdpContextId;
 
@@ -103,6 +110,8 @@ wio_ota_agent::Result checkOtaOnce() {
 ## 1日1回確認する例
 
 `Agent::check()`は1回の確認を同期実行する。日次スケジュールはユーザーアプリのloopで管理する。次の例は起動時に確認し、その後24時間ごと、失敗または延期時は1時間後に再試行する。
+`runUserApplication()`、`pauseUserApplicationForOta()`、`prepareCellularForOta()`、
+`restoreNormalCellularPolicy()`、`resumeUserApplicationAfterOta()`は利用側で用意する。
 
 ```cpp
 constexpr uint32_t kDailyIntervalMs = 24UL * 60UL * 60UL * 1000UL;
@@ -159,7 +168,7 @@ void loop() {
 
 format 2では、上記に加えてEd25519署名、`key_id`、anti-rollback floor、段階配信を
 アプリの判断コールバックより先に検証できる。設定例、署名ツール、VersionStoreの
-扱いは[M6 署名・アンチロールバック・段階配信](m6-security-and-rollout.md)を参照する。
+扱いは[署名・アンチロールバック・段階配信](security-and-rollout.md)を参照する。
 CRC16とSHA-256だけのformat 1は破損検出用であり、本番の配信者認証には使わない。
 
 ## エラー取得

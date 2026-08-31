@@ -1,10 +1,13 @@
 # Arduinoビルド同士のLTE OTA試験（2026-08-31）
 
+この文書は実施当時の記録です。旧環境名・コマンド・実測ログを保持しています。
+現行の導入手順と検証範囲は[検証一覧](README.md)から参照してください。
+
 ## 試験範囲
 
 Arduino CLIでビルド・USB導入済みのversion 4から、同じCLIでビルドしたversion 5へ
 LTEだけで更新する。version 5のUSB書込みは行わない。
-起点の実機確認は[Arduino CLI実機検証記録](arduino-hardware-validation-2026-08-31.md)を参照する。
+起点の実機確認は[Arduino CLI実機検証記録](arduino-usb-2026-08-31.md)を参照する。
 
 - 実機: Wio BG770A HW v1.0、dual-bank bootloader、S140 7.3.0
 - Arduino CLI 1.2.2、SeeedJP core 1.5.1
@@ -133,7 +136,7 @@ APIの読み戻しで配信manifestの完全一致と署名、Metadata設定、�
 
 これにより、PlatformIO版に加えてArduino CLIでビルドした`.ino`でも、LTE OTAの
 一連の更新を実機で確認できた。この試験にはGUI操作を含めていない。
-後続の[Arduino IDE GUI検証記録](arduino-ide-gui-validation-2026-08-31.md)で、
+後続の[Arduino IDE GUI検証記録](arduino-ide-2026-08-31.md)で、
 GUIのコンパイル・USB書込み・更新なし判定と`loaded=5`の読み戻しを確認した。
 ArduinoビルドでのM5障害注入・M6拒否条件の全再試験と、v5をさらに通常resetした後の
 `loaded=5`の独立した再読出し確認は、今回のE2E試験には含めていない。

@@ -1,4 +1,4 @@
-# M6 署名・アンチロールバック・段階配信
+# 署名・アンチロールバック・段階配信
 
 ## 保護する範囲
 
@@ -93,8 +93,8 @@ config.security.enforce_rollout = true;
 config.security.rollout_device_id = rollout_device_id;
 ```
 
-`VersionStore`はInternalFSの2ファイルを交互に更新する。片方の書込み中に電源が切れても、
-もう片方の正常レコードから復旧できる。新バージョンをdownloadした時点では記録せず、
+`VersionStore`はInternalFSの2ファイルを交互に更新する。片方が不完全な場合は、
+もう片方の正常レコードから読み戻す設計である。書込み中の電源断は実機未検証である。新バージョンをdownloadした時点では記録せず、
 更新後のアプリが`setup()`へ到達してから記録するため、適用前の失敗で同じ版の再試行を
 妨げない。
 
@@ -129,26 +129,9 @@ bucketが`rollout`未満なら対象、以上なら`Result::kDeferred`になる�
 bootloader自体の置換、秘密鍵の漏えいは対象外である。bootloaderは独自にEd25519を
 検証しないため、Agentの署名検証を無効にしたビルドを本番配布しない。
 
-## 検証状況
+## 検証範囲
 
-2026-08-31時点で次を確認した。
-
-- C++とPythonのcanonical encoding一致
-- 正しい署名の検証とmanifest改ざん時の失敗
-- 署名manifest生成CLIと公開鍵header生成CLI
-- anti-rollbackと段階配信のnative test
-- `WIO_OTA_SECURE`有効時のWio BG770Aビルド
-- v2/v3: Flash 172,732 bytes、RAM 21,260 bytes
-- 永続化確認ログを追加したv4: Flash 172,852 bytes、RAM 21,260 bytes
-
-実機では、未署名manifestの拒否、正しい署名によるv2→v3更新、更新後の同一versionに
-対する更新なし判定、署名後のmanifest改ざん拒否、正しく署名された旧versionの拒否を
-確認した。段階配信は0%での延期から100%へ変更した後のv3→v4更新を確認した。
-v4起動時には不揮発メモリからversion 3を読み出し、version 4の保存・読み戻し検証にも
-成功した。さらに通常reset後に`loaded=4 current=4 highest=4`を確認した。結果とログは
-[M6実機検証記録](m6-hardware-validation-2026-08-31.md)に記載する。
-
-本計画のM6受入試験は完了した。実機検証はHW v1.0の1台で行い、段階配信率は0%と100%
-を確認した。多台数での配信率分布、不揮発レコード書込み中の電源断、bootloader copy中の
-電源断（M5 C3）は未検証である。本番鍵への切り替えや製品全体のセキュリティ保証は
-この完了範囲に含まない。
+[署名付きOTAの実機検証記録](validation/signed-ota-2026-08-31.md)と
+[検証範囲一覧](validation/README.md)を参照する。
+試験結果はHW v1.0の1台で確認した範囲に限る。
+多台数での配信率分布、不揮発レコード書込み中やbootloader反映中の電源断は未検証である。

@@ -100,12 +100,6 @@ void setup() {
   }
 
   Serial.printf("cellular-status + OTA, app-version=%d\n", APP_VERSION);
-#if defined(WIO_OTA_M5_HALT_BEFORE_ACTIVATE)
-  Serial.println("[M5] validation-build=c1-before-activate");
-#elif defined(WIO_OTA_M5_HALT_AFTER_ACTIVATE)
-  Serial.println("[M5] validation-build=c2-after-activate");
-#endif
-
 #if defined(WIO_OTA_SECURE)
   snprintf(rollout_device_id, sizeof(rollout_device_id), "%08lx%08lx",
            static_cast<unsigned long>(NRF_FICR->DEVICEID[1]),

@@ -1,73 +1,65 @@
-# Wio BG770A cellular OTA
+# Wio BG770A LTE OTA
 
-Wio BG770A HW v1.0を、USBで一度だけOTA対応基盤へ移行し、その後LTEでユーザーアプリを更新するための開発リポジトリです。
+既存のWio BG770AユーザーアプリへOTA処理を追加するライブラリと利用例です。
+アプリが更新を確認するタイミングと適用可否を決め、ライブラリが取得・検証・更新登録を担当します。
+付属サンプルではSORACOM Metadataからmanifestを取得し、Harvest Filesからアプリを取得します。
 
-M0〜M4は実機で完了しています。dual-bank bootloaderへの移行、bootstrap書込み、Bank 1へのローカル転送と反映に加え、SORACOM MetadataとHarvest Filesを使ったLTE OTAを確認済みです。ライブラリ化後の`WioOtaAgent`でも131,784-byteのv4を取得し、CRC16/SHA-256検証、Bank 1有効化、bootloader反映、v4起動後の更新不要判定まで成功しています。
+対象はHW v1.0、対応dual-bank bootloader、SoftDevice S140 7.3.0です。
+アプリの上限は397,312 bytesです。PCのボードパッケージ導入だけでは、実機のbootloaderは更新されません。
 
-## ビルド
+## 導入
 
-```bash
-pio run
-```
+- [bootloaderの確認・移行](docs/bootloader-migration.md)
+- [PlatformIOでビルドしてOTAする](docs/platformio.md)
+- [Arduino IDE／CLIでビルドしてOTAする](docs/arduino-ide.md)
+- [既存アプリへの組み込みと日次確認](docs/ota-library-integration.md)
+- [署名・アンチロールバック・段階配信](docs/security-and-rollout.md)
 
-- `bootstrap`: USB serialからraw firmwareを受け、Bank 1へ保存する初期アプリ
-- `blinky_v2`: 更新成功確認用の対象アプリ
-- `lte_bootstrap`: manifestとraw firmwareをLTE HTTPで取得する初期アプリ（既定では無効）
-- `lte_bootstrap_apply`: M4検証用。LTE OTAを有効化し、検証済みイメージを自動適用する初期アプリ
-- `lte_target_v3`: 更新後もLTE OTA機能を保持するversion 3アプリ
-- `lte_target_v3_apply`: ライブラリ化後のv3→v4実機試験用起点
-- `lte_target_v4`: `WioOtaAgent`を内蔵し、将来のOTA自動適用も保持するversion 4アプリ
+PlatformIOとArduino IDEは、同じ
+[CellularStatusOta.ino](examples/cellular-status-ota/CellularStatusOta/CellularStatusOta.ino)
+を使います。初回はOTA処理を含むアプリをUSBで書き込み、次のアプリからLTEで配信します。
+更新後のアプリにもOTA処理と公開鍵を残してください。
 
-## ライブラリ
+## 運用
 
-- `WioOta`: 転送元に依存しないdual-bank writer
-- `WioBg770aHttp`: BG770A内蔵HTTPクライアントとUFS読出し
-- `WioOtaAgent`: manifest取得、ユーザーアプリの更新判断、download/verify/applyの制御
+1. 配信側で更新アプリをビルドし、付属ツールでmanifestへ署名します。秘密鍵は端末に入れません。
+2. raw binaryをリリースごとの上書きしないHarvest Filesのパスへ配置し、内容を確認します。
+3. 対象SIMグループを確認してから、Metadataユーザーデータを対応するmanifestへ切り替えます。
+4. 端末のアプリが通信可能な時間に更新を確認します。電池残量や処理状況による延期はアプリが判断します。
+5. 検証と適用登録の後、bootloaderが更新アプリを反映します。更新結果の遠隔通知はアプリ側へ実装します。
 
-SORACOM Metadataのユーザーデータをmanifest、SORACOM Harvest Filesをfirmware本体の配信元として使います。BG770A内蔵HTTPクライアントで取得し、大きなレスポンスはモデム内UFSへ一時保存して512-byte単位でBank 1へ転送します。M4では更新後のv3が同じmanifestを再取得し、`current=3 manifest=3`として更新不要と判定できることも確認しています。
+サンプルは起動時に1回確認します。1日1回などのスケジュール、通信失敗時の再試行、
+PSM復帰はアプリ側で管理します。配信側から端末を即時に起こす仕組みはありません。
+署名必須・アンチロールバック・段階配信の設定を確認してから運用してください。
 
-既存ユーザーアプリへの追加方法と1日1回の確認例は[WioOtaAgent組み込みガイド](docs/ota-library-integration.md)、開発状況は[開発計画](docs/development-plan.md)を参照してください。
+## ファイルの役割
 
-公式WioCellularの`cellular-status` exampleを起点にした最小構成は
-[`examples/cellular-status-ota`](examples/cellular-status-ota)にあります。
-`ota_v1`を書き込んだ後、`ota_v2`をHarvest Filesから配信することで、
-既存アプリへAgentを追加して更新する流れを確認できます。
+| 場所 | 用途 |
+|---|---|
+| `lib/WioOta` | Bank 1書込み、イメージ検証、bootloaderへの登録 |
+| `lib/WioBg770aHttp` | BG770AのHTTP取得とUFS読み出し |
+| `lib/WioOtaAgent` | manifest検証と更新処理の制御、署名・配信対象判定、バージョン保存 |
+| `examples/cellular-status-ota` | PlatformIO／Arduinoで共通の利用例 |
+| `tools/firmware_manifest.py`、`firmware_utils.py` | 配信用raw binaryの抽出とmanifest生成・署名 |
+| `tools/export_manifest_public_key.py` | 公開鍵のC++ヘッダ生成 |
+| `tools/package_arduino_libraries.py` | Arduino IDE用ZIPの生成 |
+| `tests/native`、`tests/python` | 回帰テスト |
+| `tests/hardware` | 保守担当者向けの停止・リセット試験設定 |
+| `docs/validation` | 実測ログと確認範囲 |
 
-### Arduino IDE
+初期のUSB転送PoC、LTE接続診断アプリ、開発計画は
+[整理前のコミット](https://github.com/takao2704/wio_cellular/tree/de0044f74c540a4258d631c5ee6499d431f13840/extras/lte-ota-agent)
+から参照できます。通常の導入には使いません。
 
-同じアプリ本体を使う
-[`CellularStatusOta.ino`](examples/cellular-status-ota/CellularStatusOta/CellularStatusOta.ino)
-も用意しています。Arduino IDE向けは署名検証を既定で有効にしています。
-設定は同じフォルダの`ota_sketch_config.h`で行い、公開鍵ヘッダを生成してからビルドします。
+## テストと制約
 
-```bash
-python3 tools/package_arduino_libraries.py
-```
+[PC上の回帰テスト](tests/README.md)と[実機障害試験](docs/fault-injection.md)を分けています。
+[実機検証の一覧](docs/validation/README.md)には、PlatformIO／Arduino CLIでのLTE OTAと、
+Arduino IDE GUIでのコンパイル・USB書込み・更新なし判定の記録があります。
+GUI生成バイナリ同士のLTE OTAは未試験です。
 
-`dist/arduino`に生成した3つのZIPをArduino IDEへ導入します。
-ボード設定、公開鍵の準備、バイナリのエクスポート、署名付き配信データの作成は
-[Arduino IDEガイド](docs/arduino-ide.md)を参照してください。
-
-Arduino CLIではHW v1.0へのUSB書込み、LTE接続、署名付きmanifestの更新なし判定、
-version保存状態に加え、Arduinoビルド同士のv4→v5 LTE OTAも実機で確認済みです。
-[USB導入の検証記録](docs/arduino-hardware-validation-2026-08-31.md)と
-[LTE OTAの検証記録](docs/arduino-ota-validation-2026-08-31.md)を参照してください。
-Arduino IDE 2.3.10のGUIでもコンパイル、手動DFU後のUSB書込み、LTE接続、
-署名付きmanifestの更新なし判定、最高適用versionの読み戻しを確認しました。
-[GUI操作の検証記録](docs/arduino-ide-gui-validation-2026-08-31.md)に環境とログを残しています。
-GUI生成バイナリ同士の新versionへのLTE OTAは未試験です。
-
-## 自動テスト
-
-```bash
-tools/run_native_tests.sh
-```
-
-CRC16、SHA-256、manifestの拒否条件に加え、ファームウェア受信の完了、
-途中切断、CRC16不一致、SHA-256不一致をPC上で検証します。実機での通信断と
-電源断は[M5障害注入試験](docs/m5-fault-injection.md)に従って段階的に実施します。
-
-署名付きmanifest、アンチロールバック、段階配信は
-[M6セキュリティ手順](docs/m6-security-and-rollout.md)を参照してください。実装・自動試験に加え、
-HW v1.0実機で署名付き更新、改ざんと旧versionの拒否、配信率0%での延期と100%での更新、
-再起動後のversion保存状態を確認しました。[実機検証記録と検証範囲](docs/m6-hardware-validation-2026-08-31.md)を参照してください。
+通信はHTTP・固定Content-Lengthが前提です。HTTPS、chunked transfer、途中再開には未対応です。
+署名検証はAgent側の機能であり、bootloaderのsecure bootではありません。
+更新後に起動しないアプリからの自動ロールバックもありません。
+実機検証はHW v1.0の1台で行っており、HW v1.1、多台数の段階配信、
+bootloader反映中や不揮発レコード書込み中の電源断は未検証です。

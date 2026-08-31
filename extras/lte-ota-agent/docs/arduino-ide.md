@@ -20,7 +20,7 @@ Harvest Filesから取得して自動適用・再起動する。更新がなけ�
 - PCにPython 3と、署名ツール用の`cryptography`パッケージ
 
 通常のスケッチ書込みではbootloaderは更新されない。未移行の実機では先に
-[M1の実機手順](development-plan.md#m1の実機手順)を確認する。
+[bootloader確認・移行手順](bootloader-migration.md)を確認する。
 ボードパッケージをPCに入れただけでは、実機の移行が完了したことにはならない。
 アプリ上限は397,312 bytesである。
 
@@ -104,7 +104,7 @@ openssl pkey -in "$ota_key_dir/signing-key.pem" -pubout \
 ```
 
 `ota_key_dir`の保存先を控え、以後の更新でも同じ鍵を使う。上記の一時変数は同じ端末セッション
-内でのみ有効である。本番鍵の管理と鍵更新は[M6手順](m6-security-and-rollout.md)を参照する。
+内でのみ有効である。本番鍵の管理と鍵更新は[署名・鍵管理の手順](security-and-rollout.md)を参照する。
 
 スケッチフォルダは次の構成になる。
 
@@ -145,7 +145,7 @@ USB書込み時にDFUへ入れない場合だけ、RESETをダブルクリック
 `cellular-status + OTA, app-version=1`とLTE接続後の状態ログが確認点になる。
 通信失敗や更新なしの場合にも、その結果を出力する。
 
-すでに最高適用versionが4の端末なら、新しいビルドは5以上にする。
+すでに運用中の端末なら、新しいビルドは最高適用versionを超える値にする。
 version 1からの例をそのまま既存端末へ適用したり、更新を通すために不揮発レコードを消したりしない。
 
 ## 4. 次のversionをビルドして配信ファイルを作る
@@ -201,36 +201,12 @@ manifestへ別ホストやHTTPS URLを書いても受け付けない。
 
 ## 検証範囲
 
-2026-08-31にmacOS、Arduino CLI 1.2.2、SeeedJP core 1.5.1、WioCellular 0.3.15、
-ArduinoJson 7.0.4で確認した。Arduino CLIではHW v1.0へのUSB書込み、通常reset後のLTE接続、
-署名付きmanifestの「更新なし」判定、最高適用versionの保持、通常loopの継続まで確認した。
-自動DFUでの書込みは失敗したため、手動DFUで再送して成功した。
-[Arduino CLI実機検証記録](arduino-hardware-validation-2026-08-31.md)にコマンドとログを残している。
+PlatformIOとArduino CLIでは、実機で新しいアプリへのLTE OTAと更新後の「更新なし」
+判定を確認した。Arduino IDE GUIではコンパイル、USB書込み、LTE接続、署名付きmanifestの
+更新なし判定、バイナリエクスポートを確認した。GUI生成バイナリ同士のLTE OTAは未試験である。
+環境、ログ、未検証項目は[検証記録](validation/README.md)に分けている。
 
-続いてArduinoビルド同士のv4→v5をLTE OTAで更新し、全量取得、CRC16/SHA-256検証、
-Bank 1有効化、自動再起動、v5起動、同一manifestに対する更新なし判定まで確認した。
-[Arduino LTE OTA検証記録](arduino-ota-validation-2026-08-31.md)を参照する。
-Arduino IDE 2.3.10のGUIでも、ArduinoJson 7.4.3でのコンパイル、手動DFU後のUSB書込み、
-シリアルモニタでのLTE接続・署名付きmanifestの更新なし判定・最高適用version 5の
-読み戻しを確認した。「コンパイル済みバイナリをエクスポート」からのDFU ZIP生成と、
-USB書込み用binaryとのSHA-256一致も確認した。
-[GUI検証記録](arduino-ide-gui-validation-2026-08-31.md)を参照する。
-GUI生成バイナリ同士での新versionへのLTE OTAは未試験である。
-既存のPlatformIO版実機結果は[M6検証記録](m6-hardware-validation-2026-08-31.md)へ分けている。
-
-| ビルド | Flash（ビルド表示） | RAM | 結果 |
-|---|---:|---:|---|
-| Arduino CLI、署名必須、version 1 / 2 / 4 / 5 | 172,352 bytes | 21,264 bytes | 成功 |
-| Arduino IDE GUI、ArduinoJson 7.4.3、署名必須、version 5 | 175,448 bytes | 21,264 bytes | 成功 |
-| Arduino CLI、旧format 1検証用 | 156,816 bytes | 21,224 bytes | 成功 |
-| PlatformIO、通常のota_v2 | 139,420 bytes | 21,192 bytes | 成功 |
-| PlatformIO、署名必須のota_v4 | 172,852 bytes | 21,260 bytes | 成功 |
-
-Arduino CLIでは、ZIPから導入した3ライブラリでのビルド、公開鍵ヘッダ未配置時の
-コンパイル失敗、Ed25519検証関数のリンクを確認した。version 2の実出力DFU ZIPから
-172,360-byteのraw binaryを取り出し、署名付きmanifest生成後に公開鍵での署名検証と
-CRC16/SHA-256の一致を確認した。raw binaryのサイズはビルドのFlash使用量表示とは別に
-manifest生成時に計算する。native回帰テストも成功している。
+## Arduino CLI
 
 Arduino CLIで同じスケッチをビルド・エクスポートする場合は次を使う。
 前述のボード、ライブラリ、公開鍵をCLIが参照する環境にも導入しておく。

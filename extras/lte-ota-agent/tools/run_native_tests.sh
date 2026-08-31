@@ -4,17 +4,25 @@ set -euo pipefail
 project_root="$(cd "$(dirname "$0")/.." && pwd)"
 build_dir="$project_root/.pio/native-tests"
 compiler="${CXX:-c++}"
+python="${PYTHON:-python3}"
 
-arduinojson_header="$(
-  rg --files "$project_root/.pio/libdeps" 2>/dev/null |
-    rg '/ArduinoJson/src/ArduinoJson[.]h$' |
-    head -n 1 || true
-)"
-if [[ -z "$arduinojson_header" ]]; then
-  echo "ArduinoJson is not installed. Run: pio run -e lte_bootstrap" >&2
+# Resolve the test dependency independently of any hardware diagnostic app.
+if [[ -n "${ARDUINOJSON_INCLUDE_DIR:-}" ]]; then
+  arduinojson_include="$ARDUINOJSON_INCLUDE_DIR"
+else
+  arduinojson_header="$(
+    rg --files "$project_root/examples/cellular-status-ota/.pio/libdeps" 2>/dev/null |
+      rg '/ArduinoJson/src/ArduinoJson[.]h$' |
+      head -n 1 || true
+  )"
+  arduinojson_include="${arduinojson_header%/*}"
+fi
+if [[ ! -f "$arduinojson_include/ArduinoJson.h" ]]; then
+  echo "ArduinoJson is not installed. Build the example first:" >&2
+  echo "  pio run -d examples/cellular-status-ota -e initial" >&2
+  echo "Or set ARDUINOJSON_INCLUDE_DIR to the ArduinoJson src directory." >&2
   exit 2
 fi
-arduinojson_include="$(dirname "$arduinojson_header")"
 
 mkdir -p "$build_dir"
 
@@ -60,7 +68,9 @@ mkdir -p "$build_dir"
 "$build_dir/test_image_verifier"
 "$build_dir/test_manifest"
 "$build_dir/test_security"
-python3 "$project_root/tests/python/test_manifest_signing.py"
-python3 "$project_root/tests/python/test_arduino_support.py"
+"$python" "$project_root/tests/python/test_manifest_signing.py"
+"$python" "$project_root/tests/python/test_arduino_support.py"
+
+"$python" "$project_root/tests/python/test_project_layout.py"
 
 echo "native tests: PASS"

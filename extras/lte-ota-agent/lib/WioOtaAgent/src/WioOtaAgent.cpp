@@ -4,9 +4,9 @@
 #include <cstdio>
 #include <cstring>
 
-#if defined(WIO_OTA_M5_HALT_BEFORE_ACTIVATE) && \
-    defined(WIO_OTA_M5_HALT_AFTER_ACTIVATE)
-#error "Select only one M5 activation halt point"
+#if defined(WIO_OTA_TEST_HALT_BEFORE_ACTIVATE) && \
+    defined(WIO_OTA_TEST_HALT_AFTER_ACTIVATE)
+#error "Select only one OTA test activation halt point"
 #endif
 
 namespace wio_ota_agent {
@@ -372,8 +372,8 @@ Result Agent::check(const DecisionCallback& decide,
     writer_.discard();
     return fail(Error::kModemPowerOffFailed);
   }
-#if defined(WIO_OTA_M5_HALT_BEFORE_ACTIVATE)
-  log("[M5] verified; halted before activate; press RESET");
+#if defined(WIO_OTA_TEST_HALT_BEFORE_ACTIVATE)
+  log("[OTA TEST] verified; halted before activate; press RESET");
   if (logger_ != nullptr) {
     logger_->flush();
   }
@@ -385,8 +385,8 @@ Result Agent::check(const DecisionCallback& decide,
       error != wio_ota::Error::kNone) {
     return failWriter(error);
   }
-#if defined(WIO_OTA_M5_HALT_AFTER_ACTIVATE)
-  log("[M5] settings committed; halted before software reset; press RESET");
+#if defined(WIO_OTA_TEST_HALT_AFTER_ACTIVATE)
+  log("[OTA TEST] settings committed; halted before software reset; press RESET");
   if (logger_ != nullptr) {
     logger_->flush();
   }

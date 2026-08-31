@@ -1,5 +1,8 @@
 # Arduino CLI実機確認（2026-08-31）
 
+この文書は実施当時の記録です。旧環境名・コマンド・実測ログを保持しています。
+現行の導入手順と検証範囲は[検証一覧](README.md)から参照してください。
+
 ## 対象と変更範囲
 
 - Wio BG770A HW v1.0。開始前に通常USBモードとversion 4の稼働ログを確認
@@ -129,6 +132,6 @@ Arduino CLIで共通`.ino`をビルドし、HW v1.0へUSB書込みして、通�
 この試験ではbootloader、SORACOMの配信設定、PCの既存Arduino環境は変更していない。
 
 この試験はUSB導入と動作確認までを扱う。後続のArduinoビルド同士のv4→v5 LTE OTAは
-[別の検証記録](arduino-ota-validation-2026-08-31.md)で成功を確認した。
-この試験にはGUI操作を含めていない。後続の[Arduino IDE GUI検証記録](arduino-ide-gui-validation-2026-08-31.md)
+[別の検証記録](arduino-ota-2026-08-31.md)で成功を確認した。
+この試験にはGUI操作を含めていない。後続の[Arduino IDE GUI検証記録](arduino-ide-2026-08-31.md)
 で、GUIのコンパイル・USB書込みとシリアルモニタでの実機動作を確認した。
