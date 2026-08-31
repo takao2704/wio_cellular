@@ -1,7 +1,7 @@
 # 実機障害注入試験
 
 保守担当者が、不完全・破損したイメージを適用しないことと、中断後の動作を確認する手順です。
-[過去の実測記録](validation/README.md)と現在の試験用ビルド設定を分けています。
+[過去の実測記録](https://github.com/takao2704/wio_cellular/blob/873ded2438b8083a7f001cde241c6e2962187a54/extras/lte-ota-agent/docs/validation/README.md)はforkの固定コミットから参照できます。
 PC上の検証は[回帰テスト](../tests/README.md)で実行します。
 
 ## 準備

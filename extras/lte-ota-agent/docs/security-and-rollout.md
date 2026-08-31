@@ -131,7 +131,7 @@ bootloader自体の置換、秘密鍵の漏えいは対象外である。bootloa
 
 ## 検証範囲
 
-[署名付きOTAの実機検証記録](validation/signed-ota-2026-08-31.md)と
-[検証範囲一覧](validation/README.md)を参照する。
+forkの固定コミットにある[署名付きOTAの実機検証記録](https://github.com/takao2704/wio_cellular/blob/873ded2438b8083a7f001cde241c6e2962187a54/extras/lte-ota-agent/docs/validation/signed-ota-2026-08-31.md)と
+[検証範囲一覧](https://github.com/takao2704/wio_cellular/blob/873ded2438b8083a7f001cde241c6e2962187a54/extras/lte-ota-agent/docs/validation/README.md)を参照する。
 試験結果はHW v1.0の1台で確認した範囲に限る。
 多台数での配信率分布、不揮発レコード書込み中やbootloader反映中の電源断は未検証である。

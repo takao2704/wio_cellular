@@ -204,7 +204,7 @@ manifestへ別ホストやHTTPS URLを書いても受け付けない。
 PlatformIOとArduino CLIでは、実機で新しいアプリへのLTE OTAと更新後の「更新なし」
 判定を確認した。Arduino IDE GUIではコンパイル、USB書込み、LTE接続、署名付きmanifestの
 更新なし判定、バイナリエクスポートを確認した。GUI生成バイナリ同士のLTE OTAは未試験である。
-環境、ログ、未検証項目は[検証記録](validation/README.md)に分けている。
+環境、ログ、未検証項目はforkの固定コミットにある[検証記録](https://github.com/takao2704/wio_cellular/blob/873ded2438b8083a7f001cde241c6e2962187a54/extras/lte-ota-agent/docs/validation/README.md)を参照できる。
 
 ## Arduino CLI
 

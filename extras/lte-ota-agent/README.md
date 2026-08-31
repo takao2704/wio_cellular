@@ -45,7 +45,6 @@ PSM復帰はアプリ側で管理します。配信側から端末を即時に�
 | `tools/package_arduino_libraries.py` | Arduino IDE用ZIPの生成 |
 | `tests/native`、`tests/python` | 回帰テスト |
 | `tests/hardware` | 保守担当者向けの停止・リセット試験設定 |
-| `docs/validation` | 実測ログと確認範囲 |
 
 初期のUSB転送PoC、LTE接続診断アプリ、開発計画は
 [整理前のコミット](https://github.com/takao2704/wio_cellular/tree/de0044f74c540a4258d631c5ee6499d431f13840/extras/lte-ota-agent)
@@ -54,7 +53,8 @@ PSM復帰はアプリ側で管理します。配信側から端末を即時に�
 ## テストと制約
 
 [PC上の回帰テスト](tests/README.md)と[実機障害試験](docs/fault-injection.md)を分けています。
-[実機検証の一覧](docs/validation/README.md)には、PlatformIO／Arduino CLIでのLTE OTAと、
+実測ログは本家向けのソースツリーに含めず、forkの固定コミットに保存しています。
+[実機検証の一覧](https://github.com/takao2704/wio_cellular/blob/873ded2438b8083a7f001cde241c6e2962187a54/extras/lte-ota-agent/docs/validation/README.md)には、PlatformIO／Arduino CLIでのLTE OTAと、
 Arduino IDE GUIでのコンパイル・USB書込み・更新なし判定の記録があります。
 GUI生成バイナリ同士のLTE OTAは未試験です。
 

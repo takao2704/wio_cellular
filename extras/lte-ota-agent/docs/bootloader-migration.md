@@ -51,4 +51,4 @@ bootloader更新だけではLTE OTAは始まりません。
 OTAの試験へ進まず状態を確認します。USB DFUが使えない場合の復旧にはSWD/J-Link等が必要になることがあります。
 
 [Seeed公式ユーザーマニュアル](https://seeedjp.github.io/Wiki/Wio_BG770A/user-manual.html)と
-[移行時の実測記録](validation/hardware-2026-08-30.md)も参照してください。
+forkに保存した[移行時の実測記録](https://github.com/takao2704/wio_cellular/blob/873ded2438b8083a7f001cde241c6e2962187a54/extras/lte-ota-agent/docs/validation/hardware-2026-08-30.md)も参照してください。
