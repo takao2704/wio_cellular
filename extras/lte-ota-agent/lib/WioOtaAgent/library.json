@@ -1,0 +1,11 @@
+{
+  "name": "WioOtaAgent",
+  "version": "0.2.1",
+  "description": "Application-controlled SORACOM OTA agent for Wio BG770A",
+  "frameworks": "arduino",
+  "platforms": "nordicnrf52",
+  "build": {
+    "includeDir": "src",
+    "extraScript": "scripts/platformio_nrfcrypto.py"
+  }
+}
